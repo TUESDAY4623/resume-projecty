@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Mastery — Complete 6-Part Video Course</title>
+    <meta name="description" content="Master cybersecurity from zero to professional with this comprehensive 6-part interactive video course covering foundations, programming, methodology, tools, practice platforms, and career roadmap.">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #06050e;
+            --sf: #0c0a1a;
+            --cd: #141028;
+            --bd: #26204a;
+            --fg: #e4e0f8;
+            --mt: #6a62a0;
+            --ac: #B388FF;
+            --ac2: #FF6E40;
+            --acg: rgba(179, 136, 255, .07);
+            --rd: #FF5252;
+            --cy: #18FFFF;
+            --amb: #FFD740;
+            --gn: #69F0AE;
+            --pp: #EA80FC
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ========== BACKGROUND ========== */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-grid {
+            background-image:
+                linear-gradient(rgba(179, 136, 255, .012) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(179, 136, 255, .012) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        .bg-g1 {
+            width: 700px; height: 700px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(179, 136, 255, .06) 0%, transparent 70%);
+            position: absolute; top: -250px; right: -150px;
+            animation: gd1 22s ease-in-out infinite;
+        }
+
+        .bg-g2 {
+            width: 550px; height: 550px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 110, 64, .03) 0%, transparent 70%);
+            position: absolute; bottom: -200px; left: -100px;
+            animation: gd2 28s ease-in-out infinite;
+        }
+
+        .bg-g3 {
+            width: 400px; height: 400px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(24, 255, 255, .02) 0%, transparent 70%);
+            position: absolute; top: 50%; left: 40%;
+            animation: gd3 20s ease-in-out infinite;
+        }
+
+        @keyframes gd1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-80px,60px)} }
+        @keyframes gd2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(70px,-50px)} }
+        @keyframes gd3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-40px,30px)} }
+
+        /* ========== NAV ========== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 32px;
+            background: rgba(6, 5, 14, .8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(179, 136, 255, .08);
+            transition: all .3s;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 32px;
+            background: rgba(6, 5, 14, .95);
+            border-bottom-color: var(--bd);
+        }
+
+        .nav-brand {
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .nav-brand .logo {
+            width: 32px; height: 32px;
+            background: linear-gradient(135deg, var(--ac), var(--pp));
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; color: var(--bg); font-weight: 800;
+        }
+
+        .nav-brand span {
+            font-family: 'Fira Code', monospace;
+            font-size: 13px; font-weight: 600;
+            color: var(--ac); letter-spacing: .5px;
+        }
+
+        .nav-links {
+            display: flex; gap: 6px;
+        }
+
+        .nav-links a {
+            color: var(--mt); text-decoration: none;
+            font-size: 11px; font-weight: 500;
+            padding: 6px 14px; border-radius: 6px;
+            transition: all .2s;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .nav-links a:hover {
+            color: var(--ac); background: var(--acg);
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            position: relative; z-index: 1;
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center;
+            padding: 120px 24px 60px;
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--acg);
+            border: 1px solid rgba(179, 136, 255, .15);
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 11px; font-weight: 600;
+            color: var(--ac);
+            font-family: 'Fira Code', monospace;
+            letter-spacing: .4px;
+            margin-bottom: 28px;
+            animation: fadeUp .6s ease;
+        }
+
+        .hero-badge .pulse {
+            width: 6px; height: 6px;
+            background: var(--gn); border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,100% { opacity: 1; transform: scale(1) }
+            50% { opacity: .5; transform: scale(1.4) }
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 6vw, 72px);
+            font-weight: 800;
+            line-height: 1.08;
+            margin-bottom: 20px;
+            animation: fadeUp .6s ease .1s both;
+        }
+
+        .hero h1 .grad {
+            background: linear-gradient(135deg, var(--ac), var(--pp), var(--cy));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradShift 6s ease-in-out infinite;
+        }
+
+        @keyframes gradShift {
+            0%,100% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+        }
+
+        .hero .sub {
+            font-size: clamp(13px, 1.8vw, 18px);
+            color: var(--mt);
+            max-width: 560px;
+            line-height: 1.6;
+            margin-bottom: 36px;
+            animation: fadeUp .6s ease .2s both;
+        }
+
+        .hero-cta {
+            display: flex; gap: 12px;
+            animation: fadeUp .6s ease .3s both;
+        }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, var(--ac), var(--pp));
+            color: var(--bg); border: none;
+            padding: 14px 32px;
+            font-size: 14px; font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all .25s;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.15);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(179, 136, 255, .25);
+        }
+
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: none;
+            color: var(--fg); border: 1px solid var(--bd);
+            padding: 14px 28px;
+            font-size: 14px; font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: all .25s;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--ac);
+            color: var(--ac);
+            background: var(--acg);
+            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: flex; gap: 40px;
+            margin-top: 48px;
+            animation: fadeUp .6s ease .4s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(24px, 3.5vw, 36px);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--ac), var(--pp));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--mt);
+            margin-top: 4px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 28px;
+            display: flex; flex-direction: column;
+            align-items: center; gap: 6px;
+            color: var(--mt);
+            font-size: 10px;
+            font-family: 'Fira Code', monospace;
+            animation: bob 2.5s ease-in-out infinite;
+        }
+
+        @keyframes bob {
+            0%,100% { transform: translateY(0) }
+            50% { transform: translateY(8px) }
+        }
+
+        /* ========== SECTION ========== */
+        .section {
+            position: relative; z-index: 1;
+            padding: 80px 24px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            color: var(--ac);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(24px, 4vw, 42px);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 12px;
+        }
+
+        .section-sub {
+            font-size: clamp(12px, 1.4vw, 16px);
+            color: var(--mt);
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* ========== COURSE GRID ========== */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .course-card {
+            position: relative;
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            border-radius: 14px;
+            padding: 28px 24px 24px;
+            cursor: pointer;
+            transition: all .35s cubic-bezier(.4,0,.2,1);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--card-accent, var(--ac));
+            opacity: 0;
+            transition: opacity .35s;
+        }
+
+        .course-card:hover {
+            border-color: var(--card-accent, var(--ac));
+            transform: translateY(-6px);
+            box-shadow: 0 20px 48px rgba(0,0,0,.4), 0 0 0 1px var(--card-accent, var(--ac));
+        }
+
+        .course-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-top {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .card-part {
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--bg);
+            background: var(--card-accent, var(--ac));
+            padding: 3px 10px;
+            border-radius: 4px;
+            letter-spacing: .6px;
+        }
+
+        .card-duration {
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            color: var(--mt);
+            display: flex; align-items: center; gap: 4px;
+        }
+
+        .card-icon {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            margin-bottom: 14px;
+            transition: transform .3s;
+        }
+
+        .course-card:hover .card-icon {
+            transform: scale(1.1) rotate(-4deg);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            transition: color .3s;
+        }
+
+        .course-card:hover .card-title {
+            color: var(--card-accent, var(--ac));
+        }
+
+        .card-desc {
+            font-size: 12.5px;
+            color: var(--mt);
+            line-height: 1.55;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+
+        .card-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 16px;
+        }
+
+        .topic-tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 9px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: rgba(179, 136, 255, .06);
+            border: 1px solid rgba(179, 136, 255, .1);
+            color: var(--ac);
+        }
+
+        .card-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            padding-top: 14px;
+            border-top: 1px solid var(--bd);
+        }
+
+        .card-slides {
+            font-size: 10px;
+            color: var(--mt);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .card-arrow {
+            width: 30px; height: 30px;
+            border-radius: 6px;
+            border: 1px solid var(--bd);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px;
+            color: var(--mt);
+            transition: all .3s;
+        }
+
+        .course-card:hover .card-arrow {
+            background: var(--card-accent, var(--ac));
+            border-color: var(--card-accent, var(--ac));
+            color: var(--bg);
+            transform: translateX(3px);
+        }
+
+        /* ========== FEATURES ========== */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .feature {
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            border-radius: 10px;
+            padding: 22px 20px;
+            transition: all .3s;
+        }
+
+        .feature:hover {
+            border-color: var(--ac);
+            transform: translateY(-3px);
+        }
+
+        .feature i {
+            font-size: 20px;
+            color: var(--ac);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .feature h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .feature p {
+            font-size: 11.5px;
+            color: var(--mt);
+            line-height: 1.5;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            position: relative; z-index: 1;
+            text-align: center;
+            padding: 40px 24px 32px;
+            border-top: 1px solid var(--bd);
+        }
+
+        footer .footer-brand {
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            color: var(--ac);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        footer p {
+            font-size: 11px;
+            color: var(--mt);
+            line-height: 1.5;
+        }
+
+        footer .shortcuts {
+            display: inline-flex; gap: 12px;
+            margin-top: 14px;
+        }
+
+        footer .kbd {
+            font-family: 'Fira Code', monospace;
+            font-size: 9px;
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: var(--mt);
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px) }
+            to { opacity: 1; transform: translateY(0) }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .navbar { padding: 10px 16px }
+            .nav-links { display: none }
+            .hero { padding: 100px 16px 40px }
+            .hero-stats { gap: 24px }
+            .hero-cta { flex-direction: column; align-items: center }
+            .course-grid { grid-template-columns: 1fr }
+            .section { padding: 60px 16px }
+            .features { grid-template-columns: 1fr 1fr }
+        }
+
+        @media (max-width: 480px) {
+            .features { grid-template-columns: 1fr }
+            .hero-stats { flex-direction: column; gap: 16px }
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--ac);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-layer bg-grid"></div>
+    <div class="bg-layer">
+        <div class="bg-g1"></div>
+        <div class="bg-g2"></div>
+        <div class="bg-g3"></div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">
+            <div class="logo"><i class="fas fa-shield-halved"></i></div>
+            <span>>_ CYBER_MASTERY</span>
+        </div>
+        <div class="nav-links">
+            <a href="#courses">Modules</a>
+            <a href="#features">Features</a>
+            <a href="part1.html">Start Course</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">
+            <div class="pulse"></div>
+            6-PART INTERACTIVE COURSE
+        </div>
+        <h1>
+            Master<br>
+            <span class="grad">Cybersecurity</span><br>
+            From Zero.
+        </h1>
+        <p class="sub">A comprehensive, voice-narrated video course covering foundations, programming, penetration testing methodology, essential tools, practice platforms, and career roadmap.</p>
+        <div class="hero-cta">
+            <a href="part1.html" class="btn-primary" id="start-btn">
+                <i class="fas fa-play"></i> Start Learning
+            </a>
+            <a href="#courses" class="btn-secondary">
+                <i class="fas fa-list"></i> View All Modules
+            </a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-num">6</div>
+                <div class="stat-label">Modules</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">70+</div>
+                <div class="stat-label">Slides</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">∞</div>
+                <div class="stat-label">Replay</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">$0</div>
+                <div class="stat-label">Cost</div>
+            </div>
+        </div>
+        <div class="scroll-hint">
+            <i class="fas fa-chevron-down"></i>
+            SCROLL TO EXPLORE
+        </div>
+    </section>
+
+    <!-- COURSES -->
+    <section class="section" id="courses">
+        <div class="section-header reveal">
+            <div class="section-label">// Course Modules</div>
+            <h2 class="section-title">Six Pillars of<br>Cybersecurity Mastery</h2>
+            <p class="section-sub">Each module is a self-contained, voice-narrated interactive presentation. Complete them in order for the best learning experience.</p>
+        </div>
+
+        <div class="course-grid">
+            <!-- Part 1 -->
+            <a href="part1.html" class="course-card reveal" style="--card-accent: #B388FF">
+                <div class="card-top">
+                    <span class="card-part">PART 01</span>
+                    <span class="card-duration"><i class="fas fa-clock"></i> ~12 min</span>
+                </div>
+                <div class="card-icon" style="background: rgba(179,136,255,.1); color: #B388FF">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <div class="card-title">Cybersecurity Foundations</div>
+                <div class="card-desc">The CIA triad, networking fundamentals, TCP/IP & OSI models, operating systems, Linux command line, and web application architecture.</div>
+                <div class="card-topics">
+                    <span class="topic-tag">CIA Triad</span>
+                    <span class="topic-tag">Networking</span>
+                    <span class="topic-tag">Linux CLI</span>
+                    <span class="topic-tag">Web Architecture</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-slides"><i class="fas fa-layer-group"></i> 12 slides</span>
+                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- Part 2 -->
+            <a href="part2.html" class="course-card reveal" style="--card-accent: #18FFFF">
+                <div class="card-top">
+                    <span class="card-part" style="color: var(--bg)">PART 02</span>
+                    <span class="card-duration"><i class="fas fa-clock"></i> ~14 min</span>
+                </div>
+                <div class="card-icon" style="background: rgba(24,255,255,.1); color: #18FFFF">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="card-title">Scripting & Programming</div>
+                <div class="card-desc">Python automation, Bash scripting, SQL injection fundamentals, and JavaScript for web security — the four languages every hacker needs.</div>
+                <div class="card-topics">
+                    <span class="topic-tag" style="color:#18FFFF;border-color:rgba(24,255,255,.15)">Python</span>
+                    <span class="topic-tag" style="color:#18FFFF;border-color:rgba(24,255,255,.15)">Bash</span>
+                    <span class="topic-tag" style="color:#18FFFF;border-color:rgba(24,255,255,.15)">SQL</span>
+                    <span class="topic-tag" style="color:#18FFFF;border-color:rgba(24,255,255,.15)">JavaScript</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-slides"><i class="fas fa-layer-group"></i> 14 slides</span>
+                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- Part 3 -->
+            <a href="part3.html" class="course-card reveal" style="--card-accent: #FF5252">
+                <div class="card-top">
+                    <span class="card-part">PART 03</span>
+                    <span class="card-duration"><i class="fas fa-clock"></i> ~16 min</span>
+                </div>
+                <div class="card-icon" style="background: rgba(255,82,82,.1); color: #FF5252">
+                    <i class="fas fa-crosshairs"></i>
+                </div>
+                <div class="card-title">Penetration Testing Methodology</div>
+                <div class="card-desc">The 6-phase pentest lifecycle: reconnaissance, scanning, enumeration, exploitation, post-exploitation, and reporting — plus Kill Chain mapping.</div>
+                <div class="card-topics">
+                    <span class="topic-tag" style="color:#FF5252;border-color:rgba(255,82,82,.15)">Recon</span>
+                    <span class="topic-tag" style="color:#FF5252;border-color:rgba(255,82,82,.15)">Exploitation</span>
+                    <span class="topic-tag" style="color:#FF5252;border-color:rgba(255,82,82,.15)">Kill Chain</span>
+                    <span class="topic-tag" style="color:#FF5252;border-color:rgba(255,82,82,.15)">Reporting</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-slides"><i class="fas fa-layer-group"></i> 16 slides</span>
+                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- Part 4 -->
+            <a href="part4.html" class="course-card reveal" style="--card-accent: #FF6E40">
+                <div class="card-top">
+                    <span class="card-part">PART 04</span>
+                    <span class="card-duration"><i class="fas fa-clock"></i> ~14 min</span>
+                </div>
+                <div class="card-icon" style="background: rgba(255,110,64,.1); color: #FF6E40">
+                    <i class="fas fa-screwdriver-wrench"></i>
+                </div>
+                <div class="card-title">Essential Cybersecurity Tools</div>
+                <div class="card-desc">Hands-on with the five pillars of Kali Linux: Nmap, Burp Suite, Metasploit, Wireshark, and John the Ripper & Hashcat.</div>
+                <div class="card-topics">
+                    <span class="topic-tag" style="color:#FF6E40;border-color:rgba(255,110,64,.15)">Nmap</span>
+                    <span class="topic-tag" style="color:#FF6E40;border-color:rgba(255,110,64,.15)">Burp Suite</span>
+                    <span class="topic-tag" style="color:#FF6E40;border-color:rgba(255,110,64,.15)">Metasploit</span>
+                    <span class="topic-tag" style="color:#FF6E40;border-color:rgba(255,110,64,.15)">Wireshark</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-slides"><i class="fas fa-layer-group"></i> 14 slides</span>
+                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- Part 5 -->
+            <a href="part5.html" class="course-card reveal" style="--card-accent: #69F0AE">
+                <div class="card-top">
+                    <span class="card-part" style="color: var(--bg)">PART 05</span>
+                    <span class="card-duration"><i class="fas fa-clock"></i> ~12 min</span>
+                </div>
+                <div class="card-icon" style="background: rgba(105,240,174,.1); color: #69F0AE">
+                    <i class="fas fa-flag-checkered"></i>
+                </div>
+                <div class="card-title">Practice & Training Platforms</div>
+                <div class="card-desc">The four pillars of hands-on practice: TryHackMe, HackTheBox, PortSwigger Web Security Academy, and DVWA for local code auditing.</div>
+                <div class="card-topics">
+                    <span class="topic-tag" style="color:#69F0AE;border-color:rgba(105,240,174,.15)">TryHackMe</span>
+                    <span class="topic-tag" style="color:#69F0AE;border-color:rgba(105,240,174,.15)">HackTheBox</span>
+                    <span class="topic-tag" style="color:#69F0AE;border-color:rgba(105,240,174,.15)">PortSwigger</span>
+                    <span class="topic-tag" style="color:#69F0AE;border-color:rgba(105,240,174,.15)">DVWA</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-slides"><i class="fas fa-layer-group"></i> 13 slides</span>
+                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+
+            <!-- Part 6 -->
+            <a href="part6.html" class="course-card reveal" style="--card-accent: #EA80FC">
+                <div class="card-top">
+                    <span class="card-part" style="color: var(--bg)">PART 06</span>
+                    <span class="card-duration"><i class="fas fa-clock"></i> ~10 min</span>
+                </div>
+                <div class="card-icon" style="background: rgba(234,128,252,.1); color: #EA80FC">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <div class="card-title">Certifications & Career Roadmap</div>
+                <div class="card-desc">CompTIA Security+, OSCP, CISSP certification paths, portfolio building strategies, entry-level career paths, and your actionable next steps.</div>
+                <div class="card-topics">
+                    <span class="topic-tag" style="color:#EA80FC;border-color:rgba(234,128,252,.15)">Security+</span>
+                    <span class="topic-tag" style="color:#EA80FC;border-color:rgba(234,128,252,.15)">OSCP</span>
+                    <span class="topic-tag" style="color:#EA80FC;border-color:rgba(234,128,252,.15)">Portfolio</span>
+                    <span class="topic-tag" style="color:#EA80FC;border-color:rgba(234,128,252,.15)">Career</span>
+                </div>
+                <div class="card-footer">
+                    <span class="card-slides"><i class="fas fa-layer-group"></i> 9 slides</span>
+                    <div class="card-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+        <div class="section-header reveal">
+            <div class="section-label">// Why This Course</div>
+            <h2 class="section-title">Built Different</h2>
+            <p class="section-sub">Not another boring lecture. Every module is designed for maximum engagement and retention.</p>
+        </div>
+
+        <div class="features">
+            <div class="feature reveal">
+                <i class="fas fa-microphone-lines"></i>
+                <h4>AI Voice Narration</h4>
+                <p>Every slide is narrated using browser text-to-speech — learn by listening, not just reading.</p>
+            </div>
+            <div class="feature reveal">
+                <i class="fas fa-keyboard"></i>
+                <h4>Keyboard Shortcuts</h4>
+                <p>Space to play/pause, arrows to navigate, M to mute, F for fullscreen — total control.</p>
+            </div>
+            <div class="feature reveal">
+                <i class="fas fa-gauge-high"></i>
+                <h4>Speed Control</h4>
+                <p>Adjust narration speed from 0.75x to 1.5x — go slow to learn, fast to review.</p>
+            </div>
+            <div class="feature reveal">
+                <i class="fas fa-code"></i>
+                <h4>Live Code Examples</h4>
+                <p>Real terminal commands, real attack patterns, real tool outputs — not abstract theory.</p>
+            </div>
+            <div class="feature reveal">
+                <i class="fas fa-mobile-screen"></i>
+                <h4>Fully Responsive</h4>
+                <p>Works on desktop, tablet, and mobile — learn anywhere, anytime.</p>
+            </div>
+            <div class="feature reveal">
+                <i class="fas fa-dollar-sign"></i>
+                <h4>100% Free</h4>
+                <p>No subscriptions, no paywalls, no email required — just open and start learning.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-brand">>_ CYBER_MASTERY // 2026</div>
+        <p>Built with passion for the cybersecurity community.<br>All content is for educational purposes only.</p>
+        <div class="shortcuts">
+            <span class="kbd">SPACE</span> Play/Pause
+            <span class="kbd">←→</span> Navigate
+            <span class="kbd">↑↓</span> Speed
+            <span class="kbd">M</span> Mute
+            <span class="kbd">F</span> Fullscreen
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Scroll reveal animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>

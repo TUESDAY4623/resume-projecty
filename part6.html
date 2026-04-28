@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certifications & Career Roadmap — Video Course</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg: #06050e;
+            --sf: #0c0a1a;
+            --cd: #141028;
+            --bd: #26204a;
+            --fg: #e4e0f8;
+            --mt: #6a62a0;
+            --ac: #B388FF;
+            --ac2: #FF6E40;
+            --acg: rgba(179, 136, 255, .07);
+            --or2: rgba(255, 110, 64, .06);
+            --rd: #FF5252;
+            --cy: #18FFFF;
+            --amb: #FFD740;
+            --gn: #69F0AE;
+            --pp: #EA80FC;
+            --ppg: rgba(234, 128, 252, .05)
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif
+        }
+
+        .bgl {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none
+        }
+
+        .bggrid {
+            background-image: linear-gradient(rgba(179, 136, 255, .01) 1px, transparent 1px), linear-gradient(90deg, rgba(179, 136, 255, .01) 1px, transparent 1px);
+            background-size: 48px 48px
+        }
+
+        .bg1 {
+            width: 550px;
+            height: 550px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(179, 136, 255, .04) 0%, transparent 70%);
+            position: absolute;
+            top: -180px;
+            right: -80px;
+            animation: g1 24s ease-in-out infinite
+        }
+
+        .bg2 {
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 110, 64, .025) 0%, transparent 70%);
+            position: absolute;
+            bottom: -140px;
+            left: -60px;
+            animation: g2 28s ease-in-out infinite
+        }
+
+        .bg3 {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(24, 255, 255, .015) 0%, transparent 70%);
+            position: absolute;
+            top: 45%;
+            left: 20%;
+            animation: g3 20s ease-in-out infinite
+        }
+
+        @keyframes g1 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(-70px, 50px)
+            }
+        }
+
+        @keyframes g2 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(60px, -40px)
+            }
+        }
+
+        @keyframes g3 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(-30px, 40px)
+            }
+        }
+
+        .pl {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column
+        }
+
+        .topbar {
+            height: 42px;
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            background: var(--sf);
+            border-bottom: 1px solid var(--bd);
+            gap: 10px;
+            flex-shrink: 0
+        }
+
+        .topbar .td {
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .topbar .td .circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--ac)
+        }
+
+        .topbar .td span {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            color: var(--ac);
+            font-weight: 600;
+            letter-spacing: .5px
+        }
+
+        .topbar .tt2 {
+            margin-left: auto;
+            font-size: 10.5px;
+            color: var(--mt)
+        }
+
+        .mc {
+            flex: 1;
+            display: flex;
+            overflow: hidden
+        }
+
+        .sidebar {
+            width: 240px;
+            background: var(--sf);
+            border-right: 1px solid var(--bd);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0
+        }
+
+        .sb-head {
+            padding: 14px 16px; 
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--ac);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            border-bottom: 1px solid var(--bd);
+            font-family: 'Fira Code', monospace
+        }
+
+        .sb-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px 0
+        }
+
+        .sb-list::-webkit-scrollbar {
+            width: 3px
+        }
+
+        .sb-list::-webkit-scrollbar-thumb {
+            background: var(--bd);
+            border-radius: 4px
+        }
+
+        .ci {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background .18s;
+            border-left: 2px solid transparent
+        }
+
+        .ci:hover {
+            background: var(--cd)
+        }
+
+        .ci.on {
+            background: var(--acg);
+            border-left-color: var(--ac)
+        }
+
+        .ci .nm {
+            font-family: 'Fira Code', monospace;
+            font-size: 9px;
+            color: var(--mt);
+            min-width: 18px;
+            text-align: center
+        }
+
+        .ci.on .nm {
+            color: var(--ac)
+        }
+
+        .ci .label {
+            font-size: clamp(9px, 1vw, 11px);
+            color: var(--mt);
+            line-height: 1.35
+        }
+
+        .ci.on .label {
+            color: var(--fg)
+        }
+
+        .main-view {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative
+        }
+
+        .sa {
+            flex: 1;
+            position: relative;
+            overflow: hidden
+        }
+
+        .sl {
+            position: absolute;
+            inset: 0;
+            padding: clamp(24px, 4vw, 52px) clamp(28px, 5vw, 64px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(32px);
+            transition: opacity .42s, transform .42s;
+            pointer-events: none;
+            overflow-y: auto
+        }
+
+        .sl.on {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto
+        }
+
+        .sl.ex {
+            opacity: 0;
+            transform: translateX(-32px)
+        }
+
+        .slb {
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            color: var(--ac);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 8px
+        }
+
+        .slt {
+            font-size: clamp(14px, 2.2vw, 22px);
+            font-weight: 700;
+            line-height: 1.18;
+            margin-bottom: 10px;
+            color: var(--fg)
+        }
+
+        .sbd {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center
+        }
+
+        .bl {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .bl li {
+            display: flex;
+            align-items: flex-start;
+            gap: 7px;
+            font-size: clamp(9px, 1.2vw, 12px);
+            line-height: 1.5;
+            color: rgba(228, 224, 248, .84);
+            opacity: 0;
+            animation: fadeUp .35s ease forwards
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .d {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--ac);
+            margin-top: 6px;
+            flex-shrink: 0
+        }
+
+        .tbl {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(7px, .98vw, 10px)
+        }
+
+        .tbl thead th {
+            text-align: left;
+            padding: 6px 8px;
+            color: var(--ac);
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(7px, .85vw, 9px);
+            text-transform: uppercase;
+            letter-spacing: .2px
+        }
+
+        .tbl tbody td {
+            padding: 6px 8px;
+            border-top: 1px solid var(--bd);
+            color: rgba(228, 224, 248, .78)
+        }
+
+        .cb {
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            border-radius: 5px;
+            padding: 8px 11px;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(7px, .98vw, 10px);
+            line-height: 1.65;
+            overflow-x: auto
+        }
+
+        .ib,
+        .fb,
+        .wb {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 9px 13px;
+            border-radius: 5px;
+            font-size: clamp(8px, 1vw, 10px);
+            line-height: 1.45;
+            margin-top: 8px
+        }
+
+        .ib {
+            background: rgba(179, 136, 255, .05);
+            border: 1px solid rgba(179, 136, 255, .12);
+            color: rgba(179, 136, 255, .85)
+        }
+
+        .fb {
+            background: rgba(255, 215, 64, .05);
+            border: 1px solid rgba(255, 215, 64, .12);
+            color: rgba(255, 215, 64, .85)
+        }
+
+        .wb {
+            background: rgba(255, 82, 82, .05);
+            border: 1px solid rgba(255, 82, 82, .12);
+            color: rgba(255, 82, 82, .85)
+        }
+
+        .ib i,
+        .fb i,
+        .wb i {
+            margin-top: 2px;
+            flex-shrink: 0
+        }
+
+        .tc2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px
+        }
+
+        .cd {
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            padding: 10px 12px
+        }
+
+        .cd h4 {
+            font-size: clamp(8px, 1.1vw, 11px);
+            font-weight: 600;
+            margin-bottom: 4px
+        }
+
+        .cd .bl {
+            gap: 4px
+        }
+
+        .cd .bl li {
+            font-size: clamp(7px, .92vw, 9px);
+            opacity: 1
+        }
+
+        .pr {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border: 1px solid;
+            border-radius: 6px
+        }
+
+        .pn {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            flex-shrink: 0
+        }
+
+        .pb {
+            flex: 1
+        }
+
+        .pn2 {
+            font-weight: 600;
+            font-size: clamp(8px, 1.1vw, 11px)
+        }
+
+        .pd2 {
+            font-size: clamp(7px, .9vw, 9px);
+            margin-top: 1px
+        }
+
+        .lv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 5px
+        }
+
+        .lv-item {
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            border-radius: 4px;
+            padding: 5px 7px;
+            text-align: center;
+            font-size: clamp(7px, .85vw, 9px)
+        }
+
+        .lv-item .lvn {
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(7px, .8vw, 8px);
+            margin-bottom: 1px
+        }
+
+        .ts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 6px;
+            min-height: 100%
+        }
+
+        .ts .mt {
+            font-size: clamp(16px, 2.6vw, 34px);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 7px;
+            background: linear-gradient(135deg, var(--ac), var(--pp));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .ts .ms {
+            color: var(--mt);
+            font-size: clamp(8px, 1.1vw, 12px);
+            max-width: 450px;
+            line-height: 1.5
+        }
+
+        .ts .ht {
+            font-size: 10px;
+            color: var(--mt);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px
+        }
+
+        .ct {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--sf);
+            border-top: 1px solid var(--bd);
+            flex-shrink: 0
+        }
+
+        .ctb {
+            background: none;
+            border: 1px solid var(--bd);
+            color: var(--fg);
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all .18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px
+        }
+
+        .ctb:hover {
+            border-color: var(--ac);
+            color: var(--ac)
+        }
+
+        .ctb.pb {
+            background: var(--ac);
+            color: var(--bg);
+            border-color: var(--ac);
+            width: 34px;
+            height: 34px;
+            font-size: 12px
+        }
+
+        .ctb.pb:hover {
+            filter: brightness(1.15)
+        }
+
+        .pw3 {
+            flex: 1;
+            height: 4px;
+            background: var(--bd);
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative
+        }
+
+        .pf2 {
+            height: 100%;
+            background: linear-gradient(90deg, var(--ac), var(--pp));
+            border-radius: 3px;
+            transition: width .15s linear
+        }
+
+        .tdi {
+            font-family: 'Fira Code', monospace;
+            font-size: 9px;
+            color: var(--mt);
+            min-width: 82px;
+            text-align: center
+        }
+
+        .ss2 {
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            color: var(--fg);
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-family: 'Fira Code', monospace;
+            cursor: pointer
+        }
+
+        .vs2 {
+            display: flex;
+            align-items: center;
+            gap: 4px
+        }
+
+        .vsl2 {
+            width: 58px;
+            accent-color: var(--ac)
+        }
+
+        .io {
+            position: absolute;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 30;
+            text-align: center;
+            padding: 20px;
+            transition: opacity .5s, visibility .5s
+        }
+
+        .io.hid {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none
+        }
+
+        .io .it {
+            font-size: clamp(13px, 2vw, 26px);
+            font-weight: 700;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, var(--ac), var(--pp));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .io .is {
+            color: var(--mt);
+            font-size: clamp(8px, 1.1vw, 12px);
+            max-width: 400px;
+            margin-bottom: 20px;
+            line-height: 1.5
+        }
+
+        .sbt {
+            background: linear-gradient(135deg, var(--ac), var(--pp));
+            color: var(--bg);
+            border: none;
+            padding: 10px 28px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: filter .18s
+        }
+
+        .sbt:hover {
+            filter: brightness(1.15)
+        }
+
+        .eo2 {
+            position: absolute;
+            inset: 0;
+            background: rgba(6, 5, 14, .94);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 25;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .45s, visibility .45s
+        }
+
+        .eo2.vis {
+            opacity: 1;
+            visibility: visible
+        }
+
+        .eo2 .et2 {
+            font-size: clamp(14px, 2.2vw, 26px);
+            font-weight: 700;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, var(--ac), var(--pp));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .eo2 .es2 {
+            color: var(--mt);
+            font-size: 11px;
+            margin-bottom: 18px
+        }
+
+        .rbt {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: linear-gradient(135deg, var(--ac), var(--pp));
+            color: var(--bg);
+            border: none;
+            padding: 8px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            transition: filter .18s
+        }
+
+        .rbt:hover {
+            filter: brightness(1.15)
+        }
+
+        .si2 {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--acg);
+            border: 1px solid rgba(179, 136, 255, .2);
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 8px;
+            font-weight: 600;
+            color: var(--ac);
+            font-family: 'Fira Code', monospace;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .3s, visibility .3s;
+            z-index: 20
+        }
+
+        .si2.vis {
+            opacity: 1;
+            visibility: visible
+        }
+
+        .sbs {
+            display: flex;
+            gap: 2px
+        }
+
+        .sb2 {
+            width: 3px;
+            height: 10px;
+            background: var(--ac);
+            border-radius: 2px;
+            animation: eq .6s ease-in-out infinite alternate
+        }
+
+        .sb2:nth-child(2) {
+            animation-delay: .15s
+        }
+
+        .sb2:nth-child(3) {
+            animation-delay: .3s
+        }
+
+        .sb2:nth-child(4) {
+            animation-delay: .45s
+        }
+
+        @keyframes eq {
+            from {
+                transform: scaleY(.3)
+            }
+
+            to {
+                transform: scaleY(1)
+            }
+        }
+
+        .mob-toggle {
+            display: none;
+            position: fixed;
+            top: 50px;
+            left: 8px;
+            z-index: 40;
+            background: var(--sf);
+            border: 1px solid var(--bd);
+            color: var(--ac);
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px
+        }
+
+        .tst2 {
+            position: fixed;
+            bottom: 56px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            color: var(--fg);
+            font-size: 10px;
+            font-family: 'Fira Code', monospace;
+            padding: 5px 14px;
+            border-radius: 5px;
+            opacity: 0;
+            z-index: 50;
+            transition: opacity .2s, transform .2s;
+            pointer-events: none
+        }
+
+        .tst2.sh {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0)
+        }
+
+        @media (max-width:768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 42px;
+                bottom: 0;
+                z-index: 35;
+                transition: left .3s
+            }
+
+            .sidebar.op {
+                left: 0
+            }
+
+            .mob-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center
+            }
+
+            .sl {
+                padding: 18px 16px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bgl bggrid"></div>
+    <div class="bgl"><div class="bg1"></div><div class="bg2"></div><div class="bg3"></div></div>
+
+    <button class="mob-toggle" id="ct6" aria-label="Chapters"><i class="fas fa-bars"></i></button>
+
+    <div class="pl" id="pl6">
+        <div class="topbar">
+            <div class="td"><div class="circle"></div><span>PART 6</span></div>
+            <div class="tt2" id="ti6">Certifications & Career Roadmap</div>
+        </div>
+        <div class="mc">
+            <div class="sidebar" id="cp6">
+                <div class="sb-head"><i class="fas fa-list"></i>&ensp;CHAPTERS</div>
+                <div class="sb-list" id="cl6"></div>
+            </div>
+            <div class="main-view">
+                <div class="io" id="io6">
+                    <div class="it">Part 6: Certifications & Career Roadmap</div>
+                    <div class="is">The final chapter in your cybersecurity journey. From beginner certifications to landing your first job — we cover the complete career framework, certification hierarchy, and actionable next steps.</div>
+                    <button class="sbt" id="sbt6"><i class="fas fa-play"></i>&ensp;Start Part 6</button>
+                </div>
+                <div class="eo2" id="eo6">
+                    <div class="et2">Course Complete!</div>
+                    <div class="es2">You've completed all six parts of the cybersecurity roadmap. Time to build.</div>
+                    <button class="rbt" id="rbt6"><i class="fas fa-rotate-left"></i> Watch Again</button>
+                </div>
+                <div class="sa" id="sa6"></div>
+                <div class="si2" id="si6">
+                    <div class="sbs">
+                        <div class="sb2"></div>
+                        <div class="sb2"></div>
+                        <div class="sb2"></div>
+                        <div class="sb2"></div>
+                    </div><span>NARRATING</span>
+                </div>
+                <div class="ct">
+                    <button class="ctb" id="pv6" aria-label="Previous"><i class="fas fa-backward-step"></i></button>
+                    <button class="ctb pb" id="pl6b" aria-label="Play/Pause"><i class="fas fa-play"
+                            id="pli6"></i></button>
+                    <button class="ctb" id="nx6" aria-label="Next"><i class="fas fa-forward-step"></i></button>
+                    <div class="pw3" id="pw6" role="slider" aria-label="Progress" tabindex="0">
+                        <div class="pf2" id="pf6" style="width:0%"></div>
+                    </div>
+                    <div class="tdi" id="td6">00:00 / 00:00</div>
+                    <select class="ss2" id="ss6" aria-label="Speed">
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1.0x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                    </select>
+                    <div class="vs2">
+                        <button class="ctb" id="vb6" aria-label="Mute"><i class="fas fa-volume-high"
+                                id="vi6"></i></button>
+                        <input type="range" class="vsl2" id="vs6" min="0" max="1" step="0.1" value="1"
+                            aria-label="Volume">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tst2" id="tst6"></div>
+    <script>
+        const D = [
+            {
+                t: "Certifications & Career Roadmap", lb: "Introduction",
+                n: "Certifications and Career Roadmap. This is the final part of our six-part cybersecurity course. You have learned the foundations, the programming languages, the penetration testing methodology, the essential tools, and the practice platforms. Now it is time to formalize your knowledge with industry-recognized certifications, build a professional portfolio, and launch your cybersecurity career. This voice-guided presentation covers the certification hierarchy, resume building, and actionable next steps.",
+                h: `<div class="ts"><div class="mt">Turn Knowledge<br>Into Credentials.</div><div class="ms">The Complete Guide to Cybersecurity Certifications, Portfolio Building & Career Launch</div><div class="ht"><i class="fas fa-play"></i>&ensp;Press play to begin narration</div></div>`
+            },
+
+            {
+                t: "Why Certifications Matter", lb: "Chapter 01",
+                n: "In cybersecurity, certifications serve three critical functions. First, they validate your knowledge to employers who may have no way to assess your technical skills in a short interview. Second, certifications provide structured learning paths that ensure you cover every important topic systematically rather than randomly jumping between subjects. Third, many government and corporate positions legally require specific certifications under frameworks like DoD 8570. Without them, you cannot be considered for those roles regardless of your skill level.",
+                h: `<ul class="bl">
+<li><div class="d" style="background:var(--ac)"></div><span><strong style="color:var(--ac)">Employer Validation</strong> — certifications prove baseline competency when your resume lands on a recruiter's desk</span></li>
+<li><div class="d" style="background:var(--ac2)"></div><span><strong style="color:var(--ac2)">Structured Learning</strong> — each certification curriculum ensures comprehensive, systematic coverage of its domain</span></li>
+<li><div class="d" style="background:var(--cy)"></div><span><strong style="color:var(--cy)">Regulatory Requirement</strong> — DoD 8570, government agencies, and major enterprises mandate specific certifications</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span><strong style="color:var(--gn)">Career Progression</strong> — certifications create measurable milestones and unlock higher salary brackets</span></li>
+<li><div class="d" style="background:var(--amb)"></div><span><strong style="color:var(--amb)">Community & Networking</strong> — certified professionals gain access to exclusive communities and job boards</span></li>
+</ul>`},
+
+            {
+                t: "The Certification Hierarchy", lb: "Certification Map",
+                n: "Cybersecurity certifications are organized in a clear hierarchy. At the foundational level, CompTIA Security Plus is the universally accepted starting certification. It covers networking fundamentals, threat analysis, cryptography, and risk management. Above that, CompTIA CySA Plus focuses on defensive operations and blue team analytics. For offensive security, the CEH by EC-Council provides ethical hacking methodology, though it is increasingly considered theoretical. The gold standard for penetration testers is the OSCP by Offensive Security, which requires a grueling 24-hour practical exam. At the top tier, CISSP is the management-level certification that opens doors to security architect and CISO positions.",
+                h: `<div style="display:flex;flex-direction:column;gap:3px">
+<div class="pr" style="border-color:var(--gn);background:rgba(105,240,174,.04)"><div class="pn" style="background:rgba(105,240,174,.06);color:var(--gn)">Entry</div><div class="pb"><div class="pn2" style="color:var(--gn)">CompTIA Security+</div><div class="pd2">Foundational — networking, threats, crypto, risk management. The universal starting point.</div></div></div>
+<div class="pr" style="border-color:var(--cy);background:rgba(24,255,255,.03)"><div class="pn" style="background:rgba(24,255,255,.05);color:var(--cy)">Blue</div><div class="pb"><div class="pn2" style="color:var(--cy)">CompTIA CySA+</div><div class="pd2">Defensive operations — SOC analysis, threat detection, incident response, log analysis.</div></div></div>
+<div class="pr" style="border-color:var(--ac2);background:var(--or2)"><div class="pn" style="background:var(--or2);color:var(--ac2)">Red</div><div class="pb"><div class="pn2" style="color:var(--ac2)">CEH + OSCP</div><div class="pd2">Offensive security — CEH for theory, OSCP for practical proof of exploitation capability.</div></div></div>
+<div class="pr" style="border-color:var(--ac);background:var(--acg)"><div class="pn" style="background:var(--acg);color:var(--ac)">Expert</div><div class="pb"><div class="pn2" style="color:var(--ac)">CISSP</div><div class="pd2">Management-level — security architecture, governance, open doors to CISO/Director roles.</div></div></div>
+</div>`},
+
+            {
+                t: "CompTIA Security+ — Your First Credential", lb: "Security+",
+                n: "CompTIA Security Plus should be your very first cybersecurity certification. It is vendor-neutral, meaning the knowledge applies everywhere regardless of whether you work with Microsoft, Linux, or cloud environments. The exam covers six domains: threats and attacks, technologies and tools, architecture and design, identity and access management, risk management, and cryptography. The exam is 90 questions in 90 minutes and requires a score of 750 out of 900 to pass. Study resources include Professor Messer's free YouTube course, Jason Dion's Udemy practice exams, and the official CompTIA study guide.",
+                h: `<table class="tbl">
+<thead><tr><th>Domain</th><th>Weight</th><th>Key Topics</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--ac);font-weight:600">Threats & Attacks</td><td>24%</td><td>Malware types, social engineering, application attacks</td></tr>
+<tr><td style="color:var(--ac);font-weight:600">Architecture & Design</td><td>21%</td><td>Secure network design, virtualization, cloud models</td></tr>
+<tr><td style="color:var(--ac);font-weight:600">Implementation</td><td>25%</td><td>Identity management, PKI, wireless security</td></tr>
+<tr><td style="color:var(--ac);font-weight:600">Operations & IR</td><td>16%</td><td>Incident response, forensics, disaster recovery</td></tr>
+<tr><td style="color:var(--ac);font-weight:600">Governance & Risk</td><td>14%</td><td>Policies, legal frameworks, risk assessment</td></tr>
+</tbody></table>
+<div class="fb"><i class="fas fa-lightbulb"></i><span><strong>Study plan:</strong> Professor Messer (free YouTube) + Jason Dion practice exams + 8-12 weeks of consistent study.</span></div>`},
+
+            {
+                t: "OSCP — The Gold Standard", lb: "OSCP",
+                n: "The Offensive Security Certified Professional is the most respected hands-on certification in penetration testing. Unlike multiple-choice exams, the OSCP requires you to hack into multiple machines during a grueling 24-hour practical exam, then write a full professional penetration testing report within the following 24 hours. The PEN-200 course provides extensive lab access with over 70 machines. Preparation requires months of dedicated practice on HackTheBox and TryHackMe. The OSCP proves you can actually hack, not just talk about it. It is extremely difficult, with pass rates estimated between 40 to 60 percent. But passing it immediately elevates your resume above the competition.",
+                h: `<div class="tc2">
+<div class="cd" style="border-color:var(--ac2)"><h4 style="color:var(--ac2)"><i class="fas fa-clock"></i> Exam Format</h4>
+<ul class="bl"><li><div class="d" style="background:var(--ac2)"></div><span>24-hour practical hacking exam</span></li><li><div class="d" style="background:var(--ac2)"></div><span>24-hour report writing window</span></li><li><div class="d" style="background:var(--ac2)"></div><span>Multiple machines to compromise</span></li><li><div class="d" style="background:var(--ac2)"></div><span>Must document every step</span></li></ul></div>
+<div class="cd" style="border-color:var(--ac)"><h4 style="color:var(--ac)"><i class="fas fa-book"></i> Preparation</h4>
+<ul class="bl"><li><div class="d"></div><span>PEN-200 course + 70+ lab machines</span></li><li><div class="d"></div><span>3-6 months of HackTheBox/THM practice</span></li><li><div class="d"></div><span>Master enumeration methodology</span></li><li><div class="d"></div><span>Practice report writing</span></li></ul></div>
+</div>
+<div class="wb"><i class="fas fa-triangle-exclamation"></i><span><strong>Reality check:</strong> OSCP is extremely difficult (40-60% pass rate). Do NOT attempt it until you can consistently root HTB Medium machines without hints.</span></div>`},
+
+            {
+                t: "Building Your Portfolio", lb: "Portfolio",
+                n: "Certifications alone will not land you a job. You need a portfolio that demonstrates practical capability. First, create a professional GitHub profile with documented projects. Write detailed writeups of CTF challenges you have solved on TryHackMe and HackTheBox. Build a personal cybersecurity blog covering tool tutorials, vulnerability analyses, and CTF walkthroughs. Contribute to open-source security tools. Set up a home lab documenting your network configurations and experiments. Each portfolio item should demonstrate a specific skill that directly maps to job requirements listed in cybersecurity postings.",
+                h: `<ul class="bl">
+<li><div class="d" style="background:var(--ac)"></div><span><strong style="color:var(--ac)">GitHub Projects</strong> — custom scripts, automation tools, security scanners, documented and version-controlled</span></li>
+<li><div class="d" style="background:var(--ac2)"></div><span><strong style="color:var(--ac2)">CTF Writeups</strong> — detailed walkthroughs of THM rooms and HTB machines showing methodology and reasoning</span></li>
+<li><div class="d" style="background:var(--cy)"></div><span><strong style="color:var(--cy)">Security Blog</strong> — regular posts covering tool reviews, vulnerability research, and incident analysis</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span><strong style="color:var(--gn)">Open Source Contributions</strong> — pull requests to security tools like Nmap scripts, Metasploit modules, or Burp extensions</span></li>
+<li><div class="d" style="background:var(--amb)"></div><span><strong style="color:var(--amb)">Home Lab Documentation</strong> — network diagrams, SIEM setup, Active Directory lab configurations</span></li>
+</ul>
+<div class="ib"><i class="fas fa-info-circle"></i><span>Recruiters spend 6 seconds on a resume. A GitHub profile with active projects speaks <strong>louder than any certification</strong>.</span></div>`},
+
+            {
+                t: "Entry-Level Career Paths", lb: "Career Paths",
+                n: "Cybersecurity offers multiple entry-level career paths. SOC Analyst is the most common entry point, monitoring security alerts and triaging incidents. Junior Penetration Tester requires strong offensive skills and typically needs OSCP or CEH. Security Engineer focuses on building and maintaining security infrastructure. GRC Analyst handles governance, risk management, and compliance frameworks. Incident Responder investigates security breaches. The average entry-level cybersecurity salary ranges from 55,000 to 85,000 dollars, with rapid growth potential as you gain experience and specialized certifications.",
+                h: `<table class="tbl">
+<thead><tr><th>Role</th><th>Focus</th><th>Key Certs</th><th style="color:var(--gn)">Salary Range</th></tr></thead>
+<tbody>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--cy)">SOC Analyst</td><td>Alert monitoring, triage, IR</td><td>Security+, CySA+</td><td style="color:var(--gn)">$55-75K</td></tr>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--ac2)">Jr. Pentester</td><td>Vulnerability assessment, testing</td><td>OSCP, CEH</td><td style="color:var(--gn)">$65-90K</td></tr>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--ac)">Security Engineer</td><td>Infrastructure hardening</td><td>Security+, AWS/Azure</td><td style="color:var(--gn)">$70-95K</td></tr>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--amb)">GRC Analyst</td><td>Policy, compliance, auditing</td><td>Security+, CISA</td><td style="color:var(--gn)">$55-80K</td></tr>
+<tr><td style="font-family:'Fira Code',monospace;color:var(--pp)">Incident Responder</td><td>Breach investigation, forensics</td><td>CySA+, GCIH</td><td style="color:var(--gn)">$65-90K</td></tr>
+</tbody></table>`},
+
+            {
+                t: "The Complete 6-Part Recap", lb: "Course Recap",
+                n: "Let us recap your entire cybersecurity learning journey across all six parts. Part 1 covered cybersecurity foundations including the CIA triad, networking basics, operating systems, and the Linux command line. Part 2 introduced essential programming languages: Python for automation, Bash for scripting, SQL for database interaction, and JavaScript for web security. Part 3 taught the penetration testing methodology: reconnaissance, scanning, enumeration, exploitation, post-exploitation, and reporting. Part 4 covered essential tools: Nmap, Burp Suite, Metasploit, Wireshark, John the Ripper, and Hashcat. Part 5 introduced practice platforms: TryHackMe, HackTheBox, PortSwigger, and DVWA. And now Part 6 has provided your certification roadmap and career framework.",
+                h: `<div style="display:flex;flex-direction:column;gap:3px">
+<div class="pr" style="border-color:var(--gn);background:rgba(105,240,174,.03)"><div class="pn" style="background:rgba(105,240,174,.06);color:var(--gn)">Part 1</div><div class="pb"><div class="pn2" style="color:var(--gn)">Foundations</div><div class="pd2">CIA triad, networking, operating systems, Linux CLI</div></div></div>
+<div class="pr" style="border-color:var(--cy);background:rgba(24,255,255,.03)"><div class="pn" style="background:rgba(24,255,255,.05);color:var(--cy)">Part 2</div><div class="pb"><div class="pn2" style="color:var(--cy)">Programming</div><div class="pd2">Python, Bash, SQL, JavaScript for security</div></div></div>
+<div class="pr" style="border-color:var(--rd);background:rgba(255,82,82,.03)"><div class="pn" style="background:rgba(255,82,82,.05);color:var(--rd)">Part 3</div><div class="pb"><div class="pn2" style="color:var(--rd)">Methodology</div><div class="pd2">Recon → Scan → Enumerate → Exploit → Post-Exploit → Report</div></div></div>
+<div class="pr" style="border-color:var(--ac2);background:var(--or2)"><div class="pn" style="background:var(--or2);color:var(--ac2)">Part 4</div><div class="pb"><div class="pn2" style="color:var(--ac2)">Tools</div><div class="pd2">Nmap, Burp Suite, Metasploit, Wireshark, John, Hashcat</div></div></div>
+<div class="pr" style="border-color:var(--amb);background:rgba(255,215,64,.03)"><div class="pn" style="background:rgba(255,215,64,.05);color:var(--amb)">Part 5</div><div class="pb"><div class="pn2" style="color:var(--amb)">Practice</div><div class="pd2">TryHackMe, HackTheBox, PortSwigger, DVWA</div></div></div>
+<div class="pr" style="border-color:var(--ac);background:var(--acg)"><div class="pn" style="background:var(--acg);color:var(--ac)">Part 6</div><div class="pb"><div class="pn2" style="color:var(--ac)">Career</div><div class="pd2">Certifications, portfolio building, career paths</div></div></div>
+</div>`},
+
+            {
+                t: "Your Action Plan — Start Now", lb: "Conclusion",
+                n: "Here is your actionable next steps plan. This week, create accounts on TryHackMe and HackTheBox. Complete the TryHackMe Pre Security learning path. Start studying for CompTIA Security Plus using Professor Messer's free course. Within the first month, complete the Junior Penetration Tester path on TryHackMe and solve your first HackTheBox machine. This quarter, pass the Security Plus exam, start your GitHub portfolio, and begin writing CTF writeups. Within six months, attempt the OSCP if you are on the offensive track, or pursue CySA Plus if you prefer defense. Start applying for entry-level positions immediately: SOC Analyst, Junior Penetration Tester, or Security Engineer. You have the complete roadmap. The only thing left is to execute. Start today.",
+                h: `<div class="ts" style="text-align:left;align-items:flex-start">
+<div style="font-size:clamp(13px,2vw,22px);font-weight:700;color:var(--fg);margin-bottom:10px;line-height:1.3">Your Action Plan</div>
+<ul class="bl">
+<li><div class="d" style="background:var(--gn)"></div><span><strong style="color:var(--gn)">This Week</strong> — Create THM/HTB accounts, start Pre Security path, begin Security+ study</span></li>
+<li><div class="d" style="background:var(--cy)"></div><span><strong style="color:var(--cy)">Month 1</strong> — Complete Jr Pentester path, solve first HTB machine, build GitHub profile</span></li>
+<li><div class="d" style="background:var(--ac2)"></div><span><strong style="color:var(--ac2)">Quarter 1</strong> — Pass Security+, start CTF writeup blog, contribute to open-source tools</span></li>
+<li><div class="d" style="background:var(--ac)"></div><span><strong style="color:var(--ac)">6 Months</strong> — Attempt OSCP or CySA+, apply for entry-level roles, build home lab</span></li>
+</ul>
+<div style="margin-top:14px;padding:10px 14px;background:rgba(179,136,255,.05);border:1px solid rgba(179,136,255,.12);border-radius:6px;font-family:'Fira Code',monospace;font-size:clamp(9px,1.1vw,12px);color:var(--ac);line-height:1.6">
+"You have the complete roadmap.<br>The only variable left is execution.<br>Start today. Start now."
+</div>
+</div>`}
+        ];
+
+        const st6 = { cur: 0, play: false, up: false, spd: 1, vol: 1, mut: false, start: false, ss: 0, se: 0, pt: null, utt: null };
+        D.forEach(s => { s.w = s.n.split(/\s+/).length; s.dur = (s.w / 140) * 60 });
+        const totD6 = D.reduce((a, s) => a + s.dur, 0);
+        const $ = id => document.getElementById(id);
+        const sa6 = $('sa6'), pl6b = $('pl6b'), pli6 = $('pli6'), pv6 = $('pv6'), nx6 = $('nx6'), pw6 = $('pw6'), pf6 = $('pf6'), td6 = $('td6'), ss6 = $('ss6'), vs6 = $('vs6'), vb6 = $('vb6'), vi6 = $('vi6'), ct6 = $('ct6'), cp6 = $('cp6'), cl6 = $('cl6'), io6 = $('io6'), eo6 = $('eo6'), sbt6 = $('sbt6'), rbt6 = $('rbt6'), si6 = $('si6'), ti6 = $('ti6'), tst6 = $('tst6');
+
+        function fmt6(s) { const m = Math.floor(s / 60).toString().padStart(2, '0'), sc = Math.floor(s % 60).toString().padStart(2, '0'); return m + ':' + sc }
+        function toast6(m) { tst6.textContent = m; tst6.classList.add('sh'); setTimeout(() => tst6.classList.remove('sh'), 2200) }
+        function getEl6() { let t = 0; for (let i = 0; i < st6.cur; i++) t += D[i].dur; t += st6.se; return t }
+
+        function buildS6() { sa6.innerHTML = ''; D.forEach((s, i) => { const d = document.createElement('div'); d.className = 'sl' + (i === 0 ? ' on' : ''); d.id = 's6-' + i; d.innerHTML = `<div class="slb">${s.lb}</div><div class="slt">${s.t}</div><div class="sbd">${s.h}</div>`; sa6.appendChild(d) }) }
+        function buildC6() { cl6.innerHTML = ''; D.forEach((s, i) => { const d = document.createElement('div'); d.className = 'ci' + (i === 0 ? ' on' : ''); d.innerHTML = `<span class="nm">${i + 1}</span><span class="label">${s.t}</span>`; d.addEventListener('click', () => seek6(i)); cl6.appendChild(d) }) }
+
+        function render6(idx, dir = 'next') {
+            const prev = sa6.querySelector('.sl.on'), next = $('s6-' + idx);
+            if (!next || prev === next) return;
+            if (prev) { prev.classList.remove('on'); prev.classList.add(dir === 'next' ? 'ex' : ''); setTimeout(() => prev.classList.remove('ex'), 420) }
+            next.classList.add('on');
+            next.querySelectorAll('.bl li').forEach((li, i) => { li.style.animation = 'none'; li.offsetHeight; li.style.animationDelay = (i * .1) + 's'; li.style.animation = '' });
+            cl6.querySelectorAll('.ci').forEach((e, i) => e.classList.toggle('on', i === idx));
+            ti6.textContent = D[idx].t; st6.se = 0; upd6();
+        }
+
+        function spk6(txt) {
+            if (!('speechSynthesis' in window)) { toast6('TTS not supported'); return }
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(txt); u.rate = st6.spd; u.pitch = 1; u.volume = st6.mut ? 0 : st6.vol;
+            const v = speechSynthesis.getVoices();
+            const p = v.find(x => x.lang.startsWith('en') && x.name.includes('Google')) || v.find(x => x.lang.startsWith('en') && x.localService) || v.find(x => x.lang.startsWith('en'));
+            if (p) u.voice = p;
+            u.onend = () => { if (!st6.up && st6.play) { if (st6.cur < D.length - 1) nxt6(); else { stp6(); eo6.classList.add('vis') } } si6.classList.remove('vis') };
+            u.onerror = e => { if (e.error !== 'canceled') si6.classList.remove('vis') };
+            st6.utt = u; speechSynthesis.speak(u); si6.classList.add('vis');
+        }
+
+        function doP6() { st6.play = true; st6.up = false; st6.ss = Date.now() - (st6.se * 1000); pli6.className = 'fas fa-pause'; spk6(D[st6.cur].n); startPT6() }
+        function doPa6() { st6.up = true; st6.play = false; st6.se = (Date.now() - st6.ss) / 1000; pli6.className = 'fas fa-play'; speechSynthesis.pause(); si6.classList.remove('vis'); stopPT6() }
+        function togP6() { if (!st6.start) return; st6.play ? doPa6() : doP6() }
+        function nxt6() { if (st6.cur >= D.length - 1) return; speechSynthesis.cancel(); st6.cur++; render6(st6.cur, 'next'); if (st6.play) { st6.ss = Date.now(); st6.se = 0; spk6(D[st6.cur].n) } else upd6() }
+        function prv6() { if (st6.cur <= 0) return; speechSynthesis.cancel(); si6.classList.remove('vis'); const w = st6.play; st6.play = false; st6.cur--; st6.se = 0; render6(st6.cur, 'prev'); upd6(); if (w) setTimeout(() => doP6(), 100) }
+        function seek6(idx) { if (idx === st6.cur) return; speechSynthesis.cancel(); si6.classList.remove('vis'); const w = st6.play; st6.play = false; st6.cur = idx; st6.se = 0; render6(idx); upd6(); if (w) setTimeout(() => doP6(), 100) }
+        function stp6() { st6.play = false; st6.up = false; pli6.className = 'fas fa-play'; speechSynthesis.cancel(); si6.classList.remove('vis'); stopPT6() }
+        function startPT6() { stopPT6(); st6.pt = setInterval(() => { st6.se = (Date.now() - st6.ss) / 1000; upd6() }, 200) }
+        function stopPT6() { if (st6.pt) { clearInterval(st6.pt); st6.pt = null } }
+        function upd6() { const e = getEl6(), p = Math.min((e / totD6) * 100, 100); pf6.style.width = p + '%'; td6.textContent = fmt6(e) + ' / ' + fmt6(totD6) }
+
+        pl6b.addEventListener('click', togP6); pv6.addEventListener('click', prv6); nx6.addEventListener('click', nxt6);
+        ss6.addEventListener('change', () => { st6.spd = parseFloat(ss6.value); if (st6.play) { st6.ss = Date.now() - (st6.se * 1000); spk6(D[st6.cur].n) } toast6('Speed: ' + ss6.value + 'x') });
+        vs6.addEventListener('input', () => { st6.vol = parseFloat(vs6.value); st6.mut = false; vi6.className = st6.vol === 0 ? 'fas fa-volume-xmark' : st6.vol < .5 ? 'fas fa-volume-low' : 'fas fa-volume-high'; if (st6.utt) st6.utt.volume = st6.vol });
+        vb6.addEventListener('click', () => { st6.mut = !st6.mut; vi6.className = st6.mut ? 'fas fa-volume-xmark' : 'fas fa-volume-high'; if (st6.utt) st6.utt.volume = st6.mut ? 0 : st6.vol });
+        ct6.addEventListener('click', () => { cp6.classList.toggle('op'); ct6.classList.toggle('on') });
+        pw6.addEventListener('click', e => { const r = pw6.getBoundingClientRect(), p = (e.clientX - r.left) / r.width, tt = p * totD6; let a = 0; for (let i = 0; i < D.length; i++) { if (a + D[i].dur >= tt) { seek6(i); const w = tt - a; st6.se = w; st6.ss = Date.now() - (w * 1000); upd6(); break } a += D[i].dur } });
+        sbt6.addEventListener('click', () => { st6.start = true; io6.classList.add('hid'); if (speechSynthesis.getVoices().length === 0) { speechSynthesis.addEventListener('voiceschanged', () => doP6(), { once: true }) } else doP6() });
+        rbt6.addEventListener('click', () => { eo6.classList.remove('vis'); st6.cur = 0; st6.se = 0; render6(0, 'prev'); upd6(); setTimeout(() => doP6(), 300) });
+
+        document.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            switch (e.code) {
+                case 'Space': e.preventDefault(); if (!st6.start) { sbt6.click(); return } togP6(); break;
+                case 'ArrowRight': e.preventDefault(); nxt6(); break;
+                case 'ArrowLeft': e.preventDefault(); prv6(); break;
+                case 'ArrowUp': e.preventDefault(); st6.spd = Math.min(st6.spd + .25, 2); ss6.value = st6.spd.toString(); if (st6.play) { st6.ss = Date.now() - (st6.se * 1000); spk6(D[st6.cur].n) } toast6('Speed: ' + st6.spd + 'x'); break;
+                case 'ArrowDown': e.preventDefault(); st6.spd = Math.max(st6.spd - .25, .5); ss6.value = st6.spd.toString(); if (st6.play) { st6.ss = Date.now() - (st6.se * 1000); spk6(D[st6.cur].n) } toast6('Speed: ' + st6.spd + 'x'); break;
+                case 'KeyM': vb6.click(); break;
+                case 'KeyF': if (document.fullscreenElement) document.exitFullscreen(); else $('pl6').requestFullscreen?.(); break;
+                case 'Escape': cp6.classList.remove('op'); ct6.classList.remove('on'); break;
+            }
+        });
+        document.addEventListener('visibilitychange', () => { if (document.hidden && st6.play) doPa6() });
+        if ('speechSynthesis' in window) { speechSynthesis.getVoices(); speechSynthesis.addEventListener('voiceschanged', () => speechSynthesis.getVoices(), { once: true }) }
+
+        buildS6(); buildC6(); upd6();
+    </script>
+</body>
+
+</html>

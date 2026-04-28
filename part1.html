@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offensive Security Foundations — Video Course</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg: #06050e;
+            --surface: #0c0a1a;
+            --card: #141028;
+            --border: #26204a;
+            --fg: #e4e0f8;
+            --muted: #6a62a0;
+            --accent: #B388FF;
+            --accent-dim: #9b6fe0;
+            --accent-glow: rgba(179, 136, 255, 0.07);
+            --orange: #FF6E40;
+            --red: #FF5252;
+            --cyan: #18FFFF;
+            --yellow: #FFD740;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Animated background */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-grid {
+            background-image:
+                linear-gradient(rgba(179, 136, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(179, 136, 255, 0.01) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        .bg-glow-1 {
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(179, 136, 255, 0.04) 0%, transparent 70%);
+            position: absolute;
+            top: -200px;
+            right: -100px;
+            animation: glowDrift1 20s ease-in-out infinite;
+        }
+
+        .bg-glow-2 {
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(24, 255, 255, 0.025) 0%, transparent 70%);
+            position: absolute;
+            bottom: -150px;
+            left: -100px;
+            animation: glowDrift2 25s ease-in-out infinite;
+        }
+
+        @keyframes glowDrift1 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(-80px, 60px)
+            }
+        }
+
+        @keyframes glowDrift2 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(60px, -40px)
+            }
+        }
+
+        /* App layout */
+        #app {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background: rgba(11, 11, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .top-bar .logo {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .top-bar .title-text {
+            color: var(--muted);
+            font-size: 13px;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chap-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .chap-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .chap-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        /* Main area */
+        .main-area {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Chapter sidebar */
+        .chapters {
+            width: 280px;
+            background: rgba(11, 11, 30, 0.9);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            flex-shrink: 0;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            position: absolute;
+            z-index: 10;
+            height: 100%;
+        }
+
+        .chapters.open {
+            transform: translateX(0);
+        }
+
+        .chap-header {
+            padding: 16px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chap-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .chap-item:hover {
+            background: rgba(0, 255, 136, 0.04);
+            color: var(--fg);
+        }
+
+        .chap-item.active {
+            border-left-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        .chap-item .num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .chap-item.active .num {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        .chap-item .label {
+            line-height: 1.3;
+        }
+
+        /* Player */
+        .player-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            min-width: 0;
+        }
+
+        .player {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16/9;
+            background: var(--surface);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 60px rgba(0, 255, 136, 0.03), 0 20px 60px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Scanline overlay */
+        .player::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 136, 0.008) 2px, rgba(0, 255, 136, 0.008) 4px);
+        }
+
+        /* Slide area */
+        .slide-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            padding: 36px 44px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+            overflow-y: auto;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2;
+        }
+
+        .slide.exit {
+            opacity: 0;
+            transform: translateX(-30px);
+            z-index: 1;
+        }
+
+        .slide-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            flex-shrink: 0;
+        }
+
+        .slide-title {
+            font-size: clamp(20px, 3vw, 32px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--fg) 0%, var(--muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-body {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .slide-body::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .slide-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .slide-body::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        /* Slide content styles */
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: clamp(13px, 1.6vw, 16px);
+            line-height: 1.6;
+            color: rgba(228, 228, 240, 0.88);
+            opacity: 0;
+            transform: translateY(8px);
+            animation: bulletIn 0.4s ease forwards;
+        }
+
+        .bullet-list li .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+            margin-top: 8px;
+        }
+
+        @keyframes bulletIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(11px, 1.3vw, 14px);
+        }
+
+        .slide-table thead th {
+            text-align: left;
+            padding: 8px 12px;
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(10px, 1.2vw, 12px);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .slide-table tbody td {
+            padding: 7px 12px;
+            border-bottom: 1px solid var(--border);
+            color: rgba(228, 228, 240, 0.82);
+            vertical-align: top;
+        }
+
+        .slide-table tbody tr:hover {
+            background: rgba(0, 255, 136, 0.03);
+        }
+
+        /* OSI layers visual */
+        .osi-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .osi-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: clamp(11px, 1.3vw, 14px);
+            transition: transform 0.2s;
+        }
+
+        .osi-row:hover {
+            transform: translateX(4px);
+        }
+
+        .osi-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .osi-name {
+            font-weight: 600;
+            min-width: 100px;
+        }
+
+        .osi-detail {
+            color: var(--muted);
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(10px, 1.1vw, 12px);
+        }
+
+        /* Encapsulation visual */
+        .encap-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .encap-box {
+            border: 2px solid;
+            border-radius: 8px;
+            padding: 12px 20px;
+            text-align: center;
+            transition: transform 0.2s;
+            cursor: default;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .encap-box:hover {
+            transform: scale(1.02);
+        }
+
+        .encap-label {
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(10px, 1.1vw, 12px);
+            font-weight: 600;
+        }
+
+        .encap-inner {
+            margin-top: 6px;
+        }
+
+        /* HTTP flow */
+        .http-flow {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .http-step {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            text-align: center;
+            font-size: clamp(10px, 1.2vw, 13px);
+            min-width: 80px;
+            transition: all 0.2s;
+        }
+
+        .http-step:hover {
+            border-color: var(--accent);
+            background: var(--accent-glow);
+        }
+
+        .http-step .step-title {
+            color: var(--accent);
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(9px, 1vw, 11px);
+            margin-bottom: 3px;
+        }
+
+        .http-arrow {
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        /* Comparison two-col */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .col-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            border-top: 3px solid;
+        }
+
+        .col-card h4 {
+            font-size: clamp(13px, 1.5vw, 16px);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Title slide specific */
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .title-slide .main-title {
+            font-size: clamp(24px, 4vw, 48px);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title-slide .sub-title {
+            color: var(--muted);
+            font-size: clamp(12px, 1.5vw, 18px);
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .title-slide .start-hint {
+            margin-top: 30px;
+            color: var(--accent);
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.5
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        /* Speaking indicator */
+        .speaking-indicator {
+            position: absolute;
+            bottom: 12px;
+            right: 16px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .speaking-indicator.visible {
+            opacity: 1;
+        }
+
+        .speak-bars {
+            display: flex;
+            gap: 2px;
+            align-items: end;
+            height: 14px;
+        }
+
+        .speak-bar {
+            width: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            animation: speakBar 0.6s ease-in-out infinite;
+        }
+
+        .speak-bar:nth-child(1) {
+            height: 6px;
+            animation-delay: 0s;
+        }
+
+        .speak-bar:nth-child(2) {
+            height: 10px;
+            animation-delay: 0.15s;
+        }
+
+        .speak-bar:nth-child(3) {
+            height: 14px;
+            animation-delay: 0.3s;
+        }
+
+        .speak-bar:nth-child(4) {
+            height: 8px;
+            animation-delay: 0.1s;
+        }
+
+        @keyframes speakBar {
+
+            0%,
+            100% {
+                transform: scaleY(0.4)
+            }
+
+            50% {
+                transform: scaleY(1)
+            }
+        }
+
+        /* Controls bar */
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            background: rgba(8, 8, 20, 0.95);
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .ctrl-btn {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 14px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+
+        .ctrl-btn:hover {
+            color: var(--fg);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .ctrl-btn.play-btn {
+            font-size: 16px;
+            color: var(--accent);
+        }
+
+        .progress-wrap {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-width: 60px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+            border-radius: 3px;
+            transition: width 0.3s linear;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.2s;
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .progress-wrap:hover .progress-fill::after {
+            opacity: 1;
+        }
+
+        .time-display {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .speed-select {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .speed-select:focus {
+            border-color: var(--accent);
+        }
+
+        .vol-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .vol-slider {
+            width: 60px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--border);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .vol-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+        }
+
+        /* Intro overlay */
+        .intro-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-icon {
+            font-size: 48px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .intro-title {
+            font-size: clamp(20px, 3vw, 36px);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .intro-sub {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .start-btn {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 12px 36px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.35);
+        }
+
+        /* End overlay */
+        .end-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            background: rgba(5, 5, 16, 0.92);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .end-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .end-overlay .end-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .end-overlay .end-sub {
+            color: var(--muted);
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .replay-btn {
+            background: none;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 10px 30px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .replay-btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--fg);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.3s;
+            pointer-events: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width:768px) {
+            .player {
+                border-radius: 8px;
+                aspect-ratio: auto;
+                height: calc(100vh - 100px);
+            }
+
+            .slide {
+                padding: 20px 22px;
+            }
+
+            .two-col {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .http-flow {
+                gap: 4px;
+            }
+
+            .http-arrow {
+                font-size: 12px;
+            }
+
+            .vol-slider {
+                width: 40px;
+            }
+
+            .chapters {
+                width: 240px;
+            }
+
+            .top-bar .title-text {
+                display: none;
+            }
+        }
+
+        @media (max-width:480px) {
+            .controls {
+                gap: 6px;
+                padding: 6px 8px;
+            }
+
+            .speed-select {
+                display: none;
+            }
+        }
+
+        /* Focus styles */
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-layer bg-grid"></div>
+    <div class="bg-layer">
+        <div class="bg-glow-1"></div>
+        <div class="bg-glow-2"></div>
+    </div>
+
+    <div id="app">
+        <!-- Top bar -->
+        <div class="top-bar">
+            <button class="chap-btn" id="chapToggle" aria-label="Toggle chapters">
+                <i class="fas fa-bars"></i> <span>Chapters</span>
+            </button>
+            <div class="logo">&gt;_ SEC_FOUNDATIONS</div>
+            <div class="title-text" id="topTitle">Foundational Architectures in Offensive Security</div>
+            <div style="width:24px"></div>
+        </div>
+
+        <div class="main-area">
+            <!-- Chapter sidebar -->
+            <nav class="chapters" id="chapPanel" aria-label="Presentation chapters">
+                <div class="chap-header">Chapters</div>
+                <div id="chapList"></div>
+            </nav>
+
+            <!-- Player -->
+            <div class="player-wrap">
+                <div class="player" id="player">
+                    <!-- Intro overlay -->
+                    <div class="intro-overlay" id="introOverlay">
+                        <div class="intro-icon"><i class="fas fa-shield-halved"></i></div>
+                        <div class="intro-title">Offensive Security Foundations</div>
+                        <div class="intro-sub">Network &bull; Linux &bull; Web Architecture — Voice-Guided Video Course
+                        </div>
+                        <button class="start-btn" id="startBtn">Start Presentation</button>
+                        <div
+                            style="margin-top:16px;font-size:11px;color:var(--muted);font-family:'Fira Code',monospace">
+                            Uses browser text-to-speech &bull; Best with headphones
+                        </div>
+                    </div>
+
+                    <!-- End overlay -->
+                    <div class="end-overlay" id="endOverlay">
+                        <div class="end-title">Presentation Complete</div>
+                        <div class="end-sub">You've covered all foundational pillars of offensive security.</div>
+                        <button class="replay-btn" id="replayBtn"><i class="fas fa-rotate-left"></i> Watch
+                            Again</button>
+                    </div>
+
+                    <!-- Slide area -->
+                    <div class="slide-area" id="slideArea"></div>
+
+                    <!-- Speaking indicator -->
+                    <div class="speaking-indicator" id="speakInd">
+                        <div class="speak-bars">
+                            <div class="speak-bar"></div>
+                            <div class="speak-bar"></div>
+                            <div class="speak-bar"></div>
+                            <div class="speak-bar"></div>
+                        </div>
+                        <span>NARRATING</span>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="controls">
+                        <button class="ctrl-btn" id="prevBtn" aria-label="Previous slide"><i
+                                class="fas fa-backward-step"></i></button>
+                        <button class="ctrl-btn play-btn" id="playBtn" aria-label="Play/Pause"><i class="fas fa-play"
+                                id="playIcon"></i></button>
+                        <button class="ctrl-btn" id="nextBtn" aria-label="Next slide"><i
+                                class="fas fa-forward-step"></i></button>
+                        <div class="progress-wrap" id="progressWrap" role="slider" aria-label="Presentation progress"
+                            tabindex="0">
+                            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                        </div>
+                        <div class="time-display" id="timeDisplay">00:00 / 00:00</div>
+                        <select class="speed-select" id="speedSelect" aria-label="Playback speed">
+                            <option value="0.75">0.75x</option>
+                            <option value="1" selected>1.0x</option>
+                            <option value="1.25">1.25x</option>
+                            <option value="1.5">1.5x</option>
+                        </select>
+                        <div class="vol-wrap">
+                            <button class="ctrl-btn" id="volBtn" aria-label="Mute/Unmute"><i class="fas fa-volume-high"
+                                    id="volIcon"></i></button>
+                            <input type="range" class="vol-slider" id="volSlider" min="0" max="1" step="0.1" value="1"
+                                aria-label="Volume">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ===================== SLIDE DATA =====================
+        const slides = [
+            {
+                title: "Foundational Architectures in Offensive Security",
+                label: "Introduction",
+                narration: "Foundational Architectures in Offensive Security. A comprehensive analysis of Network, System, and Web Ecosystems. This voice-guided presentation explores the critical foundational knowledge that separates true security professionals from tool-dependent operators.",
+                html: `<div class="title-slide">
+      <div class="main-title">Foundational Architectures<br>in Offensive Security</div>
+      <div class="sub-title">A Comprehensive Analysis of Network, System, and Web Ecosystems</div>
+      <div class="start-hint"><i class="fas fa-play"></i>&ensp;Press play to begin narration</div>
+    </div>`
+            },
+            {
+                title: "The Problem with Tool Dependency",
+                label: "Chapter 01",
+                narration: "The most common vulnerability among emerging cybersecurity practitioners is the premature focus on automated exploitation tools. This produces what the industry calls a script kiddie, someone who can deploy sophisticated tools but cannot modify, troubleshoot, or understand the mechanisms behind them. True proficiency requires exhaustive mastery of how digital constructs operate under normal conditions before attempting to break them.",
+                html: `<ul class="bullet-list">
+      <li><div class="dot"></div><span>Premature focus on automated tools <strong style="color:var(--red)">bypasses foundational knowledge</strong> required for true expertise</span></li>
+      <li><div class="dot"></div><span>The <strong style="color:var(--orange)">"script kiddie" paradigm</strong>: capable of deploying tools but entirely incapable of understanding their mechanisms</span></li>
+      <li><div class="dot"></div><span>Cannot modify, troubleshoot, or adapt exploits when tools fail or targets deviate from expected configurations</span></li>
+      <li><div class="dot"></div><span><strong style="color:var(--accent)">True proficiency</strong> requires mastery of how systems operate under normal, non-malicious conditions first</span></li>
+      <li><div class="dot"></div><span>Building a resilient base before constructing complex attack vectors is not optional — it is <strong>imperative</strong></span></li>
+    </ul>`
+            },
+            {
+                title: "Three Foundational Pillars",
+                label: "Chapter 02",
+                narration: "True expertise rests on three interconnected pillars. First, Computer Network Architectures and Protocols, understanding how data moves across digital infrastructure. Second, Operating System Command Line Proficiency, specifically Linux environments, which power the backbone of the internet and nearly all security tools. Third, Web Application Architecture, understanding client-server dynamics and the stateless nature of HTTP. These three domains form the foundation upon which all offensive and defensive capabilities are built.",
+                html: `<div class="two-col">
+      <div class="col-card" style="border-color:var(--accent)">
+        <h4 style="color:var(--accent)"><i class="fas fa-network-wired"></i>&ensp;Network Architectures</h4>
+        <ul class="bullet-list">
+          <li><div class="dot"></div><span>OSI & TCP/IP models</span></li>
+          <li><div class="dot"></div><span>Data encapsulation & routing</span></li>
+          <li><div class="dot"></div><span>IP addressing & subnetting</span></li>
+          <li><div class="dot"></div><span>DNS, DHCP & core protocols</span></li>
+        </ul>
+      </div>
+      <div class="col-card" style="border-color:var(--cyan)">
+        <h4 style="color:var(--cyan)"><i class="fab fa-linux"></i>&ensp;Linux OS Mastery</h4>
+        <ul class="bullet-list">
+          <li><div class="dot" style="background:var(--cyan)"></div><span>Command-line fluency</span></li>
+          <li><div class="dot" style="background:var(--cyan)"></div><span>File permissions & ownership</span></li>
+          <li><div class="dot" style="background:var(--cyan)"></div><span>Process management</span></li>
+          <li><div class="dot" style="background:var(--cyan)"></div><span>Kali vs Parrot environments</span></li>
+        </ul>
+      </div>
+      <div class="col-card" style="border-color:var(--orange);grid-column:span 2">
+        <h4 style="color:var(--orange)"><i class="fas fa-globe"></i>&ensp;Web Application Architecture</h4>
+        <ul class="bullet-list">
+          <li><div class="dot" style="background:var(--orange)"></div><span>HTTP request-response lifecycle</span></li>
+          <li><div class="dot" style="background:var(--orange)"></div><span>State management: Cookies vs Sessions</span></li>
+          <li><div class="dot" style="background:var(--orange)"></div><span>Client-server dynamics & exploitation vectors</span></li>
+        </ul>
+      </div>
+    </div>`
+            },
+            {
+                title: "The OSI Model — Seven Layers of Network Communication",
+                label: "Chapter 03",
+                narration: "The OSI Model, introduced in 1984 by the International Organization for Standardization, is a seven-layer theoretical framework for network communication. While the modern internet runs on TCP/IP, OSI remains the premier diagnostic and educational tool. Layer 1 Physical handles raw bit transmission. Layer 2 Data Link organizes bits into frames using MAC addresses, where switches operate. Layer 3 Network handles IP addressing and routing, where routers operate. Layer 4 Transport guarantees delivery via TCP or UDP. Layer 5 Session manages application dialogues. Layer 6 Presentation handles encryption and data formatting. And Layer 7 Application is where protocols like HTTP, SSH, and DNS reside.",
+                html: `<div class="osi-stack">
+      <div class="osi-row" style="background:rgba(255,68,102,0.08)">
+        <div class="osi-num" style="background:rgba(255,68,102,0.2);color:var(--red)">7</div>
+        <div class="osi-name">Application</div>
+        <div class="osi-detail">HTTP, SSH, DNS, FTP</div>
+      </div>
+      <div class="osi-row" style="background:rgba(255,215,0,0.06)">
+        <div class="osi-num" style="background:rgba(255,215,0,0.15);color:var(--yellow)">6</div>
+        <div class="osi-name">Presentation</div>
+        <div class="osi-detail">Encryption, Compression, Formatting</div>
+      </div>
+      <div class="osi-row" style="background:rgba(255,107,53,0.06)">
+        <div class="osi-num" style="background:rgba(255,107,53,0.15);color:var(--orange)">5</div>
+        <div class="osi-name">Session</div>
+        <div class="osi-detail">Dialogue Control, Synchronization</div>
+      </div>
+      <div class="osi-row" style="background:rgba(0,212,255,0.06)">
+        <div class="osi-num" style="background:rgba(0,212,255,0.15);color:var(--cyan)">4</div>
+        <div class="osi-name">Transport</div>
+        <div class="osi-detail">TCP (reliable) / UDP (fast)</div>
+      </div>
+      <div class="osi-row" style="background:rgba(0,255,136,0.06)">
+        <div class="osi-num" style="background:rgba(0,255,136,0.15);color:var(--accent)">3</div>
+        <div class="osi-name">Network</div>
+        <div class="osi-detail">IP Addressing, Routing — Routers</div>
+      </div>
+      <div class="osi-row" style="background:rgba(120,120,200,0.06)">
+        <div class="osi-num" style="background:rgba(120,120,200,0.15);color:#8888cc">2</div>
+        <div class="osi-name">Data Link</div>
+        <div class="osi-detail">MAC Addressing, Frames — Switches</div>
+      </div>
+      <div class="osi-row" style="background:rgba(100,100,140,0.06)">
+        <div class="osi-num" style="background:rgba(100,100,140,0.15);color:var(--muted)">1</div>
+        <div class="osi-name">Physical</div>
+        <div class="osi-detail">Bits, Cables, RF — Hubs, Repeaters</div>
+      </div>
+    </div>`
+            },
+            {
+                title: "The TCP/IP Model — Practical Internet Architecture",
+                label: "Chapter 04",
+                narration: "The TCP/IP model, developed by the Department of Defense for ARPANET in the late 1960s, is the practical foundation of the modern internet. It collapses the seven OSI layers into four broader categories. The Application layer merges OSI layers 5, 6, and 7, handling high-level protocols, data representation, and dialogue control simultaneously. The Transport layer maps directly to OSI, managing TCP and UDP. The Internet layer handles IP routing. And the Network Access layer fuses OSI's Data Link and Physical layers. Unlike OSI's strict theoretical separation, TCP/IP prioritizes rapid, robust communication over rigid boundaries.",
+                html: `<div style="display:flex;flex-direction:column;gap:8px;max-width:500px;margin:0 auto">
+      <div style="background:rgba(255,68,102,0.1);border:1px solid rgba(255,68,102,0.2);border-radius:8px;padding:14px 18px">
+        <div style="color:var(--red);font-weight:600;font-size:15px;margin-bottom:4px">Application Layer</div>
+        <div style="color:var(--muted);font-size:13px">Merges OSI L5+L6+L7 — HTTP, DNS, SSH, FTP</div>
+      </div>
+      <div style="text-align:center;color:var(--muted);font-size:11px;font-family:'Fira Code',monospace">▼</div>
+      <div style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:8px;padding:14px 18px">
+        <div style="color:var(--cyan);font-weight:600;font-size:15px;margin-bottom:4px">Transport Layer</div>
+        <div style="color:var(--muted);font-size:13px">Maps to OSI L4 — TCP (reliable) / UDP (fast)</div>
+      </div>
+      <div style="text-align:center;color:var(--muted);font-size:11px;font-family:'Fira Code',monospace">▼</div>
+      <div style="background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);border-radius:8px;padding:14px 18px">
+        <div style="color:var(--accent);font-weight:600;font-size:15px;margin-bottom:4px">Internet Layer</div>
+        <div style="color:var(--muted);font-size:13px">Maps to OSI L3 — IP addressing & routing</div>
+      </div>
+      <div style="text-align:center;color:var(--muted);font-size:11px;font-family:'Fira Code',monospace">▼</div>
+      <div style="background:rgba(120,120,200,0.08);border:1px solid rgba(120,120,200,0.2);border-radius:8px;padding:14px 18px">
+        <div style="color:#8888cc;font-weight:600;font-size:15px;margin-bottom:4px">Network Access Layer</div>
+        <div style="color:var(--muted);font-size:13px">Fuses OSI L1+L2 — Hardware, MAC, physical transmission</div>
+      </div>
+    </div>`
+            },
+            {
+                title: "OSI vs TCP/IP — Comparative Analysis",
+                label: "Chapter 05",
+                narration: "The key differences between these models reveal fundamentally distinct philosophies. OSI is theoretical and protocol-independent, making it superior for fault isolation and education. TCP/IP is practical and protocol-dependent, designed to solve real communication problems. OSI's seven strictly segregated layers simplify troubleshooting because you can isolate failures precisely. TCP/IP's four broader integrated layers enabled the internet to scale exponentially. OSI was adopted as a standard in 1984 but is primarily educational. TCP/IP was developed earlier by the DoD and became the undisputed standard of global communication.",
+                html: `<table class="slide-table">
+      <thead><tr><th>Feature</th><th>OSI Model</th><th>TCP/IP Model</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--accent);font-weight:500">Nature</td><td>Theoretical, protocol-independent</td><td>Practical, protocol-dependent</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Layers</td><td>7 distinct specialized layers</td><td>4 broadly aggregated layers</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Aggregation</td><td>Strict segregation of functions</td><td>L5+L6+L7 collapsed into one</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Diagnostics</td><td>Easier fault isolation</td><td>More complex — combined functions</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Timeline</td><td>1984 international standard</td><td>1960s DoD, de facto internet standard</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Primary Use</td><td>Education & reference</td><td>Actual global internet operation</td></tr>
+      </tbody>
+    </table>`
+            },
+            {
+                title: "Data Encapsulation — The Packet Lifecycle",
+                label: "Chapter 06",
+                narration: "Data doesn't travel as a single block. It undergoes encapsulation as it descends through the protocol stack. At the Application layers, it's called Data. The Transport layer adds port numbers, creating a Segment. The Network layer adds IP addresses, creating a Packet. The Data Link layer adds MAC addresses and a trailer, creating a Frame. Finally, the Physical layer converts it to Bits for transmission. Each layer appends headers the receiving side strips away in reverse. This process is paramount for ethical hacking — tools like Wireshark intercept these Protocol Data Units in transit.",
+                html: `<div class="encap-wrap">
+      <div class="encap-box" style="border-color:var(--muted);background:rgba(100,100,140,0.06)">
+        <div class="encap-label" style="color:var(--muted)">L1 Physical — BITS</div>
+        <div class="encap-inner">
+          <div class="encap-box" style="border-color:#8888cc;background:rgba(120,120,200,0.06)">
+            <div class="encap-label" style="color:#8888cc">L2 Data Link — FRAME (MAC + Trailer)</div>
+            <div class="encap-inner">
+              <div class="encap-box" style="border-color:var(--accent);background:rgba(0,255,136,0.06)">
+                <div class="encap-label" style="color:var(--accent)">L3 Network — PACKET (IP Addresses)</div>
+                <div class="encap-inner">
+                  <div class="encap-box" style="border-color:var(--cyan);background:rgba(0,212,255,0.06)">
+                    <div class="encap-label" style="color:var(--cyan)">L4 Transport — SEGMENT (Port Numbers)</div>
+                    <div class="encap-inner">
+                      <div style="background:rgba(255,68,102,0.1);border:1px dashed var(--red);border-radius:6px;padding:8px 16px;color:var(--red);font-weight:600;font-family:'Fira Code',monospace;font-size:13px">DATA (Payload)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;color:var(--muted);font-size:12px;text-align:center;font-family:'Fira Code',monospace">
+        Decapsulation reverses this process on the receiving end
+      </div>
+    </div>`
+            },
+            {
+                title: "Switches vs Routers — Layer 2 and Layer 3",
+                label: "Chapter 07",
+                narration: "Switches operate at Layer 2, the Data Link Layer. They connect devices within a local network using dynamic MAC address tables, forwarding frames only to the correct port. Hackers exploit switches through MAC flooding attacks, overwhelming memory to force fail-open behavior, enabling packet sniffing. Routers operate at Layer 3, connecting separate networks using IP routing tables. They don't use MAC addresses — only logical IP addresses. Without routers, internet communication is impossible, as isolated LANs would have no mechanism to exchange data across WANs. Understanding this distinction is critical for Man-in-the-Middle attacks.",
+                html: `<div class="two-col">
+      <div class="col-card" style="border-color:var(--cyan)">
+        <h4 style="color:var(--cyan)">Layer 2 — Switches</h4>
+        <ul class="bullet-list">
+          <li><div class="dot" style="background:var(--cyan)"></div><span>Operates within <strong>local subnets</strong></span></li>
+          <li><div class="dot" style="background:var(--cyan)"></div><span>Uses <strong>MAC address tables</strong> for forwarding</span></li>
+          <li><div class="dot" style="background:var(--cyan)"></div><span>Forwards frames to specific ports</span></li>
+          <li><div class="dot" style="background:var(--cyan)"></div><span>Reduces network collisions</span></li>
+          <li><div class="dot" style="background:var(--cyan)"></div><span style="color:var(--red)">Vuln: MAC flooding → fail-open sniffing</span></li>
+        </ul>
+      </div>
+      <div class="col-card" style="border-color:var(--accent)">
+        <h4 style="color:var(--accent)">Layer 3 — Routers</h4>
+        <ul class="bullet-list">
+          <li><div class="dot"></div><span>Connects <strong>separate networks</strong></span></li>
+          <li><div class="dot"></div><span>Uses <strong>IP routing tables</strong> for path selection</span></li>
+          <li><div class="dot"></div><span>Forwards packets across WANs</span></li>
+          <li><div class="dot"></div><span>Ignores MAC addresses entirely</span></li>
+          <li><div class="dot"></div><span style="color:var(--orange)">Critical for MitM & network segmentation bypass</span></li>
+        </ul>
+      </div>
+    </div>`
+            },
+            {
+                title: "IP Addressing & CIDR Subnetting",
+                label: "Chapter 08",
+                narration: "IPv4 addresses are 32 bits divided into four octets. Networks are segmented into subnets using subnet masks, dividing each address into network and host portions. Classless Inter-Domain Routing, or CIDR, uses slash notation like slash 24 to specify the number of network bits. The formula for usable hosts is 2 to the power of H minus 2, where H is host bits. Two addresses are always reserved: the Network ID at the start and the Broadcast Address at the end. For example, a slash 27 subnet has 5 host bits, yielding 30 usable addresses with a block size of 32.",
+                html: `<div style="display:flex;flex-direction:column;gap:14px">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 18px">
+        <div style="color:var(--accent);font-weight:600;margin-bottom:6px;font-family:'Fira Code',monospace;font-size:14px">Usable Hosts Formula</div>
+        <div style="font-size:22px;font-weight:700;font-family:'Fira Code',monospace;text-align:center;padding:8px;background:rgba(0,255,136,0.05);border-radius:6px">
+          2<sup>H</sup> − 2
+        </div>
+        <div style="color:var(--muted);font-size:12px;margin-top:6px;text-align:center">
+          H = host bits &bull; Subtract Network ID & Broadcast Address
+        </div>
+      </div>
+      <table class="slide-table">
+        <thead><tr><th>CIDR</th><th>Subnet Mask</th><th>Block Size</th><th>Usable Hosts</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">/24</td><td>255.255.255.0</td><td>256</td><td>254</td></tr>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">/25</td><td>255.255.255.128</td><td>128</td><td>126</td></tr>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">/26</td><td>255.255.255.192</td><td>64</td><td>62</td></tr>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">/27</td><td>255.255.255.224</td><td>32</td><td style="color:var(--orange);font-weight:600">30</td></tr>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">/28</td><td>255.255.255.240</td><td>16</td><td>14</td></tr>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">/29</td><td>255.255.255.248</td><td>8</td><td>6</td></tr>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">/30</td><td>255.255.255.252</td><td>4</td><td>2</td></tr>
+        </tbody>
+      </table>
+    </div>`
+            },
+            {
+                title: "DNS, DHCP & Critical Protocols",
+                label: "Chapter 09",
+                narration: "DNS translates domain names into IP addresses through a hierarchy of root, TLD, and authoritative servers. Attackers exploit DNS through cache poisoning to redirect traffic. DHCP automates IP assignment via the DORA process: Discover, Offer, Request, Acknowledge. Rogue DHCP servers can intercept all traffic by assigning themselves as the default gateway. Critical protocols: HTTP on port 80 is unencrypted and visible in transit. HTTPS on port 443 encrypts with TLS. FTP on ports 20-21 transmits credentials in cleartext, a prime target. SSH on port 22 provides encrypted remote access using asymmetric cryptography.",
+                html: `<table class="slide-table">
+      <thead><tr><th>Protocol</th><th>Port</th><th>Function</th><th>Security</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600;color:var(--accent)">DNS</td>
+          <td style="font-family:'Fira Code',monospace">53</td>
+          <td>Domain → IP resolution</td>
+          <td style="color:var(--red)">Cache poisoning risk</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:var(--accent)">DHCP</td>
+          <td style="font-family:'Fira Code',monospace">67/68</td>
+          <td>Auto IP assignment (DORA)</td>
+          <td style="color:var(--red)">Rogue server → MitM</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:var(--orange)">HTTP</td>
+          <td style="font-family:'Fira Code',monospace">80</td>
+          <td>Web data transfer</td>
+          <td style="color:var(--red)">Cleartext — fully visible</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:var(--cyan)">HTTPS</td>
+          <td style="font-family:'Fira Code',monospace">443</td>
+          <td>Encrypted web (TLS/SSL)</td>
+          <td style="color:var(--accent)">Secure</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:var(--orange)">FTP</td>
+          <td style="font-family:'Fira Code',monospace">20/21</td>
+          <td>File transfer</td>
+          <td style="color:var(--red)">Cleartext credentials</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;color:var(--cyan)">SSH</td>
+          <td style="font-family:'Fira Code',monospace">22</td>
+          <td>Encrypted remote shell</td>
+          <td style="color:var(--accent)">Asymmetric crypto</td>
+        </tr>
+      </tbody>
+    </table>`
+            },
+            {
+                title: "Linux — The Non-Negotiable Security OS",
+                label: "Chapter 10",
+                narration: "Linux is non-negotiable for offensive security. Unlike proprietary operating systems that obscure functionality, Linux provides granular, unrestricted access to system internals, raw network sockets, and complex file permissions. It powers the internet's backbone, cloud infrastructure, and nearly all security tools. True power comes through the Command Line Interface, not graphical interfaces, because initial exploitation almost always yields a text-based shell. GUI tools throttle speed and flexibility. The CLI offers minimal resource consumption, unparalleled automation via Bash or Python scripting, and absolute systemic control.",
+                html: `<ul class="bullet-list">
+      <li><div class="dot"></div><span><strong style="color:var(--accent)">Granular system access</strong> — raw network sockets, file permissions, kernel-level manipulation</span></li>
+      <li><div class="dot"></div><span><strong style="color:var(--accent)">Powers the internet</strong> — 96% of top 1M servers, all major cloud platforms</span></li>
+      <li><div class="dot"></div><span><strong style="color:var(--accent)">Tool ecosystem</strong> — Metasploit, Nmap, Burp Suite, Wireshark all built for Linux first</span></li>
+      <li><div class="dot"></div><span><strong style="color:var(--cyan)">CLI over GUI</strong> — exploitation yields text shells, not desktop environments</span></li>
+      <li><div class="dot"></div><span><strong style="color:var(--cyan)">Automation</strong> — Bash/Python scripting for scalable operations</span></li>
+      <li><div class="dot"></div><span><strong style="color:var(--cyan)">Resource efficiency</strong> — minimal footprint for running multiple VMs in attack labs</span></li>
+    </ul>`
+            },
+            {
+                title: "Kali Linux vs Parrot Security OS",
+                label: "Chapter 11",
+                narration: "Kali Linux by Offensive Security is the industry standard, focused exclusively on penetration testing with a heavy Gnome desktop requiring 20 gigabytes of storage and significant RAM. It has unmatched documentation and certification alignment. Parrot Security OS offers more versatility, including development tools, built-in Tor routing, and the lightweight MATE desktop, running on just 320 megabytes of RAM with 16 gigabytes storage. Parrot excels in resource-constrained virtual environments where running multiple VMs concurrently is necessary. For beginners, Parrot is more forgiving due to its intuitive interface.",
+                html: `<table class="slide-table">
+      <thead><tr><th>Metric</th><th>Kali Linux</th><th>Parrot Security OS</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--accent);font-weight:500">Focus</td><td>Pure penetration testing</td><td>Security + dev + privacy</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Desktop</td><td>Gnome (heavyweight)</td><td>MATE (lightweight)</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Min RAM</td><td style="color:var(--orange)">~1 GB (realistically 4+)</td><td style="color:var(--accent)">320 MB</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Storage</td><td>20 GB</td><td>16 GB</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">GPU Required</td><td style="color:var(--red)">Yes</td><td style="color:var(--accent)">No</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Extra Tools</td><td>None (focused)</td><td>IDEs, Tor, anonymity tools</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Best For</td><td>Certs, documentation, standards</td><td>VM labs, low-end hardware</td></tr>
+      </tbody>
+    </table>`
+            },
+            {
+                title: "Essential Linux CLI Commands",
+                label: "Chapter 12",
+                narration: "Essential Linux commands form the vocabulary of an ethical hacker. PWD confirms your location. CD navigates directories. LS with dash LA reveals hidden files and permissions. WHOAMI and ID identify your user context. CAT reads files, critical for extracting password hashes from etc passwd and etc shadow. GREP searches for patterns, invaluable for finding hardcoded credentials. CHMOD modifies permissions to execute payloads. CHOWN changes file ownership. PS and TOP reveal running processes. KILL terminates defensive mechanisms. Mastering these commands is non-negotiable for post-exploitation operations.",
+                html: `<table class="slide-table">
+      <thead><tr><th>Command</th><th>Purpose</th><th>Hacker Usage</th></tr></thead>
+      <tbody>
+        <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">pwd / cd</td><td>Navigate filesystem</td><td>Situational awareness in remote shell</td></tr>
+        <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">ls -la</td><td>List all files with permissions</td><td>Find hidden configs, check misconfigurations</td></tr>
+        <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">whoami / id</td><td>Current user & groups</td><td>Determine privilege scope for escalation</td></tr>
+        <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">cat</td><td>Read file contents</td><td>Extract hashes from /etc/passwd, /etc/shadow</td></tr>
+        <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">grep -ri</td><td>Search text patterns</td><td>Find hardcoded passwords in web directories</td></tr>
+        <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">chmod +x</td><td>Set execute permission</td><td>Enable uploaded payloads to run</td></tr>
+        <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">ps / top</td><td>View processes</td><td>Identify AV, logging, root services</td></tr>
+        <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">kill</td><td>Terminate process</td><td>Disable defensive mechanisms by PID</td></tr>
+      </tbody>
+    </table>`
+            },
+            {
+                title: "The HTTP Request-Response Lifecycle",
+                label: "Chapter 13",
+                narration: "When you visit a website, a complex multi-step process occurs. First, DNS resolution translates the domain into an IP address through recursive queries across root, TLD, and authoritative servers. Then, a TCP three-way handshake establishes a reliable connection with SYN, SYN-ACK, and ACK packets. For HTTPS sites, a TLS handshake negotiates encryption. The browser sends an HTTP request with a method like GET or POST, headers with metadata, and an optional body. The server processes the request, queries databases if needed, and returns an HTTP response with a status code like 200 for success, 404 for not found, or 500 for server error. Finally, the browser renders the HTML, CSS, and JavaScript.",
+                html: `<div class="http-flow">
+      <div class="http-step"><div class="step-title">Step 1</div>DNS<br>Resolution</div>
+      <div class="http-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="http-step"><div class="step-title">Step 2</div>TCP<br>Handshake</div>
+      <div class="http-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="http-step"><div class="step-title">Step 3</div>TLS<br>Handshake</div>
+      <div class="http-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="http-step"><div class="step-title">Step 4</div>HTTP<br>Request</div>
+      <div class="http-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="http-step"><div class="step-title">Step 5</div>Server<br>Processing</div>
+      <div class="http-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="http-step"><div class="step-title">Step 6</div>HTTP<br>Response</div>
+      <div class="http-arrow"><i class="fas fa-chevron-right"></i></div>
+      <div class="http-step"><div class="step-title">Step 7</div>Browser<br>Rendering</div>
+    </div>
+    <div style="margin-top:18px">
+      <table class="slide-table">
+        <thead><tr><th>Status Code</th><th>Meaning</th><th>Context</th></tr></thead>
+        <tbody>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--accent)">200 OK</td><td>Success</td><td>Resource delivered successfully</td></tr>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--yellow)">403 Forbidden</td><td>Auth failure</td><td>Insufficient permissions</td></tr>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--orange)">404 Not Found</td><td>Missing resource</td><td>Path does not exist on server</td></tr>
+          <tr><td style="font-family:'Fira Code',monospace;color:var(--red)">500 Internal Error</td><td>Server failure</td><td>Backend logic crashed</td></tr>
+        </tbody>
+      </table>
+    </div>`
+            },
+            {
+                title: "Cookies vs Sessions — Web State Management",
+                label: "Chapter 14",
+                narration: "HTTP is inherently stateless — it retains no memory of past interactions. Cookies solve this by storing data client-side as small key-value pairs, sent with every request. They're scalable but limited to 4 kilobytes and vulnerable to theft if not secured. The Secure flag restricts transmission to HTTPS, and the HttpOnly flag prevents JavaScript access. Sessions are more secure, storing sensitive data server-side and sending only a random Session ID to the client. The actual data never traverses the network. However, sessions place a heavier memory burden on servers. Missing security flags on cookies is a primary pathway to session hijacking via Cross-Site Scripting.",
+                html: `<table class="slide-table">
+      <thead><tr><th>Feature</th><th style="color:var(--orange)">Cookies (Client-Side)</th><th style="color:var(--cyan)">Sessions (Server-Side)</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--accent);font-weight:500">Storage</td><td>User's browser / hard drive</td><td>Server RAM / database</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Content</td><td>Actual readable data</td><td>Only a random Session ID</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Size Limit</td><td>~4 KB per cookie</td><td>Virtually unlimited</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Scalability</td><td style="color:var(--accent)">High (offloaded to client)</td><td style="color:var(--red)">Lower (server memory)</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Security</td><td style="color:var(--red)">Vulnerable to XSS, CSRF</td><td style="color:var(--accent)">Data never leaves server</td></tr>
+        <tr><td style="color:var(--accent);font-weight:500">Protection</td><td>Secure + HttpOnly flags</td><td>Session ID rotation, timeouts</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;background:rgba(255,68,102,0.06);border:1px solid rgba(255,68,102,0.15);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red)">
+      <i class="fas fa-triangle-exclamation"></i>&ensp;Missing Secure/HttpOnly flags = primary XSS → session hijacking vector
+    </div>`
+            },
+            {
+                title: "Conclusion — Building True Expertise",
+                label: "Conclusion",
+                narration: "The defining distinction between an ineffective operator and a proficient ethical hacker lies in foundational comprehension. Visualize data encapsulation across the TCP/IP stack. Master the Linux command line to manipulate permissions, manage processes, and hunt for vulnerabilities at the root level. Understand that every web interaction is a stateless HTTP exchange governed by exploitable cookies and sessions. By internalizing these mechanics, security professionals evolve past executing pre-written scripts. They gain the architectural insight necessary to deconstruct, exploit, and ultimately secure the world's most complex digital infrastructures.",
+                html: `<div class="title-slide" style="text-align:left;align-items:flex-start">
+      <div style="font-size:clamp(18px,2.5vw,28px);font-weight:700;line-height:1.3;color:var(--fg);margin-bottom:16px">
+        The Architecture of True Expertise
+      </div>
+      <ul class="bullet-list">
+        <li><div class="dot"></div><span><strong style="color:var(--accent)">Visualize</strong> data encapsulation across the TCP/IP stack — not as abstract theory, but as tangible mechanics</span></li>
+        <li><div class="dot"></div><span><strong style="color:var(--cyan)">Master</strong> the Linux command line — discard GUI crutches, navigate with precision at the root level</span></li>
+        <li><div class="dot"></div><span><strong style="color:var(--orange)">Deconstruct</strong> the illusion of web statefulness — every interaction is a discrete, exploitable HTTP exchange</span></li>
+        <li><div class="dot"></div><span><strong style="color:var(--red)">Evolve</strong> past script execution — gain the architectural insight to build, break, and secure anything</span></li>
+      </ul>
+      <div style="margin-top:20px;padding:14px 18px;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.15);border-radius:8px;font-family:'Fira Code',monospace;font-size:clamp(12px,1.3vw,14px);color:var(--accent);line-height:1.6">
+        "Foundational knowledge is not the prerequisite for hacking.<br>Foundational knowledge IS the hack."
+      </div>
+    </div>`
+            }
+        ];
+
+        // ===================== STATE =====================
+        const state = {
+            current: 0,
+            playing: false,
+            userPaused: false,
+            speed: 1,
+            volume: 1,
+            muted: false,
+            started: false,
+            slideStart: 0,
+            slideElapsed: 0,
+            progressTimer: null,
+            utterance: null
+        };
+
+        // Calculate estimated duration per slide (words / 150 wpm * 60)
+        slides.forEach(s => {
+            s.words = s.narration.split(/\s+/).length;
+            s.estimatedDuration = (s.words / 150) * 60;
+        });
+        const totalDuration = slides.reduce((a, s) => a + s.estimatedDuration, 0);
+
+        // ===================== DOM REFS =====================
+        const $ = id => document.getElementById(id);
+        const slideArea = $('slideArea');
+        const playBtn = $('playBtn');
+        const playIcon = $('playIcon');
+        const prevBtn = $('prevBtn');
+        const nextBtn = $('nextBtn');
+        const progressWrap = $('progressWrap');
+        const progressFill = $('progressFill');
+        const timeDisplay = $('timeDisplay');
+        const speedSelect = $('speedSelect');
+        const volSlider = $('volSlider');
+        const volBtn = $('volBtn');
+        const volIcon = $('volIcon');
+        const chapToggle = $('chapToggle');
+        const chapPanel = $('chapPanel');
+        const chapList = $('chapList');
+        const introOverlay = $('introOverlay');
+        const endOverlay = $('endOverlay');
+        const startBtn = $('startBtn');
+        const replayBtn = $('replayBtn');
+        const speakInd = $('speakInd');
+        const topTitle = $('topTitle');
+        const toast = $('toast');
+
+        // ===================== HELPERS =====================
+        function fmt(sec) {
+            const m = Math.floor(sec / 60).toString().padStart(2, '0');
+            const s = Math.floor(sec % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        function getElapsed() {
+            let t = 0;
+            for (let i = 0; i < state.current; i++) t += slides[i].estimatedDuration;
+            t += state.slideElapsed;
+            return t;
+        }
+
+        // ===================== BUILD SLIDES =====================
+        function buildSlides() {
+            slideArea.innerHTML = '';
+            slides.forEach((s, i) => {
+                const div = document.createElement('div');
+                div.className = 'slide' + (i === 0 ? ' active' : '');
+                div.id = 'slide-' + i;
+                div.innerHTML = `<div class="slide-label">${s.label}</div><div class="slide-title">${s.title}</div><div class="slide-body">${s.html}</div>`;
+                slideArea.appendChild(div);
+            });
+        }
+
+        // ===================== BUILD CHAPTERS =====================
+        function buildChapters() {
+            chapList.innerHTML = '';
+            slides.forEach((s, i) => {
+                const div = document.createElement('div');
+                div.className = 'chap-item' + (i === 0 ? ' active' : '');
+                div.innerHTML = `<span class="num">${i + 1}</span><span class="label">${s.title}</span>`;
+                div.addEventListener('click', () => seekToSlide(i));
+                chapList.appendChild(div);
+            });
+        }
+
+        // ===================== RENDER SLIDE =====================
+        function renderSlide(index, direction = 'next') {
+            const prev = slideArea.querySelector('.slide.active');
+            const next = $('slide-' + index);
+            if (!next || prev === next) return;
+
+            if (prev) {
+                prev.classList.remove('active');
+                prev.classList.add(direction === 'next' ? 'exit' : '');
+                setTimeout(() => prev.classList.remove('exit'), 500);
+            }
+            next.classList.add('active');
+
+            // Re-trigger bullet animations
+            next.querySelectorAll('.bullet-list li').forEach((li, i) => {
+                li.style.animation = 'none';
+                li.offsetHeight; // reflow
+                li.style.animationDelay = (i * 0.1) + 's';
+                li.style.animation = '';
+            });
+
+            // Update chapters
+            chapList.querySelectorAll('.chap-item').forEach((el, i) => {
+                el.classList.toggle('active', i === index);
+            });
+
+            // Update top title
+            topTitle.textContent = slides[index].title;
+
+            state.slideElapsed = 0;
+            updateProgress();
+        }
+
+        // ===================== SPEECH =====================
+        function speak(text) {
+            if (!('speechSynthesis' in window)) {
+                showToast('Text-to-speech not supported in this browser');
+                return;
+            }
+            speechSynthesis.cancel();
+
+            const utt = new SpeechSynthesisUtterance(text);
+            utt.rate = state.speed;
+            utt.pitch = 1;
+            utt.volume = state.muted ? 0 : state.volume;
+
+            // Try to find a good English voice
+            const voices = speechSynthesis.getVoices();
+            const preferred = voices.find(v => v.lang.startsWith('en') && v.name.includes('Google'))
+                || voices.find(v => v.lang.startsWith('en') && v.localService)
+                || voices.find(v => v.lang.startsWith('en'));
+            if (preferred) utt.voice = preferred;
+
+            utt.onend = () => {
+                if (!state.userPaused && state.playing) {
+                    if (state.current < slides.length - 1) {
+                        nextSlide();
+                    } else {
+                        stopPresentation();
+                        endOverlay.classList.add('visible');
+                    }
+                }
+                speakInd.classList.remove('visible');
+            };
+
+            utt.onerror = (e) => {
+                if (e.error !== 'canceled') {
+                    speakInd.classList.remove('visible');
+                }
+            };
+
+            state.utterance = utt;
+            speechSynthesis.speak(utt);
+            speakInd.classList.add('visible');
+        }
+
+        // ===================== CONTROLS =====================
+        function play() {
+            state.playing = true;
+            state.userPaused = false;
+            state.slideStart = Date.now() - (state.slideElapsed * 1000);
+            playIcon.className = 'fas fa-pause';
+            speak(slides[state.current].narration);
+            startProgressTimer();
+        }
+
+        function pause() {
+            state.userPaused = true;
+            state.playing = false;
+            state.slideElapsed = (Date.now() - state.slideStart) / 1000;
+            playIcon.className = 'fas fa-play';
+            speechSynthesis.pause();
+            speakInd.classList.remove('visible');
+            stopProgressTimer();
+        }
+
+        function togglePlay() {
+            if (!state.started) return;
+            if (state.playing) pause();
+            else play();
+        }
+
+        function nextSlide() {
+            if (state.current >= slides.length - 1) return;
+            speechSynthesis.cancel();
+            state.current++;
+            renderSlide(state.current, 'next');
+            if (state.playing) {
+                state.slideStart = Date.now();
+                state.slideElapsed = 0;
+                speak(slides[state.current].narration);
+            } else {
+                updateProgress();
+            }
+        }
+
+        function prevSlide() {
+            if (state.current <= 0) return;
+            speechSynthesis.cancel();
+            state.current--;
+            renderSlide(state.current, 'prev');
+            if (state.playing) {
+                state.slideStart = Date.now();
+                state.slideElapsed = 0;
+                speak(slides[state.current].narration);
+            } else {
+                updateProgress();
+            }
+        }
+
+        function seekToSlide(index) {
+            if (index === state.current) return;
+            speechSynthesis.cancel();
+            speakInd.classList.remove('visible');
+            const wasPlaying = state.playing;
+            state.playing = false;
+            state.current = index;
+            state.slideElapsed = 0;
+            renderSlide(index, index > state.current ? 'next' : 'prev');
+            updateProgress();
+            if (wasPlaying) {
+                setTimeout(() => play(), 100);
+            }
+        }
+
+        function stopPresentation() {
+            state.playing = false;
+            state.userPaused = false;
+            playIcon.className = 'fas fa-play';
+            speechSynthesis.cancel();
+            speakInd.classList.remove('visible');
+            stopProgressTimer();
+        }
+
+        function startProgressTimer() {
+            stopProgressTimer();
+            state.progressTimer = setInterval(() => {
+                state.slideElapsed = (Date.now() - state.slideStart) / 1000;
+                updateProgress();
+            }, 200);
+        }
+
+        function stopProgressTimer() {
+            if (state.progressTimer) {
+                clearInterval(state.progressTimer);
+                state.progressTimer = null;
+            }
+        }
+
+        function updateProgress() {
+            const elapsed = getElapsed();
+            const pct = Math.min((elapsed / totalDuration) * 100, 100);
+            progressFill.style.width = pct + '%';
+            timeDisplay.textContent = fmt(elapsed) + ' / ' + fmt(totalDuration);
+        }
+
+        // ===================== EVENT LISTENERS =====================
+        playBtn.addEventListener('click', togglePlay);
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        speedSelect.addEventListener('change', () => {
+            state.speed = parseFloat(speedSelect.value);
+            if (state.playing) {
+                state.slideStart = Date.now() - (state.slideElapsed * 1000);
+                speak(slides[state.current].narration);
+            }
+            showToast('Speed: ' + speedSelect.value + 'x');
+        });
+
+        volSlider.addEventListener('input', () => {
+            state.volume = parseFloat(volSlider.value);
+            state.muted = false;
+            volIcon.className = state.volume === 0 ? 'fas fa-volume-xmark' : state.volume < 0.5 ? 'fas fa-volume-low' : 'fas fa-volume-high';
+            if (state.utterance) state.utterance.volume = state.volume;
+        });
+
+        volBtn.addEventListener('click', () => {
+            state.muted = !state.muted;
+            volIcon.className = state.muted ? 'fas fa-volume-xmark' : 'fas fa-volume-high';
+            if (state.utterance) state.utterance.volume = state.muted ? 0 : state.volume;
+        });
+
+        chapToggle.addEventListener('click', () => {
+            chapPanel.classList.toggle('open');
+            chapToggle.classList.toggle('active');
+        });
+
+        progressWrap.addEventListener('click', (e) => {
+            const rect = progressWrap.getBoundingClientRect();
+            const pct = (e.clientX - rect.left) / rect.width;
+            const targetTime = pct * totalDuration;
+            let accum = 0;
+            for (let i = 0; i < slides.length; i++) {
+                if (accum + slides[i].estimatedDuration >= targetTime) {
+                    seekToSlide(i);
+                    // Set elapsed within that slide
+                    const within = targetTime - accum;
+                    state.slideElapsed = within;
+                    state.slideStart = Date.now() - (within * 1000);
+                    updateProgress();
+                    break;
+                }
+                accum += slides[i].estimatedDuration;
+            }
+        });
+
+        startBtn.addEventListener('click', () => {
+            state.started = true;
+            introOverlay.classList.add('hidden');
+            // Ensure voices are loaded
+            if (speechSynthesis.getVoices().length === 0) {
+                speechSynthesis.addEventListener('voiceschanged', () => play(), { once: true });
+            } else {
+                play();
+            }
+        });
+
+        replayBtn.addEventListener('click', () => {
+            endOverlay.classList.remove('visible');
+            state.current = 0;
+            state.slideElapsed = 0;
+            renderSlide(0, 'prev');
+            updateProgress();
+            setTimeout(() => play(), 300);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            switch (e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    if (!state.started) { startBtn.click(); return; }
+                    togglePlay();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    prevSlide();
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    state.speed = Math.min(state.speed + 0.25, 2);
+                    speedSelect.value = state.speed.toString();
+                    if (state.playing) { state.slideStart = Date.now() - (state.slideElapsed * 1000); speak(slides[state.current].narration); }
+                    showToast('Speed: ' + state.speed + 'x');
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    state.speed = Math.max(state.speed - 0.25, 0.5);
+                    speedSelect.value = state.speed.toString();
+                    if (state.playing) { state.slideStart = Date.now() - (state.slideElapsed * 1000); speak(slides[state.current].narration); }
+                    showToast('Speed: ' + state.speed + 'x');
+                    break;
+                case 'KeyM':
+                    volBtn.click();
+                    break;
+                case 'KeyF':
+                    if (document.fullscreenElement) document.exitFullscreen();
+                    else $('player').requestFullscreen?.();
+                    break;
+                case 'Escape':
+                    chapPanel.classList.remove('open');
+                    chapToggle.classList.remove('active');
+                    break;
+            }
+        });
+
+        // Handle visibility change — pause when tab hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && state.playing) {
+                pause();
+            }
+        });
+
+        // Preload voices
+        if ('speechSynthesis' in window) {
+            speechSynthesis.getVoices();
+            speechSynthesis.addEventListener('voiceschanged', () => speechSynthesis.getVoices(), { once: true });
+        }
+
+        // ===================== INIT =====================
+        buildSlides();
+        buildChapters();
+        updateProgress();
+    </script>
+</body>
+
+</html>

